@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rento/components/itemBlock1.dart';
+import 'package:rento/components/SideMenu.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -20,27 +21,7 @@ class SearchState extends State<SearchPage> {
               })
         ],
       ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home Page'),
-                onTap: (){Navigator.of(context).pushReplacementNamed('/SearchPage');},
-              ),
-              ListTile(
-                leading: Icon(Icons.history),
-                title: Text('Rental Histroy'),
-                onTap: (){Navigator.of(context).pushReplacementNamed('/RentalHistory');},
-              ),
-              ListTile(
-                leading: Icon(Icons.exit_to_app),
-                title: Text('Logout'),
-                onTap: (){Navigator.of(context).pushReplacementNamed('/LoginScreen2');},
-              ),
-            ],
-          ),
-        ),
+        drawer: new SideMenu(),
       body: new Item1("")
 
     );
