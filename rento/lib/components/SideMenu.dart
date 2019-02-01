@@ -6,16 +6,15 @@ class SideMenu extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text("Ashish Rawat"),
-            accountEmail: Text("ashishrawat2911@gmail.com"),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
-                  ? Colors.blue
-                  : Colors.white,
-              child: Text(
-                "A",
-                style: TextStyle(fontSize: 40.0),
-              ),
+            accountName: Text("USER NAME"),
+            accountEmail: Text("EMAIL"),
+            onDetailsPressed: () {Navigator.of(context).pushNamed('/ProfilePage');
+            print('DETAILS PRESSED');},
+            currentAccountPicture: IconButton(
+              icon: Icon(Icons.account_circle, size: 80),
+              onPressed: (){
+                Navigator.of(context).pushNamed('/ProfilePage');
+              },
             ),
           ),
           ListTile(

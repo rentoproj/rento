@@ -341,7 +341,6 @@ class _LoginScreen2State extends State<LoginScreen2>
                               //FirebaseAuth.instance.signOut();
                               Navigator.of(context)
                                   .pushNamed('/SearchPage');
-
                             })
                                 .catchError((e) {
                               print('Error: $e');
