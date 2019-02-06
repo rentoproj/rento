@@ -8,9 +8,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class Comment {
-  String _text, _uName;
+  String _text, _uName, _head;
   DateTime _dateTime;
-  Comment(this._text, this._dateTime, this._uName);
+  Comment(this._text, this._dateTime, this._uName, this._head);
 }
 
 // class CommentBlock extends StatelessWidget
@@ -27,29 +27,36 @@ class Comment {
 class Profile extends State<ProfilePage> {
   double rating = 3;
   List<Comment> comments = [
-    new Comment("_text1", DateTime.now(), "_uName1"),
-    new Comment("_text2", DateTime.now(), "_uName2"),
-    new Comment("_text3", DateTime.now(), "_uName3")
+    new Comment("ssz", DateTime.now(), "_uName1", "hea1231d"),
+    new Comment("_text2", DateTime.now(), "_uName2", "head1"),
+    new Comment("_text3", DateTime.now(), "_uName3", "head1")
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        appBar: AppBar(title: Text("Profile")),
+        appBar: AppBar(
+          title: Text("Profile"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              tooltip: "Edit Profile",
+              onPressed: (){},
+            )
+          ],
+          ),
         drawer: new SideMenu(),
-        body: Column(children: <Widget>[
+        body:
+          Column(children: <Widget>[
           Divider(),
           _buildUserIdentity("user"),
           Divider(),
-          new Padding(
-            padding: EdgeInsets.only(left: 15),
             //USER DESCRIPTION
-            child: _bibleField(),
-          ),
+          _bibleField(),
           Divider(),
           new Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: EdgeInsets.all(15),
               child: Column(children: <Widget>[
                 //RATES
                 Text(
@@ -64,26 +71,23 @@ class Profile extends State<ProfilePage> {
                   color: Colors.yellow[600],
                   starCount: 5,
                   rating: rating,
-                  size: 4,
+                  size: 30,
                   onRatingChanged: (rating) =>
                       setState(() => this.rating = rating),
                 ),
-              _bldcmnt(comments[1]),
               ])),
-          //COMMENTS BLOCKS
-          // new Padding(
-          //   padding: EdgeInsets.only(left: 20),
-          //   child: ListView.builder(
-          //     itemCount: comments.length,
-          //     itemBuilder: (context, index) {
-          //       final comment = comments[index];
-                //return _bldcmnt(comment);
-          //     },
-            // ),
-          // )
-            
+
+            Expanded(child: ListView.builder(
+              shrinkWrap: true,
+            itemCount: comments.length,
+            itemBuilder: (context, index) {
+              final comment = comments[index];
+              return _bldcmnt(comment);
+            },
+          ),
+            )
         ]));
-  }
+    }
 
   Widget _buildUserIdentity(String user) {
     return new Row(
@@ -119,7 +123,7 @@ class Profile extends State<ProfilePage> {
         child: new Container(
           child: new Center(
               child: new Column(children: [
-            new Padding(padding: EdgeInsets.only(top: 15.0)),
+            //new Padding(padding: EdgeInsets.only(top: 15.0)),
             new SingleChildScrollView(
               child: new TextFormField(
                 enableInteractiveSelection: false,
@@ -128,6 +132,10 @@ class Profile extends State<ProfilePage> {
                 initialValue: " ",
                 decoration: new InputDecoration(
                   labelText: "Bibliography",
+                  labelStyle: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 20
+                  ),
                   fillColor: Colors.pink,
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
@@ -135,13 +143,6 @@ class Profile extends State<ProfilePage> {
                         color: Colors.deepOrange,
                         style: BorderStyle.solid,
                         width: 2),
-                  ),
-                  border: new OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(
-                        color: Colors.pink,
-                        style: BorderStyle.solid,
-                        width: 10),
                   ),
                 ),
                 keyboardType: TextInputType.multiline,
@@ -155,18 +156,27 @@ class Profile extends State<ProfilePage> {
   }
 
   Widget _bldcmnt(Comment cmnt) {
-    return new Column(
-      children: <Widget>[new ListTile(
-        title: Text(cmnt._uName),
-        subtitle: new SingleChildScrollView(
+    return new ListTile(
+      contentPadding: EdgeInsets.all( 10),
+        title: new SingleChildScrollView(
           child: new TextFormField(
             enableInteractiveSelection: false,
             enabled: false,
             maxLines: 3,
             initialValue: cmnt._text,
             decoration: new InputDecoration(
+              labelStyle: TextStyle(
 
-              prefixText: cmnt._dateTime.year.toString()+"/"+cmnt._dateTime.month.toString()+"/"+cmnt._dateTime.day.toString()+'\n',
+              ),
+              alignLabelWithHint:true,
+              labelText: cmnt._head,
+              suffixText: cmnt._dateTime.year.toString() +
+                  "/" +
+                  cmnt._dateTime.month.toString() +
+                  "/" +
+                  cmnt._dateTime.day.toString() +
+                  '\n',
+              
               disabledBorder: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
                 borderSide: new BorderSide(
@@ -180,6 +190,6 @@ class Profile extends State<ProfilePage> {
               fontFamily: "Poppins",
             ),
           ),
-        ))]);
+        ));
   }
 }
