@@ -30,6 +30,8 @@ class _LoginScreen2State extends State<LoginScreen2>
 
   Widget HomePage() {
     return Scaffold(
+      //ADDED LINE THAT MIGHT SOLVE PIXEL OVERFLOW
+      resizeToAvoidBottomPadding: false,
       body: Container(
         //height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -344,17 +346,6 @@ class _LoginScreen2State extends State<LoginScreen2>
                             })
                                 .catchError((e) {
                               print('Error: $e');
-                              final snackBar = SnackBar(
-                                content: Text(
-                                  'Incorrect user email or password!',
-                                  style: TextStyle(
-                                    fontSize: 17.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              );
-                              // Find the Scaffold in the Widget tree and use it to show a SnackBar!
-                              Scaffold.of(context).showSnackBar(snackBar);
                             });
                           }
                         },

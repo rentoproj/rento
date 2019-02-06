@@ -8,8 +8,10 @@ class SideMenu extends StatelessWidget {
           UserAccountsDrawerHeader(
             accountName: Text("USER NAME"),
             accountEmail: Text("EMAIL"),
-            onDetailsPressed: () {Navigator.of(context).pushNamed('/ProfilePage');
-            print('DETAILS PRESSED');},
+            //onDetailsPressed: (){  //ADDS A DROP DOWN ARROW FOR SOME REASON
+            //   Navigator.of(context).pushNamed('/ProfilePage');
+            //   print('DETAILS PRESSED');
+            //   },
             currentAccountPicture: IconButton(
               icon: Icon(Icons.account_circle, size: 80),
               onPressed: (){
