@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
-      home: EditProfile(),
+      home: ProfilePage(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
