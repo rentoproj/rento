@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/components/StarRating.dart';
+import 'package:rento/components/Comment.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
   Profile createState() => Profile();
 }
 
-class Comment {
+class cmnt {
   String _text, _uName, _head;
   DateTime _dateTime;
-  Comment(this._text, this._dateTime, this._uName, this._head);
+  cmnt(this._text, this._dateTime, this._uName, this._head);
 }
 
 // class CommentBlock extends StatelessWidget
@@ -26,10 +27,10 @@ class Comment {
 
 class Profile extends State<ProfilePage> {
   double rating = 3;
-  List<Comment> comments = [
-    new Comment("ssz", DateTime.now(), "_uName1", "hea1231d"),
-    new Comment("_text2", DateTime.now(), "_uName2", "head1"),
-    new Comment("_text3", DateTime.now(), "_uName3", "head1")
+  List<cmnt> comments = [
+    new cmnt("ssz", DateTime.now(), "_uName1", "hea1231d"),
+    new cmnt("_text2", DateTime.now(), "_uName2", "head1"),
+    new cmnt("_text3", DateTime.now(), "_uName3", "head1")
   ];
 
   @override
@@ -82,7 +83,7 @@ class Profile extends State<ProfilePage> {
             itemCount: comments.length,
             itemBuilder: (context, index) {
               final comment = comments[index];
-              return _bldcmnt(comment);
+              return new Comment(comment._text, comment._dateTime, comment._uName, comment._head);
             },
           ),
             )
@@ -152,44 +153,6 @@ class Profile extends State<ProfilePage> {
               ),
             )
           ])),
-        ));
-  }
-
-  Widget _bldcmnt(Comment cmnt) {
-    return new ListTile(
-      contentPadding: EdgeInsets.all( 10),
-        title: new SingleChildScrollView(
-          child: new TextFormField(
-            enableInteractiveSelection: false,
-            enabled: false,
-            maxLines: 3,
-            initialValue: cmnt._text,
-            decoration: new InputDecoration(
-              labelStyle: TextStyle(
-
-              ),
-              alignLabelWithHint:true,
-              labelText: cmnt._head,
-              suffixText: cmnt._dateTime.year.toString() +
-                  "/" +
-                  cmnt._dateTime.month.toString() +
-                  "/" +
-                  cmnt._dateTime.day.toString() +
-                  '\n',
-              
-              disabledBorder: new OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: new BorderSide(
-                    color: Colors.deepOrange,
-                    style: BorderStyle.solid,
-                    width: 2),
-              ),
-            ),
-            keyboardType: TextInputType.multiline,
-            style: new TextStyle(
-              fontFamily: "Poppins",
-            ),
-          ),
         ));
   }
 }
