@@ -2,9 +2,21 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'ItemRequest1.dart';
 import 'ItemRequest2.dart';
+import 'package:rento/components/SideMenu.dart';
 
 class RentalHistory extends StatelessWidget {
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+_showSnackBar() {
+    print("Show Snackbar here !");
+    final snackBar = new SnackBar(
+      content: new Text("Completed requests are cleared"),
+      duration: new Duration(seconds: 3),
+      backgroundColor: Colors.grey,
+    );
+    //How to display Snackbar ?
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+   
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -12,27 +24,7 @@ class RentalHistory extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Rental History'),
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home Page'),
-              onTap: (){Navigator.of(context).pushReplacementNamed('/SearchPage');},
-            ),
-            ListTile(
-              leading: Icon(Icons.history),
-              title: Text('Rental Histroy'),
-              onTap: (){Navigator.of(context).pushReplacementNamed('/RentalHistory');},
-            ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Logout'),
-              onTap: (){Navigator.of(context).pushReplacementNamed('/LoginScreen2');},
-            ),
-          ],
-        ),
-      ),
+      drawer: new SideMenu(),
       body: new ListView(
         children: <Widget>[
 
@@ -83,7 +75,8 @@ class RentalHistory extends StatelessWidget {
                               //letterSpacing: 0.5,
                               fontSize: 15.0,
                             )),
-                      ],),)
+                      ],),
+                      )
                     ],))
                 ],),
             ),),
@@ -136,10 +129,14 @@ class RentalHistory extends StatelessWidget {
                     ],))
                 ],),
             ),),
-
+            
 
           //card 3
-
+          new RaisedButton(
+              child: new Text(
+                  'Clear History', style: new TextStyle(fontSize: 20.0)),
+              color: Colors.grey,
+              onPressed: _showSnackBar),
         ],
       ),
     );
