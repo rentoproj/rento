@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rento/Bloc/app_bloc.dart';
+import 'package:rento/Bloc/bloc_provider.dart';
+
 //pages
 import 'UIs/CreateAccountPage.dart';
 import 'UIs/LoginScreen2.dart';
@@ -9,10 +12,17 @@ import 'UIs/RentalHistory.dart';
 import 'UIs/ItemRequest1.dart';
 import 'UIs/ProfilePage.dart';
 import 'UIs/EditProfile.dart';
+import 'UIs/MainPage.dart';
 
-void main() {
+
+void main() async{
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
-  runApp(new MyApp());
+  runApp(
+    BlocProvider(
+      bloc: AppBloc(),
+      child: new MyApp()
+    )
+    );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,10 +30,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData( 
+        primaryColor:  Colors.deepOrange[800]
       ),
-      home: EditProfile(),
+      home: MainPage(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
@@ -33,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
         '/EditProfile': (BuildContext context) => new EditProfile(),
+        '/MainPage': (BuildContext context) => new MainPage(),
         // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
       },
     );
