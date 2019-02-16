@@ -25,7 +25,7 @@ void main() async{
       BlocProvider(
         bloc: AppBloc(),
         child: new MyApp()
-      ))
+      ));
   });
 }
 
