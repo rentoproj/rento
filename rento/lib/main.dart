@@ -18,15 +18,10 @@ import 'UIs/MainPage.dart';
 
 
 void main() async{
-  //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-  .then((_) {
+  //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU 
     runApp(
-      BlocProvider(
-        bloc: AppBloc(),
-        child: new MyApp()
-      ));
-  });
+       new MyApp()
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: MainPage(),
+      home: EditProfile(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
