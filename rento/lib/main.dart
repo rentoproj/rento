@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rento/Bloc/app_bloc.dart';
-import 'package:rento/Bloc/bloc_provider.dart';
 
 //pages
 import 'UIs/CreateAccountPage.dart';
@@ -18,10 +16,7 @@ import 'UIs/MainPage.dart';
 void main() async{
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
   runApp(
-    BlocProvider(
-      bloc: AppBloc(),
-      child: new MyApp()
-    )
+     new MyApp()
     );
 }
 
