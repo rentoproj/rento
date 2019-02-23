@@ -14,17 +14,6 @@ class cmnt {
   cmnt(this._text, this._dateTime, this._uName, this._head);
 }
 
-// class CommentBlock extends StatelessWidget
-// {
-//   Comment cmnt;
-//   CommentBlock(this.cmnt);
-//   return new _Comment(this.cmnt);
-
-//   class _Comment{
-
-//   }
-// }
-
 class Profile extends State<ProfilePage> {
   double rating = 3;
   List<cmnt> comments = [
@@ -43,17 +32,18 @@ class Profile extends State<ProfilePage> {
             IconButton(
               icon: Icon(Icons.edit),
               tooltip: "Edit Profile",
-              onPressed: (){},
+              onPressed: () {
+                Navigator.of(context).pushNamed('/ProfilePage');
+              },
             )
           ],
-          ),
+        ),
         drawer: new SideMenu(),
-        body:
-          Column(children: <Widget>[
+        body: Column(children: <Widget>[
           Divider(),
           _buildUserIdentity("user"),
           Divider(),
-            //USER DESCRIPTION
+          //USER DESCRIPTION
           _bibleField(),
           Divider(),
           new Padding(
@@ -78,17 +68,19 @@ class Profile extends State<ProfilePage> {
                 ),
               ])),
 
-            Expanded(child: ListView.builder(
+          Expanded(
+            child: ListView.builder(
               shrinkWrap: true,
-            itemCount: comments.length,
-            itemBuilder: (context, index) {
-              final comment = comments[index];
-              return new Comment(comment._text, comment._dateTime, comment._uName, comment._head);
-            },
-          ),
-            )
+              itemCount: comments.length,
+              itemBuilder: (context, index) {
+                final comment = comments[index];
+                return new Comment(comment._text, comment._dateTime,
+                    comment._uName, comment._head);
+              },
+            ),
+          )
         ]));
-    }
+  }
 
   Widget _buildUserIdentity(String user) {
     return new Row(
@@ -112,7 +104,6 @@ class Profile extends State<ProfilePage> {
                 child: new Text("Display name",
                     style: new TextStyle(fontWeight: FontWeight.bold)),
               ),
-              new Text("Real name")
             ],
           )
         ]);
@@ -133,10 +124,7 @@ class Profile extends State<ProfilePage> {
                 initialValue: " ",
                 decoration: new InputDecoration(
                   labelText: "Bibliography",
-                  labelStyle: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 20
-                  ),
+                  labelStyle: TextStyle(color: Colors.black87, fontSize: 20),
                   fillColor: Colors.pink,
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
