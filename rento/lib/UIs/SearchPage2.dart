@@ -121,15 +121,15 @@ Widget _buildDealsList(BuildContext context, List<DocumentSnapshot> snapshots) {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
         return FlightCard(
-            flightDetails: FlightDetails.fromSnapshot(snapshots[index]));
+            itemDetails: ItemDetails.fromSnapshot(snapshots[index]));
       });
 }
 
-class FlightDetails {
+class ItemDetails {
   final String airlines, date, discount, rating;
   final int oldPrice, newPrice;
 
-  FlightDetails.fromMap(Map<String, dynamic> map)
+  ItemDetails.fromMap(Map<String, dynamic> map)
       : assert(map['airlines'] != null),
         assert(map['date'] != null),
         assert(map['discount'] != null),
@@ -141,14 +141,14 @@ class FlightDetails {
         newPrice = map['newPrice'],
         rating = map['rating'];
 
-  FlightDetails.fromSnapshot(DocumentSnapshot snapshot)
+  ItemDetails.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data);
 }
 
 class FlightCard extends StatelessWidget {
-  final FlightDetails flightDetails;
+  final ItemDetails itemDetails;
 
-  FlightCard({this.flightDetails});
+  FlightCard({this.itemDetails});
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +172,7 @@ class FlightCard extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                        '${flightDetails.newPrice}',
+                        '${itemDetails.newPrice}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
@@ -182,7 +182,7 @@ class FlightCard extends StatelessWidget {
                         width: 4.0,
                       ),
                       Text(
-                        "(${flightDetails.oldPrice})",
+                        "(${itemDetails.oldPrice})",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16.0,
@@ -196,10 +196,10 @@ class FlightCard extends StatelessWidget {
                     runSpacing: -8.0,
                     children: <Widget>[
                       FlightDetailChip(
-                          Icons.calendar_today, '${flightDetails.date}'),
+                          Icons.calendar_today, '${itemDetails.date}'),
                       FlightDetailChip(
-                          Icons.flight_takeoff, '${flightDetails.airlines}'),
-                      FlightDetailChip(Icons.star, '${flightDetails.rating}'),
+                          Icons.flight_takeoff, '${itemDetails.airlines}'),
+                      FlightDetailChip(Icons.star, '${itemDetails.rating}'),
                     ],
                   )
                 ],
@@ -212,7 +212,7 @@ class FlightCard extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Text(
-                '${flightDetails.discount}%',
+                '${itemDetails.discount}%',
                 style: TextStyle(
                     color: appTheme.primaryColor,
                     fontSize: 14.0,
@@ -228,6 +228,7 @@ class FlightCard extends StatelessWidget {
           )
         ],
       ),
+      
     );
   }
 }
