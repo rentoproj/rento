@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/components/Field.dart';
+import 'package:rento/api/FirestoreServices.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _MyHomePageState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    FirestoreServices.searchItem("Bicycle");
+    FirestoreServices.getItemDetails("deHPdJNYm582VcJSRx5w");
     return Scaffold(
       appBar: AppBar(
         title: Text('Image Picker Example'),
