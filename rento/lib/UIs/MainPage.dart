@@ -5,8 +5,8 @@ import 'package:rento/UIs/SearchPage2.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/Bloc/bloc_provider.dart';
 import 'package:rento/Bloc/app_bloc.dart';
-import 'package:rento/UIs/Offer.dart';
-//import 'package:rento/Bloc/main_bloc.dart';
+import 'package:rento/Bloc/main_bloc.dart';
+import 'package:rento/components/SideMenu.dart';
 
 
 Color firstColor = Colors.deepOrange;
@@ -34,6 +34,8 @@ class HomeScreenState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      endDrawer: new SideMenu(),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -60,7 +62,6 @@ class HomeScreenTopPart extends StatefulWidget {
 class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
   AppBloc appBloc;
   var selectedLocationIndex = 0;
-  var isFlightSelected = true;
 
   @override
   void initState() {
@@ -96,6 +97,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                 /* *********************************
                             Silde menu
                  ******************************** */
+                
                 SizedBox(
                   height: 50.0,
                 ),
@@ -164,70 +166,6 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
   }
 }
 
-List<PopupMenuItem<int>> _buildPopupMenuItem(context) {
-  final AppBloc appBloc = BlocProvider.of<AppBloc>(context);
-  List<PopupMenuItem<int>> popupMenuItems = List();
-  for (int i = 0; i < appBloc.locations.length; i++) {
-    popupMenuItems.add(PopupMenuItem(
-      child: Text(
-        appBloc.locations[i],
-        style: dropDownMenuItemStyle,
-      ),
-      value: i,
-    ));
-  }
-
-  return popupMenuItems;
-}
-
-class ChoiceChip extends StatefulWidget {
-  final IconData icon;
-  final String text;
-  final bool isSelected;
-
-  ChoiceChip(this.icon, this.text, this.isSelected);
-
-  @override
-  _ChoiceChipState createState() => _ChoiceChipState();
-}
-
-class _ChoiceChipState extends State<ChoiceChip> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-      decoration: widget.isSelected
-          ? BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
-              ),
-            )
-          : null,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Icon(
-            widget.icon,
-            size: 20.0,
-            color: Colors.white,
-          ),
-          SizedBox(
-            width: 8.0,
-          ),
-          Text(
-            widget.text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.0,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
 
 var viewAllStyle = TextStyle(fontSize: 14.0, color: appTheme.primaryColor);
 
@@ -295,7 +233,7 @@ Widget _buildItemsList(
       itemCount: snapshots.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        return CityCard(city: City.fromSnapshot(snapshots[index]));
+        return ItemCard(item: Item.fromSnapshot(snapshots[index]));
       });
 }
 
@@ -310,30 +248,29 @@ class Location {
       : this.fromMap(snapshot.data);
 }
 
-class City {
-  final String imagePath, cityName, monthYear, discount;
-  final int oldPrice, newPrice;
+class Item {
+  final String photo, name, description, location;
+  final double price;
 
-  City.fromMap(Map<String, dynamic> map)
-      : assert(map['cityName'] != null),
-        assert(map['monthYear'] != null),
-        assert(map['discount'] != null),
-        assert(map['imagePath'] != null),
-        imagePath = map['imagePath'],
-        cityName = map['cityName'],
-        monthYear = map['monthYear'],
-        discount = map['discount'],
-        oldPrice = map['oldPrice'],
-        newPrice = map['newPrice'];
+  Item.fromMap(Map<String, dynamic> map)
+      : assert(map['name'] != null),
+        assert(map['description'] != null),
+        assert(map['location'] != null),
+        assert(map['photo'] != null),
+        photo = map['photo'],
+        name = map['name'],
+        description = map['description'],
+        location = map['location'],
+        price = map['price'];
 
-  City.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data);
+  Item.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data);
 }
 
 
-class CityCard extends StatelessWidget {
-  final City city;
+class ItemCard extends StatelessWidget {
+  final Item item;
 
-  CityCard({this.city});
+  ItemCard({this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +290,7 @@ class CityCard extends StatelessWidget {
                   height: 210.0,
                   width: 160.0,
                   child: CachedNetworkImage(
-                    imageUrl: '${city.imagePath}',
+                    imageUrl: '${item.photo}',
                     fit: BoxFit.cover,
                     fadeInDuration: Duration(milliseconds: 500),
                     fadeInCurve: Curves.easeIn,
@@ -388,19 +325,13 @@ class CityCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            '${city.cityName}',
+                            '${item.name}',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                                 fontSize: 18.0),
                           ),
-                          Text(
-                            '${city.monthYear}',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                                fontSize: 14.0),
-                          ),
+                          
                         ],
                       ),
                       Container(
@@ -414,7 +345,7 @@ class CityCard extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          '${city.discount}%',
+                          '${item.location}',
                           style: TextStyle(fontSize: 14.0, color: Colors.black),
                         ),
                       ),
@@ -432,21 +363,11 @@ class CityCard extends StatelessWidget {
                 width: 5.0,
               ),
               Text(
-                '${city.newPrice}',
+                '${item.price}',
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 14.0),
-              ),
-              SizedBox(
-                width: 5.0,
-              ),
-              Text(
-                "(${city.oldPrice})",
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.0),
               ),
             ],
           )
