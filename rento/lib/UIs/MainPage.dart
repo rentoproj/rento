@@ -202,6 +202,13 @@ class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                 style: dropDownMenuItemStyle,
               ),
               Spacer(),
+              new FlatButton(
+                            child: new Text("Confirm"),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/Offer');
+                            },
+                          ),
             ],
           ),
         ),
@@ -287,7 +294,7 @@ class ItemCard extends StatelessWidget {
                     fit: BoxFit.cover,
                     fadeInDuration: Duration(milliseconds: 500),
                     fadeInCurve: Curves.easeIn,
-                    placeholder: Center(child: CircularProgressIndicator()),
+                   // placeholder: Center(child: CircularProgressIndicator()),
                   ),
                 ),
                 Positioned(

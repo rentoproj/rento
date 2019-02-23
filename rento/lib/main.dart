@@ -15,6 +15,8 @@ import 'UIs/EditProfile.dart';
 import 'UIs/ItemRequest2.dart';
 import 'uis/OfferItem.dart';
 import 'UIs/MainPage.dart';
+import 'package:rento/UIs/Offer.dart';
+
 
 
 void main() async{
@@ -43,6 +45,8 @@ class MyApp extends StatelessWidget {
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
         '/EditProfile': (BuildContext context) => new EditProfile(),
+        '/Offer': (BuildContext context) => new OfferItem(),
+
         '/MainPage': (BuildContext context) => new MainPage(),
         // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
       },
