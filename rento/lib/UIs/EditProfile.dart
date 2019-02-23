@@ -30,11 +30,12 @@ class _MyHomePageState extends State<EditProfile> {
            _image == null
             ? Text('No image selected.')
             : Image.file(_image),
-             new Field("Nlll","Abo shaker"),
-             new Field("Name","Abo shaker"),
-             new Field("Name","Abo shaker"),
-             new Field("Name","Abo shaker"),
-             new Field("Name","Abo shaker"),
+             new Field("User Name","Abo shaker"),
+             new Field("Password","Abo shaker"),
+             // ****how to confirm that the both passwords are the same*** https://stackoverflow.com/questions/50155348/how-to-validate-a-form-field-based-on-the-value-of-the-other
+             //**  https://github.com/shiang/flutter-form-with-validation-BLOC/issues/1    this one using bloc   */
+             new Field("Confirm password","Abo shaker"),
+             new Field("Phone Number","050555555555"),
         ]
       ),
       floatingActionButton: FloatingActionButton(
