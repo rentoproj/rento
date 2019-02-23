@@ -1,36 +1,30 @@
 import 'package:flutter/material.dart';
 
 
-class Comment extends StatelessWidget {
-  String _text, _uName, _head;
-  DateTime _dateTime;
-  Comment(this._text, this._dateTime, this._uName, this._head);
+class Field extends StatelessWidget {
+  String _text, _head;
+ 
+  Field(this._head,  this._text);
 
   Widget build(BuildContext context) {
     return new ListTile(
       contentPadding: EdgeInsets.all( 10),
         title: new SingleChildScrollView(
           child: new TextFormField(
-            enableInteractiveSelection: false,
-            enabled: false,
-            maxLines: 3,
+            enableInteractiveSelection: true,
+            enabled: true,
+            maxLines: 1,
             initialValue: _text,
             decoration: new InputDecoration(
               labelStyle: TextStyle(
-
+                  
               ),
               //alignLabelWithHint:true,
               labelText: _head,
-              prefixText: _uName+": ",
               prefixStyle: TextStyle(color: Colors.black87),
-              suffixText: _dateTime.year.toString() +
-                  "/" +
-                  _dateTime.month.toString() +
-                  "/" +
-                  _dateTime.day.toString() +
-                  '\n',
               
-              disabledBorder: new OutlineInputBorder(
+              
+              border: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
                 borderSide: new BorderSide(
                     color: Colors.deepOrange,
@@ -41,6 +35,7 @@ class Comment extends StatelessWidget {
             keyboardType: TextInputType.multiline,
             style: new TextStyle(
               fontFamily: "Poppins",
+              color: Colors.black
             ),
           ),
         ));
