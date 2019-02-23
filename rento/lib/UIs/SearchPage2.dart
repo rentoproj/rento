@@ -1,9 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rento/components/CustomShapeClipper.dart';
-import 'package:rento/Bloc/app_bloc.dart';
-import 'package:rento/Bloc/bloc_provider.dart';
-import 'package:rento/Bloc/search_bloc.dart';
-import 'package:rento/Bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/UIs/MainPage.dart';
 
@@ -25,9 +21,7 @@ class InheritedFlightListing extends InheritedWidget {
 class FlightListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      bloc: FlightListBloc(BlocProvider.of<AppBloc>(context).firebaseService),
-      child: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           title: Text(
             "Search Result",
@@ -53,8 +47,7 @@ class FlightListingScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -68,19 +61,6 @@ class FlightListingBottomPart extends StatefulWidget {
 
 class FlightListingBottomPartState extends State<FlightListingBottomPart> {
 
-  FlightListBloc flightListBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    flightListBloc = BlocProvider.of<FlightListBloc>(context);
-  }
-
-  @override
-  void dispose() {
-    flightListBloc.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +80,7 @@ class FlightListingBottomPartState extends State<FlightListingBottomPart> {
             height: 10.0,
           ),
           StreamBuilder(
-            stream: flightListBloc.dealsStream,
+           // stream: flightListBloc.dealsStream,
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
@@ -261,7 +241,6 @@ class FlightDetailChip extends StatelessWidget {
 class FlightListTopPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    AppBloc appBloc = BlocProvider.of<AppBloc>(context);
     return Stack(
       children: <Widget>[
         ClipPath(
@@ -289,7 +268,7 @@ class FlightListTopPart extends StatelessWidget {
                     ),
                     child: TextField(
                       onChanged: (text) {
-                        appBloc.addToLocation.add(text);
+                        //appBloc.addToLocation.add(text);
                       },
                       style: dropDownMenuItemStyle,
                       cursorColor: appTheme.primaryColor,
