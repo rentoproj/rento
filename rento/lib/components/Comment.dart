@@ -19,7 +19,7 @@ class Comment extends StatelessWidget {
               labelStyle: TextStyle(
 
               ),
-              alignLabelWithHint:true,
+              //alignLabelWithHint:true,
               labelText: _head,
               prefixText: _uName+": ",
               prefixStyle: TextStyle(color: Colors.black87),

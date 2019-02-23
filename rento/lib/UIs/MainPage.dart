@@ -5,6 +5,7 @@ import 'package:rento/UIs/SearchPage2.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/Bloc/bloc_provider.dart';
 import 'package:rento/Bloc/app_bloc.dart';
+import 'package:rento/UIs/Offer.dart';
 //import 'package:rento/Bloc/main_bloc.dart';
 
 
@@ -263,6 +264,13 @@ class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                 style: dropDownMenuItemStyle,
               ),
               Spacer(),
+              new FlatButton(
+                            child: new Text("Confirm"),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/Offer');
+                            },
+                          ),
             ],
           ),
         ),
@@ -349,7 +357,7 @@ class CityCard extends StatelessWidget {
                     fit: BoxFit.cover,
                     fadeInDuration: Duration(milliseconds: 500),
                     fadeInCurve: Curves.easeIn,
-                    placeholder: Center(child: CircularProgressIndicator()),
+                   // placeholder: Center(child: CircularProgressIndicator()),
                   ),
                 ),
                 Positioned(

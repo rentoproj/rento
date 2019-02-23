@@ -13,6 +13,8 @@ import 'UIs/ItemRequest1.dart';
 import 'UIs/ProfilePage.dart';
 import 'UIs/EditProfile.dart';
 import 'UIs/MainPage.dart';
+import 'package:rento/UIs/Offer.dart';
+
 
 
 void main() async{
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: MainPage(),
+      home: OfferItem(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
@@ -44,6 +46,8 @@ class MyApp extends StatelessWidget {
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
         '/EditProfile': (BuildContext context) => new EditProfile(),
+        '/Offer': (BuildContext context) => new OfferItem(),
+
         '/MainPage': (BuildContext context) => new MainPage(),
         // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
       },
