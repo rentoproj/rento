@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:rento/Bloc/app_bloc.dart';
+import 'package:rento/Bloc/bloc_provider.dart';
 
 //pages
 import 'UIs/CreateAccountPage.dart';
