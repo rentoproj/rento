@@ -117,9 +117,8 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          InheritedFlightListing(
-                                            child: FlightListingScreen(),
-                                          )));
+                                           SearchPage2(),
+                                          ));
                             },
                             child: Icon(
                               Icons.search,
@@ -207,17 +206,6 @@ Widget _buildItemsList(
       itemBuilder: (context, index) {
         return ItemCard(item: Item.fromSnapshot(snapshots[index]));
       });
-}
-
-class Location {
-  final String name;
-
-  Location.fromMap(Map<String, dynamic> map)
-      : assert(map['name'] != null),
-        name = map['name'];
-
-  Location.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data);
 }
 
 class Item {
