@@ -21,7 +21,7 @@ class SearchState extends State<SearchPage> {
               })
         ],
       ),
-        drawer: new SideMenu(),
+      drawer: new SideMenu(),
       body: new Item1("")
 
     );
