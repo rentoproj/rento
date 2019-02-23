@@ -13,7 +13,7 @@ import 'UIs/ItemRequest1.dart';
 import 'UIs/ProfilePage.dart';
 import 'UIs/EditProfile.dart';
 import 'UIs/ItemRequest2.dart';
-import 'uis/OfferItem.dart';
+import 'UIs/OfferItem.dart';
 import 'UIs/MainPage.dart';
 
 
