@@ -23,7 +23,7 @@ void main() async{
       child: new MyApp()
     )
     );
-}
+}//ioji9
 
 class MyApp extends StatelessWidget {
 
