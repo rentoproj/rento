@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 //import 'package:firebase_auth/firebase_auth.dart';
-=======
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
->>>>>>> abc2b1afcf5d737c67a2df751884f85d8ee8c8fb
 import 'package:rento/Bloc/app_bloc.dart';
 import 'package:rento/Bloc/bloc_provider.dart';
+
 //pages
 import 'UIs/CreateAccountPage.dart';
 import 'UIs/LoginScreen2.dart';
@@ -21,13 +19,12 @@ import 'uis/OfferItem.dart';
 import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 
-
-
 void main() async{
-  //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU 
-    runApp(
-       new MyApp()
-  );
+
+  //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
+  runApp(
+     new MyApp()
+    );
 }
 
 class MyApp extends StatelessWidget {
