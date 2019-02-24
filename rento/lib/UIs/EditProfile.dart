@@ -40,6 +40,8 @@ class _MyHomePageState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    FirestoreServices.searchItem("Bicycle");
+    FirestoreServices.getItemDetails("deHPdJNYm582VcJSRx5w");
     return Scaffold(
       appBar: AppBar(
         title: Text('Image Picker Example'),

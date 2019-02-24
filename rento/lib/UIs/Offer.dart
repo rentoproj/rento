@@ -1,19 +1,56 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class OfferItem extends StatefulWidget {
   _OfferItemPageState createState() => new _OfferItemPageState();
 }
 
 class _OfferItemPageState extends State<OfferItem> {
- DateTime _SD = new DateTime.now();
+  DateTime _SD = new DateTime.now();
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
 
   StreamSubscription _subscriptionTodo;
+    
+    File _imageFile;
+    bool _uploaded =false;
+    String _downloadUrl;
+    StorageReference _reference = FirebaseStorage.instance.ref().child('myImage.jpeg');
+
+
+    Future getImage (bool isCamera) async{
+      File image;
+      if(isCamera){
+        image =await ImagePicker.pickImage(source: ImageSource.camera);
+      }else{
+        image =await ImagePicker.pickImage(source: ImageSource.gallery);
+      }
+      setState(() {
+       _imageFile = image; 
+      });
+    }
+
+    Future uploadImage() async {
+      StorageUploadTask uploadTask = _reference.putFile(_imageFile);
+      StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
+      setState(() {
+       _uploaded = true; 
+      });
+    }
+
+    Future downloadImage() async{
+      String downloadAddress =await _reference.getDownloadURL();
+      setState(() {
+       _downloadUrl =downloadAddress; 
+      });
+    }
 
   
   String _name = "Display the todo name here";
@@ -64,7 +101,7 @@ class _OfferItemPageState extends State<OfferItem> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: _SD,
-        firstDate:_SD ,
+        firstDate: _SD,
         lastDate: new DateTime(2021));
     if (picked != null) {
       setState(() {
@@ -132,6 +169,24 @@ class _OfferItemPageState extends State<OfferItem> {
               ),
             ),
           ),
+          /*
+          Firestore.instance.collection("Item").getDocuments().then(
+      (QuerySnapshot s){
+        print("SNAP DETAILS");
+        int i=0;
+        while (i<=s.documents.length) {
+          DocumentSnapshot doc = s.documents[i];
+          print(doc.data.keys);
+          des = doc.data['description'];
+          loc = doc.data['location '];
+          name = doc.data['name '];
+          id = doc.documentID;
+          print('${des}, ${name},  ${loc},  ${id}');
+          i++;
+        }
+      }
+    );
+          */ 
           new ListTile(
           title: const Text('Category'),
           trailing: new DropdownButton<String>(
@@ -217,14 +272,33 @@ class _OfferItemPageState extends State<OfferItem> {
               new RaisedButton(
                 child: new Text('Offer Item'),
                 onPressed:(){
+                  getImage(true);
                 },
               ),
               new RaisedButton(
                 child: new Text('Save as a Draft'),
                 onPressed:(){
-
+                  getImage(false);
                 },
               ),
+              _imageFile ==null ? Container() :Image.file(
+                _imageFile,
+                height: 300.0,
+                width: 300.0,
+                ),
+              new RaisedButton(
+                child: new Text('Upload to storage'),
+                onPressed: (){
+                  uploadImage();
+                },
+              ),
+              _uploaded ==false ? Container() : RaisedButton (
+                child: Text('Download image'),
+                onPressed: (){
+                  downloadImage();
+                },
+              ),
+              _downloadUrl == null ? Container() :Image.network(_downloadUrl), 
 
         ],
       ),
