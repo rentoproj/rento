@@ -3,9 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rento/components/CustomShapeClipper.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'package:flutter/material.dart';
-import 'package:rento/Bloc/bloc_provider.dart';
-import 'package:rento/Bloc/app_bloc.dart';
-import 'package:rento/Bloc/main_bloc.dart';
 import 'package:rento/components/SideMenu.dart';
 
 
@@ -23,13 +20,6 @@ class MainPage extends StatefulWidget {
 }
 
 class HomeScreenState extends State<MainPage> {
-  AppBloc appBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    appBloc = BlocProvider.of<AppBloc>(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +50,8 @@ class HomeScreenTopPart extends StatefulWidget {
 }
 
 class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
-  AppBloc appBloc;
-  var selectedLocationIndex = 0;
+  
 
-  @override
-  void initState() {
-    super.initState();
-    appBloc = BlocProvider.of<AppBloc>(context);
-  }
-
-  @override
-  void dispose() {
-    appBloc.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +99,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                     ),
                     child: TextField(
                       onChanged: (text) {
-                        appBloc.addToLocation.add(text);
+                        //appBloc.addToLocation.add(text);
                       },
                       style: dropDownMenuItemStyle,
                       cursorColor: appTheme.primaryColor,
@@ -179,13 +157,7 @@ class HomeScreenBottomPart extends StatefulWidget {
 
 class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
 
-  AppBloc appBloc;
 
-  @override
-  void initState() {
-    super.initState();
-    appBloc = BlocProvider.of<AppBloc>(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +187,7 @@ class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
         Container(
           height: 240.0,
           child: StreamBuilder(
-              stream: appBloc.itemsSnapshotStream,
+              //stream: appBloc.itemsSnapshotStream,
               builder: (context, snapshot) {
                 return !snapshot.hasData
                     ? Center(child: CircularProgressIndicator())
