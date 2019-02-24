@@ -22,7 +22,7 @@ class SearchState extends State<SearchPage> {
         ],
       ),
       drawer: new SideMenu(),
-      body: new Item1("")
+      body: new ItemBlock("","","","",1,"",)
 
     );
   }
@@ -61,7 +61,7 @@ class DataSearch extends SearchDelegate<String> {
     // results
     if (!(query.length == 0 || recentSearch.contains(query)))
       recentSearch.add(query);
-    return  Item1(query);
+    // return  Item1(query);
   }
 
   @override
