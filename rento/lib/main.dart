@@ -16,7 +16,9 @@ import 'UIs/EditProfile.dart';
 import 'UIs/ItemRequest2.dart';
 import 'UIs/Offer.dart';
 //import 'UIs/MainPage.dart';
+import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
+import 'package:rento/UIs/SearchPage2.dart';
 
 void main() async{
 
@@ -36,16 +38,20 @@ class MyApp extends StatelessWidget {
         primaryColor:  Colors.deepOrange[800]
       ),
       home: OfferItem(),
+
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
-        '/SearchPage' : (BuildContext context) => new SearchPage(),
+       // '/SearchPage' : (BuildContext context) => new SearchPage(),
        // '/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
+
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
         '/EditProfile': (BuildContext context) => new EditProfile(),
         '/Offer': (BuildContext context) => new OfferItem(),
+        '/SearchPage2': (BuildContext context) => new SearchPage2(),
+        
 
        // '/MainPage': (BuildContext context) => new MainPage(),
         // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
