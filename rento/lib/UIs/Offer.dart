@@ -7,6 +7,7 @@ class OfferItem extends StatefulWidget {
 }
 
 class _OfferItemPageState extends State<OfferItem> {
+ DateTime _SD = new DateTime.now();
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
   DateTime _fdate = new DateTime.now();
@@ -62,8 +63,8 @@ class _OfferItemPageState extends State<OfferItem> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: _date,
-        firstDate: _date,
+        initialDate: _SD,
+        firstDate:_SD ,
         lastDate: new DateTime(2021));
     if (picked != null) {
       setState(() {

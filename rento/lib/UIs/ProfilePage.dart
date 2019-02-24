@@ -33,7 +33,7 @@ class Profile extends State<ProfilePage> {
               icon: Icon(Icons.edit),
               tooltip: "Edit Profile",
               onPressed: () {
-                Navigator.of(context).pushNamed('/ProfilePage');
+                Navigator.of(context).pushNamed('/EditProfile');
               },
             )
           ],
