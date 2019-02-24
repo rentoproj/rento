@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'crud.dart';
+import 'ItemList.dart';
+import 'package:rento/components/SideMenu.dart';
 //import 'MainPage.dart';
-
 
 class OfferItem extends StatefulWidget {
   _OfferItemPageState createState() => new _OfferItemPageState();
@@ -21,45 +22,57 @@ class _OfferItemPageState extends State<OfferItem> {
   TimeOfDay _ftime = new TimeOfDay.now();
 
   StreamSubscription _subscriptionTodo;
-    
-    File _imageFile;
-    bool _uploaded =false;
-    String _downloadUrl;
-    StorageReference _reference = FirebaseStorage.instance.ref().child('myImage.jpeg');
 
+  File _imageFile;
+  bool _uploaded = false;
+  String _downloadUrl;
+  StorageReference _reference =
+      FirebaseStorage.instance.ref().child('myImage.jpeg');
 
-    Future getImage (bool isCamera) async{
-      File image;
-      if(isCamera){
-        image =await ImagePicker.pickImage(source: ImageSource.camera);
-      }else{
-        image =await ImagePicker.pickImage(source: ImageSource.gallery);
-      }
-      setState(() {
-       _imageFile = image; 
-      });
+  Future getImage(bool isCamera) async {
+    File image;
+    if (isCamera) {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    } else {
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
+    setState(() {
+      _imageFile = image;
+    });
+  }
 
-    Future uploadImage() async {
-      StorageUploadTask uploadTask = _reference.putFile(_imageFile);
-      StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
-      setState(() {
-       _uploaded = true; 
-      });
-    }
+  Future<String> uploadImage() async {
+    StorageReference ref = FirebaseStorage.instance.ref().child("image");
+    StorageUploadTask uploadTask = ref.putFile(_imageFile);
 
-    Future downloadImage() async{
-      String downloadAddress =await _reference.getDownloadURL();
-      setState(() {
-       _downloadUrl =downloadAddress; 
-      });
-    }
+    var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    var url = downUrl.toString();
+    imageURL = url;
+    return url;
 
-    String newValue;
-    String itemName;
-    String itemDescription;
-    int itemPrice;
-    String itemLocation;
+    // StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
+    // String downloadAddress = await _reference.getDownloadURL();
+    // imageURL = downloadAddress.toString();
+    // setState(() {
+    //  _uploaded = true;
+    //  // imageURL =downloadAddress;
+
+    // });
+  }
+
+  Future downloadImage() async {
+    String downloadAddress = await _reference.getDownloadURL();
+    setState(() {
+      _downloadUrl = downloadAddress;
+    });
+  }
+
+  String newValue;
+  String itemName;
+  String itemDescription;
+  int itemPrice;
+  String itemLocation;
+  String imageURL;
 
   crudMedthods crudObj = new crudMedthods();
 
@@ -67,17 +80,36 @@ class _OfferItemPageState extends State<OfferItem> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Offer Item"),
-      ),
+      ),drawer: SideMenu(),
       body: new ListView(
         children: <Widget>[
+          _imageFile == null
+              ? Container()
+              : Image.file(
+                  _imageFile,
+                  height: 300.0,
+                  width: 300.0,
+                ),
+            new RaisedButton(
+            child: new Text('Take a picture'),
+            onPressed: () {
+              getImage(true);
+            },
+          ),
+          new RaisedButton(
+            child: new Text('Upload From Gallery'),
+            onPressed: () {
+              getImage(false);
+            },
+          ),    
+          
           new ListTile(
             title: new TextField(
               //controller: _nameFieldTextController,
               decoration: new InputDecoration(
                   icon: new Icon(Icons.edit),
                   labelText: "Item Name",
-                  hintText: "Enter the Item name..."
-              ),
+                  hintText: "Enter the Item name..."),
               onChanged: (value) {
                 this.itemName = value;
               },
@@ -90,46 +122,47 @@ class _OfferItemPageState extends State<OfferItem> {
             child: TextField(
               maxLines: 9,
               decoration: InputDecoration(
-                  hintText: "Description",
-                  border: OutlineInputBorder(),
+                hintText: "Description",
+                border: OutlineInputBorder(),
               ),
-              onChanged: (value){
-                this.itemDescription =value;
+              onChanged: (value) {
+                this.itemDescription = value;
               },
             ),
           ),
           new ListTile(
-          title: const Text('Category'),
-          trailing: new DropdownButton<String>(
-              hint: Text('Choose'),
-              onChanged: (String changedValue) {
-                newValue=changedValue;
-                setState(() {
-                  newValue;
-                  print(newValue);
-                });
-              },
-              value: newValue,
-              items: <String>['Veihcels', 'Electronics','Home Equibments','Others']
-                  .map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList()),
-        ),
+            title: const Text('Category'),
+            trailing: new DropdownButton<String>(
+                hint: Text('Choose'),
+                onChanged: (String changedValue) {
+                  newValue = changedValue;
+                  setState(() {
+                    newValue;
+                    print(newValue);
+                  });
+                },
+                value: newValue,
+                items: <String>[
+                  'Veihcels',
+                  'Electronics',
+                  'Home Equibments',
+                  'Others'
+                ].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: new Text(value),
+                  );
+                }).toList()),
+          ),
           new ListTile(
             title: new TextField(
               decoration: new InputDecoration(
                   icon: new Icon(Icons.attach_money),
                   labelText: "Item Price per SR",
-                  hintText: "Enter the Item Price..."
-                  
-              ),
+                  hintText: "Enter the Item Price..."),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                
-                this.itemPrice =int.tryParse(value);
+                this.itemPrice = int.tryParse(value);
               },
             ),
           ),
@@ -138,113 +171,100 @@ class _OfferItemPageState extends State<OfferItem> {
               decoration: new InputDecoration(
                   icon: new Icon(Icons.location_on),
                   labelText: "Item Location",
-                  hintText: "Enter the Item location..."
-              ),
+                  hintText: "Enter the Item location..."),
               onChanged: (value) {
-                this.itemLocation=value;
+                this.itemLocation = value;
               },
             ),
           ),
           new ListTile(
-                title: Text("Starting Date:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.date_range),
-                    onPressed: () {
-                      _selectDate(context);
-                    }),
-                trailing: Text('${_date.year}${-_date.month}${-_date.day}'),
-              ),
-              new ListTile(
-                title: Text("Ending Date:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.date_range),
-                    onPressed: () {
-                      _selectDate1(context);
-                    }),
-                trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
-              ),
-              new ListTile(
-                title: Text("Starting time:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.timer),
-                    onPressed: () {
-                      _selectTime(context);
-                    }),
-                trailing: Text('${_time.hour} :${_time.minute}'),
-              ),
-              new ListTile(
-                title: Text("Ending time:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.timer),
-                    onPressed: () {
-                      _selectTime1(context);
-                    }),
-                trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-              ),
-              new RaisedButton(
-                child: new Text('Take a picture'),
-                onPressed:(){
-                  getImage(true);
-                },
-              ),
-              new RaisedButton(
-                child: new Text('Upload From Gallery'),
-                onPressed:(){
-                  getImage(false);
-                },
-              ),
-              _imageFile ==null ? Container() :Image.file(
-                _imageFile,
-                height: 300.0,
-                width: 300.0,
-                ),
-              new RaisedButton(
-                child: new Text('Upload to storage'),
-                onPressed: (){
-                  uploadImage();
-                },
-              ),
-              _uploaded ==false ? Container() : RaisedButton (
-                child: Text('Download image'),
-                onPressed: (){
-                  downloadImage();
-                },
-              ),
-              _downloadUrl == null ? Container() :Image.network(_downloadUrl), 
-
-              new RaisedButton(
-                child: new Text('Offer Item'),
-                onPressed:(){
-                  
-                },
-              ),
-              new FlatButton(
-                child: Text('Add'),
-                textColor: Colors.blue,
+            title: Text("Starting Date:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.date_range),
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  crudObj.addData({
-                    'Item Name': this.itemName,
-                    'item Desciprion': this.itemDescription,
-                    'item Price': this.itemPrice,
-                    'item Location': this.itemLocation,                    
-                  }).then((result) {
-                    dialogTrigger(context);
-                  }).catchError((e) {
-                    print(e);
-                  });
-                },
-              ),
-              new RaisedButton(
-                child: new Text('Save as a Draft'),
-                onPressed:(){
-                  
-                },
-              ),
+                  _selectDate(context);
+                }),
+            trailing: Text('${_date.year}${-_date.month}${-_date.day}'),
+          ),
+          new ListTile(
+            title: Text("Ending Date:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.date_range),
+                onPressed: () {
+                  _selectDate1(context);
+                }),
+            trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
+          ),
+          new ListTile(
+            title: Text("Starting time:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.timer),
+                onPressed: () {
+                  _selectTime(context);
+                }),
+            trailing: Text('${_time.hour} :${_time.minute}'),
+          ),
+          new ListTile(
+            title: Text("Ending time:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.timer),
+                onPressed: () {
+                  _selectTime1(context);
+                }),
+            trailing: Text('${_ftime.hour} :${_ftime.minute}'),
+          ),
+          
+          
+          // new RaisedButton(
+          //   child: new Text('Upload to storage'),
+          //   onPressed: () {
+          //     uploadImage();
+          //   },
+          // ),
+          // _uploaded == false
+          //     ? Container()
+          //     : RaisedButton(
+          //         child: Text('Download image'),
+          //         onPressed: () {
+          //           downloadImage();
+          //         },
+          //       ),
+          // _downloadUrl == null ? Container() : Image.network(_downloadUrl),
+          
+          // new RaisedButton(
+          //   child: new Text('Offer Item'),
+          //   onPressed: () {},
+          // ),
+          new FlatButton(
+            child: Text('Offer Item'),
+            textColor: Colors.blue,
+            onPressed: () {
+              uploadImage().then((onValue) {
+                print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
+                // Navigator.of(context).pop();
+                crudObj.addData({
+                  'name': this.itemName,
+                  'description': this.itemDescription,
+                  'price': this.itemPrice,
+                  'location': this.itemLocation,
+                  'photo': onValue,
+                }).then((result) {
+                  dialogTrigger(context);
+                }).catchError((e) {
+                  print(e);
+                });
+              });
+            },
+          ),
+          // new RaisedButton(
+          //   child: new Text('Save as a Draft'),
+          //   onPressed: () {},
+          // ),
         ],
       ),
     );
   }
+
   Future<bool> dialogTrigger(BuildContext context) async {
     return showDialog(
         context: context,
@@ -258,15 +278,15 @@ class _OfferItemPageState extends State<OfferItem> {
                 child: Text('OK'),
                 textColor: Colors.blue,
                 onPressed: () {
-                  Navigator.of(context)
-                  .pushReplacementNamed('/Offer');
+                  Navigator.of(context).pushReplacementNamed('/ItemList');
                 },
               )
             ],
           );
         });
-  }  
-    Future<Null> _selectDate(BuildContext context) async {
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: _SD,
@@ -318,4 +338,3 @@ class _OfferItemPageState extends State<OfferItem> {
     }
   }
 }
-

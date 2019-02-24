@@ -26,6 +26,10 @@ class FirestoreServices {
 
   }
 
+  static Stream<QuerySnapshot> getItemList(){
+    return Firestore.instance.collection('Item').snapshots();
+  }
+
   //AFTER SEARCH GET ITEM DETAILS
   static void getItemDetails(String itemID) {
     String des, name, loc, id;

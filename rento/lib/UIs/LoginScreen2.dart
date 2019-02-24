@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rento/UIs/MainPage.dart';
 
 
 class LoginScreen2 extends StatefulWidget {
@@ -36,12 +37,6 @@ class _LoginScreen2State extends State<LoginScreen2>
         //height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: Colors.redAccent,
-          image: DecorationImage(
-            colorFilter: new ColorFilter.mode(
-                Colors.black.withOpacity(0.1), BlendMode.dstATop),
-            image: AssetImage('assets/images/mountains.jpg'),
-            fit: BoxFit.cover,
-          ),
         ),
         child: new Column(
           children: <Widget>[
@@ -342,7 +337,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                               print("success TO LOGIN");
                               //FirebaseAuth.instance.signOut();
                               Navigator.of(context)
-                                  .pushNamed('/SearchPage');
+                                  .pushNamed('/SearchPage2');
                             })
                                 .catchError((e) {
                               print('Error: $e');
@@ -620,7 +615,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                                 .createUserWithEmailAndPassword(
                                     email: email, password: password).then((onValue) {
                               Navigator.of(context)
-                                  .pushReplacementNamed('/SearchPage');
+                                  .pushReplacementNamed('/SearchPage2');
                             })
                                 .catchError((e) {
                               print('Error: $e');
