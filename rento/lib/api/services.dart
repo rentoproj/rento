@@ -38,5 +38,7 @@ class FirebaseService {
   Stream<QuerySnapshot> getDeals() {
     return Firestore.instance.collection('deals').snapshots();
   }
+
+  
 }
 
