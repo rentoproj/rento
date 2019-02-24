@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseService {
   FirebaseService() {
@@ -37,6 +38,31 @@ class FirebaseService {
 
   Stream<QuerySnapshot> getDeals() {
     return Firestore.instance.collection('deals').snapshots();
+  }
+
+  bool isLoggedIn(){
+    if(FirebaseAuth.instance.currentUser()!=null){
+      return true;
+    }else{
+    return false;
+    }
+  }
+  Future<void> AddData(Map e) async{
+    
+      Firestore.instance.collection("Users").add(e);
+    
+
+  }
+  static void AupdateData(n,p,b){
+    print("entered");
+    print("$n $p $b");
+    Firestore.instance.collection('Users').document("adc@rento.com").updateData(
+      {
+        'name':n,
+        'phone':p,
+        'Bio':b
+      }
+    ).then((onVal){print("complete");});
   }
 }
 

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 class FirestoreServices {
   //SEARCH QUERY
-  static Stream<QuerySnapshot> searchItem(String searchTerm)  {
+  static Stream<QuerySnapshot> searchItem(String searchTerm) {
     String des, name, loc, id;
     return Firestore.instance
         .collection("Item")
@@ -13,17 +13,16 @@ class FirestoreServices {
     //     .then((QuerySnapshot s) {
     //   int i = 0;
     //   while (i <= s.documents.length) {
-        // DocumentSnapshot doc = s.documents[i];
-        // print(doc.data.keys);
-        // des = doc.data['description'];
-        // loc = doc.data['location'];
-        // name = doc.data['name'];
-        // id = doc.documentID;
+    // DocumentSnapshot doc = s.documents[i];
+    // print(doc.data.keys);
+    // des = doc.data['description'];
+    // loc = doc.data['location'];
+    // name = doc.data['name'];
+    // id = doc.documentID;
     //     print('${des}, ${name},  ${loc},  ${id}');
     //     i++;
     //   }
     // });
-
   }
 
   static Stream<QuerySnapshot> getItemList(){
@@ -46,25 +45,33 @@ class FirestoreServices {
       // print('${des}, ${name},  ${loc},  ${id}');
     });
   }
-  
-  //ITEM RATE OF 
-  static void getItemRates(String itemID){
+
+  //ITEM RATE OF
+  static void getItemRates(String itemID) {
     Firestore.instance
         .collection("Item/$itemID/Rates")
         .getDocuments()
         .then((QuerySnapshot s) {
       DocumentSnapshot doc = s.documents[0];
       print("itemRate: ${doc.data.keys}");
-        });
+    });
   }
 
-  static void getItemRequestedDates(String itemID){  
+  static void getItemRequestedDates(String itemID) {
     Firestore.instance
         .collection("Item/$itemID/Dates")
         .getDocuments()
         .then((QuerySnapshot s) {
       DocumentSnapshot doc = s.documents[0];
       print("itemReservedDates: ${doc.data.keys}");
-        });    
+    });
+  }
+
+   static Future<DocumentSnapshot> getProfileDetails(String email){
+    print("pre db ${email}");
+    return Firestore.instance
+        .collection("Users")
+        .document(email)
+        .get();
   }
 }
