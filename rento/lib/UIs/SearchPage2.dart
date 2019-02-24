@@ -81,7 +81,7 @@ class FlightListingBottomPartState extends State<FlightListingBottomPart> {
             height: 10.0,
           ),
           StreamBuilder(
-            stream: FirestoreServices.searchItem(query),
+            stream: FirestoreServices.searchItem("Bi"),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
