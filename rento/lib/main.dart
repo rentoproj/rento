@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:rento/Bloc/app_bloc.dart';
-import 'package:rento/Bloc/bloc_provider.dart';
 
 //pages
 import 'UIs/CreateAccountPage.dart';
@@ -40,7 +38,6 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
-        '/SearchPage' : (BuildContext context) => new SearchPage(),
         // '/ItemPage' : (BuildContext context) => new ItemPage(),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
