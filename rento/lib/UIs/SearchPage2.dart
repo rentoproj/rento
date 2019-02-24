@@ -1,9 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rento/components/CustomShapeClipper.dart';
-import 'package:rento/Bloc/app_bloc.dart';
-import 'package:rento/Bloc/bloc_provider.dart';
-import 'package:rento/Bloc/search_bloc.dart';
-import 'package:rento/Bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/UIs/MainPage.dart';
 
