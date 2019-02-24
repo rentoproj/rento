@@ -13,6 +13,7 @@ import 'UIs/ItemRequest1.dart';
 import 'UIs/ProfilePage.dart';
 import 'UIs/EditProfile.dart';
 import 'UIs/ItemRequest2.dart';
+import 'UIs/Offer.dart';
 import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: SearchPage2(),
+      home: ProfilePage(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         
 
         '/MainPage': (BuildContext context) => new MainPage(),
-        // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
+         '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
       },
     );
   }
