@@ -4,11 +4,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:rento/UIs/ItemPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ItemBlock extends StatelessWidget {
-  String name, desc, id, imgURL, loc;
-  int price;
+class RequestBlock extends StatelessWidget {
+  String name, desc, id, imgURL, loc, state;
 
-  ItemBlock(this.name, this.desc, this.imgURL, this.loc, this.price, this.id);
+  RequestBlock(
+      this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ItemBlock extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new ItemPage(this.id)),
+                builder: (context) => new MyApp1("-KriJ8Sg4lWIoNswKWc4")),
           );
           //pushItem(item);
         },
@@ -64,21 +64,24 @@ class ItemBlock extends StatelessWidget {
                           )),
                       new Text(" "),
                       new Container(
-                        child: Row(
+                        child: Wrap(
                           children: <Widget>[
+                            Row(children:<Widget>[
                             new Icon(Icons.location_on),
                             new Text(this.loc,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   letterSpacing: 0.5,
                                   fontSize: 20.0,
-                                )),
-                            new Icon(Icons.monetization_on),
-                            new Text(this.price.toString() + "SR/day",
+                                ))]),
+                            Row(children: <Widget>[
+                            new Icon(Icons.event_available),
+                            new Text(this.state,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   letterSpacing: 0.5,
                                   fontSize: 20.0,
-                                ))
+                                ))]),
                           ],
                         ),
                       )
