@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
-
 //pages
 import 'UIs/CreateAccountPage.dart';
 import 'UIs/LoginScreen2.dart';
-
 import 'UIs/ItemPage.dart';
 import 'UIs/RentalHistory.dart';
 import 'UIs/ItemRequest1.dart';
@@ -36,12 +33,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-
       home: LoginScreen2(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
-       // '/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),

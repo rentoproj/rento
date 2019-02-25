@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/api/FirestoreServices.dart';
 
+
 class EditProfile extends StatefulWidget {
   @override
   String email;
@@ -17,6 +18,7 @@ class EditProfile extends StatefulWidget {
 
 class _MyHomePageState extends State<EditProfile> {
   File _image;
+
   Field name, phone, Bio;
   String intName, intPhone, intBio, imageURL, email;
   //TextEditingController nameCont, phoneCont, bioCont;
@@ -39,9 +41,12 @@ class _MyHomePageState extends State<EditProfile> {
     _REAuth =FirebaseAuth.i+nstance;
     _REAuth.sendPasswordResetEmail("q@gmsil.com"),
   }*/
-  Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
+  
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.gallery);
     setState(() {
       _image = image;
     });
@@ -51,6 +56,7 @@ class _MyHomePageState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: Text('Edit Profile'),
         
       ),
@@ -75,6 +81,7 @@ class _MyHomePageState extends State<EditProfile> {
             if (phone.textv!=null) intPhone = phone.textv;
             print("VALUES: ${name.textv} , ${intName}");
             FirebaseService.AupdateData(intName, intPhone, intBio);
+
           },
         ),
       ]),
@@ -83,9 +90,11 @@ class _MyHomePageState extends State<EditProfile> {
         onPressed: getImage,
         tooltip: 'Pick Image',
         child: Icon(Icons.add_a_photo),
+        
       ),
     );
   }
+
 
   Widget _buildWidgets(BuildContext context, dynamic data) {
     this.imageURL = data['photoURL'];
@@ -108,3 +117,4 @@ class _MyHomePageState extends State<EditProfile> {
 // new Field(new Icon(Icons.repeat),"Confirm","write the new password agine"),
 // ****how to confirm that the both passwords are the same*** https://stackoverflow.com/questions/50155348/how-to-validate-a-form-field-based-on-the-value-of-the-other
 //**  https://github.com/shiang/flutter-form-with-validation-BLOC/issues/1    this one using bloc   */
+

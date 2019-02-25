@@ -158,7 +158,6 @@ class FlightListTopPart extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-
                               //FlightListingBottomPartState.setState(fn);
                               // FlightListingBottomPart().createState();
                             },

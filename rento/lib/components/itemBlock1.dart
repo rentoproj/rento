@@ -18,7 +18,7 @@ class ItemBlock extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new MyApp1("-KriJ8Sg4lWIoNswKWc4")),
+                builder: (context) => new ItemPage(this.id)),
           );
           //pushItem(item);
         },

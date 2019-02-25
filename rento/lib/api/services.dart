@@ -64,5 +64,11 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+
+  static void sendRequest(Map data)
+  {
+    Firestore.instance.collection('Requests').add(data);
+
+  }
 }
 
