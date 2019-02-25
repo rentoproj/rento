@@ -53,7 +53,7 @@ Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
         String des = doc.data['desc'];
         String name = doc.data['name'];
         String loc = doc.data['location'];
-        String id = doc.documentID;
+        String id = doc.data['ItemID'];
         String url = doc.data['Photo'];
         String state =doc.data['State'];
       return RequestBlock(name, des, url, loc, state, id);

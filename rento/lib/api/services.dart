@@ -56,7 +56,7 @@ class FirebaseService {
   static void AupdateData(n,p,b){
     print("entered");
     print("$n $p $b");
-    Firestore.instance.collection('Users').document("adc@rento.com").updateData(
+    Firestore.instance.collection('Users').document("qwer@rento.com").updateData(
       {
         'name':n,
         'phone':p,

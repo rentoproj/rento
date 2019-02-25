@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/components/StarRating.dart';
 import 'package:rento/components/Comment.dart';
+import 'package:rento/api/FirestoreServices.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -16,10 +17,11 @@ class cmnt {
 
 class Profile extends State<ProfilePage> {
   double rating = 3;
+    String intName, intPhone, intBio, imageURL, email;
   List<cmnt> comments = [
-    new cmnt("ssz", DateTime.now(), "_uName1", "hea1231d"),
-    new cmnt("_text2", DateTime.now(), "_uName2", "head1"),
-    new cmnt("_text3", DateTime.now(), "_uName3", "head1")
+    new cmnt("very understanding seller", DateTime.now(), "Sami", "Good seller"),
+    new cmnt("always returns items on time", DateTime.now(), "Khalid", "always on time"),
+    new cmnt("Definilty would rent item to him again !", DateTime.now(), "Basim Banjar", "Likes")
   ];
 
   @override
@@ -40,12 +42,15 @@ class Profile extends State<ProfilePage> {
         ),
         drawer: new SideMenu(),
         body: Column(children: <Widget>[
-          Divider(),
-          _buildUserIdentity("user"),
-          Divider(),
+          FutureBuilder(
+            future: FirestoreServices.getProfileDetails('qwer@rento.com'),
+            builder:(context, snapshot){
+                return !snapshot.hasData
+                ? Center(child: CircularProgressIndicator())
+                : _buildWidgets(context, snapshot.data);
+            }
+          ),
           //USER DESCRIPTION
-          _bibleField(),
-          Divider(),
           new Padding(
               padding: EdgeInsets.all(15),
               child: Column(children: <Widget>[
@@ -90,8 +95,9 @@ class Profile extends State<ProfilePage> {
         children: <Widget>[
           new Padding(
             child: new CircleAvatar(
-              radius: 40.0,
+              radius: 60.0,
               backgroundColor: Colors.grey,
+              backgroundImage: new NetworkImage("https://www.mensjournal.com/wp-content/uploads/mf/1280-selfie.jpg?w=1600&h=900&crop=1"),
               // backgroundImage: user.avatarUrl != null ? new NetworkImage(
               //     user.avatarUrl) : null,
             ),
@@ -101,8 +107,9 @@ class Profile extends State<ProfilePage> {
             children: <Widget>[
               new Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
-                child: new Text("Display name",
-                    style: new TextStyle(fontWeight: FontWeight.bold)),
+                child: new Text("Saeed Clapton",
+                    style: new TextStyle(fontWeight: FontWeight.bold, 
+                    fontSize: 18)),
               ),
             ],
           )
@@ -121,7 +128,8 @@ class Profile extends State<ProfilePage> {
                 enableInteractiveSelection: false,
                 enabled: false,
                 maxLines: 5,
-                initialValue: " ",
+                initialValue: intBio,
+                // "For contacts on rents or offers: +966 50 344 5663 or by email: sclapton@gmail.com"
                 decoration: new InputDecoration(
                   labelText: "Bibliography",
                   labelStyle: TextStyle(color: Colors.black87, fontSize: 20),
@@ -142,5 +150,21 @@ class Profile extends State<ProfilePage> {
             )
           ])),
         ));
+  }
+
+  _buildWidgets(BuildContext context, dynamic data)
+  {
+    this.imageURL = data['photoURL'];
+    this.intBio = data['Bio'];
+    this.intName = data['name'];
+    this.intPhone = data['phone'];
+    return Column(
+      children: <Widget>[
+       _buildUserIdentity(intName),
+       Divider(),
+       _bibleField(),
+       Divider(),
+       
+    ],);
   }
 }

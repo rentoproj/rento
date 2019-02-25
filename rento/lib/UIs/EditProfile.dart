@@ -81,7 +81,7 @@ class _MyHomePageState extends State<EditProfile> {
             if (phone.textv!=null) intPhone = phone.textv;
             print("VALUES: ${name.textv} , ${intName}");
             FirebaseService.AupdateData(intName, intPhone, intBio);
-
+            Navigator.of(context).pushNamed('/ProfilePage');
           },
         ),
       ]),
