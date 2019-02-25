@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
 
 //pages
 import 'UIs/CreateAccountPage.dart';
 import 'UIs/LoginScreen2.dart';
-
 import 'UIs/ItemPage.dart';
 import 'UIs/RentalHistory.dart';
 import 'UIs/ItemRequest1.dart';
@@ -18,6 +15,7 @@ import 'UIs/Offer.dart';
 import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
+import 'UIs/ItemList.dart';
 
 void main() async{
 
@@ -47,10 +45,9 @@ class MyApp extends StatelessWidget {
         '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
-        
-
-        '/MainPage': (BuildContext context) => new MainPage(),
-         '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
+        '/ItemList' : (BuildContext context) => new ItemList(),
+         '/MainPage': (BuildContext context) => new MainPage(),
+        // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
       },
     );
   }

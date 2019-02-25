@@ -23,7 +23,7 @@ class SideMenu extends StatelessWidget {
             leading: Icon(Icons.home),
             title: Text('Home Page'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/SearchPage');
+              Navigator.of(context).pushReplacementNamed('/MainPage');
             },
           ),
           ListTile(
@@ -31,6 +31,13 @@ class SideMenu extends StatelessWidget {
             title: Text('Rental Histroy'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/RentalHistory');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.list),
+            title: Text('Item List'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/ItemList');
             },
           ),
           ListTile(
