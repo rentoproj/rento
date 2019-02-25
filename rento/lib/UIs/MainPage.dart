@@ -25,13 +25,13 @@ class HomeScreenState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      endDrawer: new SideMenu(),
+      drawer: new SideMenu(),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
             HomeScreenTopPart(),
-            HomeScreenBottomPart(),
+           // HomeScreenBottomPart(),
           ],
         ),
       ),

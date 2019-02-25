@@ -35,7 +35,7 @@ class MyApp1State extends State<ItemPage> {
         initialDate: _date,
         firstDate: _date,
         lastDate: new DateTime(2021));
-    if (picked != null) {
+    if (picked != null) { 
       setState(() {
         _date = picked;
         _fdate = picked;
