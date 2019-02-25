@@ -45,9 +45,10 @@ class MyApp extends StatelessWidget {
         '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
+        '/MainPage': (BuildContext context) => new MainPage(),
+         '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
         '/ItemList' : (BuildContext context) => new ItemList(),
-         '/MainPage': (BuildContext context) => new MainPage(),
-        // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
+
       },
     );
   }
