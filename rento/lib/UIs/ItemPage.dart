@@ -108,16 +108,19 @@ class MyApp1State extends State<ItemPage> {
                         new FlatButton(
                           child: new Text("Confirm"),
                           onPressed: () {
-                            FirebaseService.sendRequest({
-                              ['BuyerID']: "qwer@rento.com",
-                              ['EndDate']: "",
-                              ['ItemID']: this.itemID,
-                              ['Photo']: this._path,
-                              ['ReqDate']: DateTime.now().toString(),
-                              ['SellerID']: "",
-                              ['StartDate']: "",
-                              ['State']: "",
-                            });
+                            FirebaseService.sendRequest(
+                              "qwer@rento.com",
+                              _fdate.toString(),
+                              this.itemID,
+                              this._path,
+                              DateTime.now().toString(),
+                              "adc@rento.com",
+                              _date.toString(),
+                              "Waiting for acceptance",
+                              _name,
+                              _location,
+                              _decription
+                            );
                             Navigator.of(context)
                                 .pushReplacementNamed('/RentalHistory');
                           },

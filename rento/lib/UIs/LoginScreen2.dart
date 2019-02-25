@@ -337,7 +337,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                               print("success TO LOGIN");
                               //FirebaseAuth.instance.signOut();
                               Navigator.of(context)
-                                  .pushNamed('/SearchPage2');
+                                  .pushNamed('/MainPage');
                             })
                                 .catchError((e) {
                               print('Error: $e');
@@ -615,7 +615,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                                 .createUserWithEmailAndPassword(
                                     email: email, password: password).then((onValue) {
                               Navigator.of(context)
-                                  .pushReplacementNamed('/SearchPage2');
+                                  .pushReplacementNamed('/MainPage');
                             })
                                 .catchError((e) {
                               print('Error: $e');
