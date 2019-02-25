@@ -5,6 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'crud.dart';
+import 'ItemList.dart';
+import 'package:rento/components/SideMenu.dart';
+//import 'MainPage.dart';
 
 class OfferItem extends StatefulWidget {
   _OfferItemPageState createState() => new _OfferItemPageState();
@@ -18,83 +22,268 @@ class _OfferItemPageState extends State<OfferItem> {
   TimeOfDay _ftime = new TimeOfDay.now();
 
   StreamSubscription _subscriptionTodo;
-    
-    File _imageFile;
-    bool _uploaded =false;
-    String _downloadUrl;
-    StorageReference _reference = FirebaseStorage.instance.ref().child('myImage.jpeg');
 
+  File _imageFile;
+  bool _uploaded = false;
+  String _downloadUrl;
+  StorageReference _reference =
+      FirebaseStorage.instance.ref().child('myImage.jpeg');
 
-    Future getImage (bool isCamera) async{
-      File image;
-      if(isCamera){
-        image =await ImagePicker.pickImage(source: ImageSource.camera);
-      }else{
-        image =await ImagePicker.pickImage(source: ImageSource.gallery);
-      }
-      setState(() {
-       _imageFile = image; 
-      });
+  Future getImage(bool isCamera) async {
+    File image;
+    if (isCamera) {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    } else {
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
-
-    Future uploadImage() async {
-      StorageUploadTask uploadTask = _reference.putFile(_imageFile);
-      StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
-      setState(() {
-       _uploaded = true; 
-      });
-    }
-
-    Future downloadImage() async{
-      String downloadAddress =await _reference.getDownloadURL();
-      setState(() {
-       _downloadUrl =downloadAddress; 
-      });
-    }
-
-  
-  String _name = "Display the todo name here";
-  String _location = "None";
-  String _decription = "None";
-  double _rate = 0.0;
-  double _price = 0.0;
-  String _path = "";
-  List<String> _category = ['cat1','cat2','others'];
-  var _currentItemSelected = 'choose one';
-  String newValue;
-
-
-  void initState() {
-    FirebaseTodos.getTodo("deHPdJNYm582VcJSRx5w").then(_updateTodo);
-
-    //FirebaseTodos.getTodoStream(itemID, _updateTodo)
-    //  .then((StreamSubscription s) => _subscriptionTodo = s);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    if (_subscriptionTodo != null) {
-      _subscriptionTodo.cancel();
-    }
-    super.dispose();
-  }
-
-  _updateTodo(Todo value) {
-    var name = value.name;
-    var location = value.location;
-    var description = value.decription;
-    var price = value.price;
-    var rate = value.rate;
-    var path = value.path;
     setState(() {
-      _name = name;
-      _location = location;
-      _decription = description;
-      _price = price;
-      _rate = rate;
-      _path = path;
+      _imageFile = image;
     });
+  }
+
+  Future<String> uploadImage() async {
+    StorageReference ref = FirebaseStorage.instance.ref().child("image");
+    StorageUploadTask uploadTask = ref.putFile(_imageFile);
+
+    var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    var url = downUrl.toString();
+    imageURL = url;
+    return url;
+
+    // StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
+    // String downloadAddress = await _reference.getDownloadURL();
+    // imageURL = downloadAddress.toString();
+    // setState(() {
+    //  _uploaded = true;
+    //  // imageURL =downloadAddress;
+
+    // });
+  }
+
+  Future downloadImage() async {
+    String downloadAddress = await _reference.getDownloadURL();
+    setState(() {
+      _downloadUrl = downloadAddress;
+    });
+  }
+
+  String newValue;
+  String itemName;
+  String itemDescription;
+  int itemPrice;
+  String itemLocation;
+  String imageURL;
+
+  crudMedthods crudObj = new crudMedthods();
+
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Offer Item"),
+      ),drawer: SideMenu(),
+      body: new ListView(
+        children: <Widget>[
+          _imageFile == null
+              ? Container()
+              : Image.file(
+                  _imageFile,
+                  height: 300.0,
+                  width: 300.0,
+                ),
+            new RaisedButton(
+            child: new Text('Take a picture'),
+            onPressed: () {
+              getImage(true);
+            },
+          ),
+          new RaisedButton(
+            child: new Text('Upload From Gallery'),
+            onPressed: () {
+              getImage(false);
+            },
+          ),    
+          
+          new ListTile(
+            title: new TextField(
+              //controller: _nameFieldTextController,
+              decoration: new InputDecoration(
+                  icon: new Icon(Icons.edit),
+                  labelText: "Item Name",
+                  hintText: "Enter the Item name..."),
+              onChanged: (value) {
+                this.itemName = value;
+              },
+            ),
+          ),
+          new Container(
+            margin: EdgeInsets.all(8.0),
+            // hack textfield height
+            padding: EdgeInsets.only(bottom: 40.0),
+            child: TextField(
+              maxLines: 9,
+              decoration: InputDecoration(
+                hintText: "Description",
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                this.itemDescription = value;
+              },
+            ),
+          ),
+          new ListTile(
+            title: const Text('Category'),
+            trailing: new DropdownButton<String>(
+                hint: Text('Choose'),
+                onChanged: (String changedValue) {
+                  newValue = changedValue;
+                  setState(() {
+                    newValue;
+                    print(newValue);
+                  });
+                },
+                value: newValue,
+                items: <String>[
+                  'Veihcels',
+                  'Electronics',
+                  'Home Equibments',
+                  'Others'
+                ].map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: new Text(value),
+                  );
+                }).toList()),
+          ),
+          new ListTile(
+            title: new TextField(
+              decoration: new InputDecoration(
+                  icon: new Icon(Icons.attach_money),
+                  labelText: "Item Price per SR",
+                  hintText: "Enter the Item Price..."),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                this.itemPrice = int.tryParse(value);
+              },
+            ),
+          ),
+          new ListTile(
+            title: new TextField(
+              decoration: new InputDecoration(
+                  icon: new Icon(Icons.location_on),
+                  labelText: "Item Location",
+                  hintText: "Enter the Item location..."),
+              onChanged: (value) {
+                this.itemLocation = value;
+              },
+            ),
+          ),
+          new ListTile(
+            title: Text("Starting Date:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.date_range),
+                onPressed: () {
+                  _selectDate(context);
+                }),
+            trailing: Text('${_date.year}${-_date.month}${-_date.day}'),
+          ),
+          new ListTile(
+            title: Text("Ending Date:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.date_range),
+                onPressed: () {
+                  _selectDate1(context);
+                }),
+            trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
+          ),
+          new ListTile(
+            title: Text("Starting time:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.timer),
+                onPressed: () {
+                  _selectTime(context);
+                }),
+            trailing: Text('${_time.hour} :${_time.minute}'),
+          ),
+          new ListTile(
+            title: Text("Ending time:"),
+            subtitle: new IconButton(
+                icon: new Icon(Icons.timer),
+                onPressed: () {
+                  _selectTime1(context);
+                }),
+            trailing: Text('${_ftime.hour} :${_ftime.minute}'),
+          ),
+          
+          
+          // new RaisedButton(
+          //   child: new Text('Upload to storage'),
+          //   onPressed: () {
+          //     uploadImage();
+          //   },
+          // ),
+          // _uploaded == false
+          //     ? Container()
+          //     : RaisedButton(
+          //         child: Text('Download image'),
+          //         onPressed: () {
+          //           downloadImage();
+          //         },
+          //       ),
+          // _downloadUrl == null ? Container() : Image.network(_downloadUrl),
+          
+          // new RaisedButton(
+          //   child: new Text('Offer Item'),
+          //   onPressed: () {},
+          // ),
+          new FlatButton(
+            child: Text('Offer Item'),
+            textColor: Colors.blue,
+            onPressed: () {
+              uploadImage().then((onValue) {
+                print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
+                // Navigator.of(context).pop();
+                crudObj.addData({
+                  'name': this.itemName,
+                  'description': this.itemDescription,
+                  'price': this.itemPrice,
+                  'location': this.itemLocation,
+                  'photo': onValue,
+                }).then((result) {
+                  dialogTrigger(context);
+                }).catchError((e) {
+                  print(e);
+                });
+              });
+            },
+          ),
+          // new RaisedButton(
+          //   child: new Text('Save as a Draft'),
+          //   onPressed: () {},
+          // ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool> dialogTrigger(BuildContext context) async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Job Done', style: TextStyle(fontSize: 15.0)),
+            content: Text('Item is Offered'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('OK'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/ItemList');
+                },
+              )
+            ],
+          );
+        });
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -124,187 +313,6 @@ class _OfferItemPageState extends State<OfferItem> {
     }
   }
 
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Offer Item"),
-      ),
-      body: new ListView(
-        children: <Widget>[
-          new ListTile(
-            title: new TextField(
-              //controller: _nameFieldTextController,
-              decoration: new InputDecoration(
-                  icon: new Icon(Icons.edit),
-                  labelText: "Item Name",
-                  hintText: "Enter the Item name..."
-              ),
-              onChanged: (String value) {
-                //Database.saveName(widget.mountainKey, value);
-              },
-            ),
-          ),
-          new ListTile(
-            title: new TextField(
-              //controller: _nameFieldTextController,
-              decoration: new InputDecoration(
-                  icon: new Icon(Icons.description),
-                  labelText: "Item Description",
-                  hintText: "Enter the Item discription..."
-              ),
-              onChanged: (String value) {
-                //Database.saveName(widget.mountainKey, value);
-              },
-            ),
-          ),
-          new Container(
-            margin: EdgeInsets.all(8.0),
-            // hack textfield height
-            padding: EdgeInsets.only(bottom: 40.0),
-            child: TextField(
-              maxLines: 9,
-              decoration: InputDecoration(
-                  hintText: "Description",
-                  border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          /*
-          Firestore.instance.collection("Item").getDocuments().then(
-      (QuerySnapshot s){
-        print("SNAP DETAILS");
-        int i=0;
-        while (i<=s.documents.length) {
-          DocumentSnapshot doc = s.documents[i];
-          print(doc.data.keys);
-          des = doc.data['description'];
-          loc = doc.data['location '];
-          name = doc.data['name '];
-          id = doc.documentID;
-          print('${des}, ${name},  ${loc},  ${id}');
-          i++;
-        }
-      }
-    );
-          */ 
-          new ListTile(
-          title: const Text('Category'),
-          trailing: new DropdownButton<String>(
-              hint: Text('Choose'),
-              onChanged: (String changedValue) {
-                newValue=changedValue;
-                setState(() {
-                  newValue;
-                  print(newValue);
-                });
-              },
-              value: newValue,
-              items: <String>['Veihcels', 'Electronics','Home Equibments','Others']
-                  .map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList()),
-        ),
-          new ListTile(
-            title: new TextField(
-              //controller: _nameFieldTextController,
-              decoration: new InputDecoration(
-                  icon: new Icon(Icons.attach_money),
-                  labelText: "Item Price per SR",
-                  hintText: "Enter the Item Price..."
-              ),
-              onChanged: (String value) {
-                //Database.saveName(widget.mountainKey, value);
-              },
-            ),
-          ),
-          new ListTile(
-            title: new TextField(
-              //controller: _nameFieldTextController,
-              decoration: new InputDecoration(
-                  icon: new Icon(Icons.location_on),
-                  labelText: "Item Location",
-                  hintText: "Enter the Item location..."
-              ),
-              onChanged: (String value) {
-                //Database.saveName(widget.mountainKey, value);
-              },
-            ),
-          ),
-          new ListTile(
-                title: Text("Starting Date:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.date_range),
-                    onPressed: () {
-                      _selectDate(context);
-                    }),
-                trailing: Text('${_date.year}${-_date.month}${-_date.day}'),
-              ),
-              new ListTile(
-                title: Text("Ending  Date:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.date_range),
-                    onPressed: () {
-                      _selectDate1(context);
-                    }),
-                trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
-              ),
-              new ListTile(
-                title: Text("Starting time:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.timer),
-                    onPressed: () {
-                      _selectTime(context);
-                    }),
-                trailing: Text('${_time.hour} :${_time.minute}'),
-              ),
-              new ListTile(
-                title: Text("Ending time:"),
-                subtitle: new IconButton(
-                    icon: new Icon(Icons.timer),
-                    onPressed: () {
-                      _selectTime1(context);
-                    }),
-                trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-              ),
-              new RaisedButton(
-                child: new Text('Offer Item'),
-                onPressed:(){
-                  getImage(true);
-                },
-              ),
-              new RaisedButton(
-                child: new Text('Save as a Draft'),
-                onPressed:(){
-                  getImage(false);
-                },
-              ),
-              _imageFile ==null ? Container() :Image.file(
-                _imageFile,
-                height: 300.0,
-                width: 300.0,
-                ),
-              new RaisedButton(
-                child: new Text('Upload to storage'),
-                onPressed: (){
-                  uploadImage();
-                },
-              ),
-              _uploaded ==false ? Container() : RaisedButton (
-                child: Text('Download image'),
-                onPressed: (){
-                  downloadImage();
-                },
-              ),
-              _downloadUrl == null ? Container() :Image.network(_downloadUrl), 
-
-        ],
-      ),
-    );
-  }
-
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
@@ -329,95 +337,4 @@ class _OfferItemPageState extends State<OfferItem> {
       });
     }
   }
-}
-
-class itemImage extends StatelessWidget {
-  String path;
-  itemImage(this.path);
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    var assetsImage = new AssetImage('${path}');
-    var image = new Image(
-      image: assetsImage,
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 5,
-    );
-    return Container(child: image);
-  }
-}
-
-class Todo {
-  final String key;
-  String name;
-  String location;
-  String decription;
-  double price;
-  String category;
-  double rate;
-  String path;
-  Todo.fromJson(this.key, Map data) {
-    name = data['name'];
-    location = data['location'];
-    decription = data['description'];
-    price = data['price'];
-    category = data['category'];
-    rate = data['rate'];
-    path = data['photo'];
-    if (name == null &&
-        location == null &&
-        decription == null &&
-        price == null &&
-        category == null &&
-        rate == null) {
-      name = '';
-      location = '';
-      decription = '';
-      price = 0.0;
-      category = '';
-      rate = 0.0;
-    }
-  }
-}
-
-class FirebaseTodos {
-  static Future<Todo> getTodo(String todoKey) async {
-    Completer<Todo> completer = new Completer<Todo>();
-
-    // String accountKey = await Preferences.getAccountKey();
-
-    FirebaseDatabase.instance
-        .reference()
-        .child("Item")
-        .child(todoKey)
-        .once()
-        .then((DataSnapshot snapshot) {
-      var todo = new Todo.fromJson(snapshot.key, snapshot.value);
-      completer.complete(todo);
-    });
-
-    return completer.future;
-  }
-
-  /// FirebaseTodos.getTodoStream("-KriJ8Sg4lWIoNswKWc4", _updateTodo)
-  /// .then((StreamSubscription s) => _subscriptionTodo = s);
-  static Future<StreamSubscription<Event>> getTodoStream(
-      String todoKey, void onData(Todo todo)) async {
-    //String accountKey = await Preferences.getAccountKey();
-
-    StreamSubscription<Event> subscription = FirebaseDatabase.instance
-        .reference()
-        .child("Item")
-        .child(todoKey)
-        .onValue
-        .listen((Event event) {
-      var todo = new Todo.fromJson(event.snapshot.key, event.snapshot.value);
-      onData(todo);
-    });
-
-    return subscription;
-  }
-
-  /// FirebaseTodos.getTodo("-KriJ8Sg4lWIoNswKWc4").then(_updateTodo);
-
 }

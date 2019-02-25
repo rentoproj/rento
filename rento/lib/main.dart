@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+//import 'package:rento/Bloc/app_bloc.dart';
+//import 'package:rento/Bloc/bloc_provider.dart';
 
 //pages
 import 'UIs/CreateAccountPage.dart';
@@ -17,6 +18,7 @@ import 'UIs/Offer.dart';
 import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
+import 'UIs/ItemList.dart';
 
 void main() async{
 
@@ -39,17 +41,17 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
-        // '/ItemPage' : (BuildContext context) => new ItemPage(),
+       // '/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
+
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
         '/EditProfile': (BuildContext context) => new EditProfile(),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
-        
-
-        '/MainPage': (BuildContext context) => new MainPage(),
-         '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
+        '/ItemList' : (BuildContext context) => new ItemList(),
+         '/MainPage': (BuildContext context) => new MainPage(),
+        // '/ItemRequest2.dart' : (BuildContext context) => new ItemRequest2(),
       },
     );
   }
