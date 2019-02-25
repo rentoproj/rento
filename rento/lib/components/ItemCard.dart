@@ -7,7 +7,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 class RequestBlock extends StatelessWidget {
   String name, desc, id, imgURL, loc, state;
 
-  RequestBlock(this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
+  RequestBlock(
+      this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -23,64 +24,71 @@ class RequestBlock extends StatelessWidget {
         },
         splashColor: Colors.orangeAccent,
         child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, ),
+          padding: const EdgeInsets.only(
+            top: 8.0,
+          ),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-                border: Border.all(color: Color(0xFFE6E6E6)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10.0),
               ),
+              border: Border.all(color: Color(0xFFE6E6E6)),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-                child: new Row(
-                  children: <Widget>[
-                    ItemImage(this.imgURL),
-                    new Text("   "),
-                    new Flexible(
-                        child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // crossAxisAlignment: CrossAxisAlignment.start,
+              child: new Row(
+                children: <Widget>[
+                  ItemImage(this.imgURL),
+                  new Text("   "),
+                  new Flexible(
+                      child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // crossAxisAlignment: CrossAxisAlignment.start,
 
-                        new Text(this.name,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              // fontFamily: 'Roboto',
-                              letterSpacing: 0.5,
-                              fontSize: 25.0,
-                            )),
-                        new Text("   "),
-                        new Text(this.desc,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              letterSpacing: 0.5,
-                              fontSize: 20.0,
-                            )),
-                        new Text(" "),
-                        new Container(
-                          child: Row(
-                            children: <Widget>[
-                              new Icon(Icons.location_on),
-                              new Text(this.loc,
-                                  style: TextStyle(
-                                    letterSpacing: 0.5,
-                                    fontSize: 20.0,
-                                  )),
-                              new Icon(Icons.event_available),
-                              new Text(this.state,
-                                  style: TextStyle(
-                                    letterSpacing: 0.5,
-                                    fontSize: 20.0,
-                                  ))
-                            ],
-                          ),
-                        )
-                      ],
-                    ))
-                  ],
-                ),
+                      new Text(this.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w800,
+                            // fontFamily: 'Roboto',
+                            letterSpacing: 0.5,
+                            fontSize: 25.0,
+                          )),
+                      new Text("   "),
+                      new Text(this.desc,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            letterSpacing: 0.5,
+                            fontSize: 20.0,
+                          )),
+                      new Text(" "),
+                      new Container(
+                        child: Wrap(
+                          children: <Widget>[
+                            Row(children:<Widget>[
+                            new Icon(Icons.location_on),
+                            new Text(this.loc,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  letterSpacing: 0.5,
+                                  fontSize: 20.0,
+                                ))]),
+                            Row(children: <Widget>[
+                            new Icon(Icons.event_available),
+                            new Text(this.state,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  letterSpacing: 0.5,
+                                  fontSize: 20.0,
+                                ))]),
+                          ],
+                        ),
+                      )
+                    ],
+                  ))
+                ],
+              ),
             ),
           ),
         ));

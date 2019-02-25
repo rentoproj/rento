@@ -50,9 +50,9 @@ Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
     scrollDirection: Axis.vertical,
     itemBuilder: (context, i) {
         DocumentSnapshot doc = snapshots[i];
-        String des = doc.data['Description'];
-        String name = doc.data['Name'];
-        String loc = doc.data['Location'];
+        String des = doc.data['desc'];
+        String name = doc.data['name'];
+        String loc = doc.data['location'];
         String id = doc.documentID;
         String url = doc.data['Photo'];
         String state =doc.data['State'];
