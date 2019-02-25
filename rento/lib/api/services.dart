@@ -64,9 +64,21 @@ class FirebaseService {
     ).then((onVal){print("complete");});
   }
 
-  static void sendRequest(Map data)
+  static void sendRequest(String email, String eDate, String itemID, String url, String rDate, String sID, String sDate, String state, String name, String location, String desc)
   {
-    Firestore.instance.collection('Requests').add(data);
+    Firestore.instance.collection('Requests').add({
+      'BuyerID': email,
+      'EndDate': eDate,
+      'ItemID': itemID,
+      'Photo': url,
+      'ReqDate': rDate,
+      'SellerID':sID,
+      'StartDate':sDate,
+      'State': state,
+      'name': name,
+      'location' : location,
+      'desc' : desc
+    });
 
   }
 }
