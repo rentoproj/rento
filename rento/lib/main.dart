@@ -15,9 +15,8 @@ import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
-
+// 
 void main() async{
-
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
   runApp(
      new MyApp()
@@ -33,14 +32,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: LoginScreen2(),
+      home: ProfilePage(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
+//'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
-        '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
+        '/EditProfile': (BuildContext context) => new EditProfile("qwer@rento.com"),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
         '/MainPage': (BuildContext context) => new MainPage(),
