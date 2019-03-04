@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'crud.dart';
-import 'ItemList.dart';
 import 'package:rento/components/SideMenu.dart';
+import 'package:rento/api/services.dart';
 //import 'MainPage.dart';
 
 class OfferItem extends StatefulWidget {
@@ -20,8 +17,6 @@ class _OfferItemPageState extends State<OfferItem> {
   TimeOfDay _time = new TimeOfDay.now();
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
-
-  StreamSubscription _subscriptionTodo;
 
   File _imageFile;
   bool _uploaded = false;
@@ -74,7 +69,6 @@ class _OfferItemPageState extends State<OfferItem> {
   String itemLocation;
   String imageURL;
 
-  crudMedthods crudObj = new crudMedthods();
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -242,7 +236,7 @@ class _OfferItemPageState extends State<OfferItem> {
               uploadImage().then((onValue) {
                 print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
                 // Navigator.of(context).pop();
-                crudObj.addData({
+                FirebaseService.createOffer({
                   'name': this.itemName,
                   'description': this.itemDescription,
                   'price': this.itemPrice,

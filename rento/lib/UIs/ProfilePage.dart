@@ -3,6 +3,7 @@ import 'package:rento/components/SideMenu.dart';
 import 'package:rento/components/StarRating.dart';
 import 'package:rento/components/Comment.dart';
 import 'package:rento/api/FirestoreServices.dart';
+import 'package:rento/api/services.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class Profile extends State<ProfilePage> {
         drawer: new SideMenu(),
         body: Column(children: <Widget>[
           FutureBuilder(
-            future: FirestoreServices.getProfileDetails('qwer@rento.com'),
+            future: FirestoreServices.getProfileDetails(UserAuth.getEmail()),
             builder:(context, snapshot){
                 return !snapshot.hasData
                 ? Center(child: CircularProgressIndicator())
@@ -87,7 +88,7 @@ class Profile extends State<ProfilePage> {
         ]));
   }
 
-  Widget _buildUserIdentity(String user) {
+  Widget _buildUserIdentity(String user, String photo) {
     return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -97,7 +98,17 @@ class Profile extends State<ProfilePage> {
             child: new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
-              backgroundImage: new NetworkImage("https://www.mensjournal.com/wp-content/uploads/mf/1280-selfie.jpg?w=1600&h=900&crop=1"),
+              child:
+              photo == null || photo == "" ? 
+              IconButton(
+              icon: Icon(Icons.account_circle, size: 80),
+              onPressed: (){},
+            )
+            :
+            new CircleAvatar(
+              radius: 60.0,
+              backgroundColor: Colors.grey,
+              backgroundImage: new NetworkImage(photo)),
               // backgroundImage: user.avatarUrl != null ? new NetworkImage(
               //     user.avatarUrl) : null,
             ),
@@ -160,7 +171,7 @@ class Profile extends State<ProfilePage> {
     this.intPhone = data['phone'];
     return Column(
       children: <Widget>[
-       _buildUserIdentity(intName),
+       _buildUserIdentity(intName, imageURL),
        Divider(),
        _bibleField(),
        Divider(),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 //pages
-import 'UIs/CreateAccountPage.dart';
 import 'UIs/LoginScreen2.dart';
 import 'UIs/ItemPage.dart';
 import 'UIs/RentalHistory.dart';
@@ -15,6 +14,7 @@ import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
+import 'package:rento/api/services.dart';
 
 void main() async{
 
@@ -24,8 +24,11 @@ void main() async{
     );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget{
+  MyAppState createState () => new MyAppState();
+}
 
+class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,9 +36,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: ProfilePage(),
+      home: UserAuth.isLoggedIn() ? LoginScreen2() : MainPage(),
       routes: <String, WidgetBuilder>{
-        '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
 //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
@@ -50,5 +52,14 @@ class MyApp extends StatelessWidget {
 
       },
     );
+  }
+
+  @override
+  void initState (){
+    UserAuth();
+    super.initState();
+    FirebaseAuth.instance.onAuthStateChanged.listen((user){
+      
+    });
   }
 }

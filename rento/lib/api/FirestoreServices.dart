@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
-
+import 'services.dart';
 class FirestoreServices {
   //SEARCH QUERY
   static Stream<QuerySnapshot> searchItem(String searchTerm) {
-    String des, name, loc, id;
     return Firestore.instance
         .collection("Item")
         .where("name", isGreaterThanOrEqualTo: searchTerm)
@@ -62,7 +60,6 @@ class FirestoreServices {
   }
 
    static Future<DocumentSnapshot> getProfileDetails(String email){
-    print("pre db ${email}");
     return Firestore.instance
         .collection("Users")
         .document(email)
