@@ -14,10 +14,8 @@ import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
-import 'package:rento/api/services.dart';
-
+// 
 void main() async{
-
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
   runApp(
      new MyApp()
