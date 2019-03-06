@@ -99,13 +99,13 @@ class Profile extends State<ProfilePage> {
               radius: 60.0,
               backgroundColor: Colors.grey,
               child:
-              photo == null || photo == "" ? 
-              IconButton(
-              icon: Icon(Icons.account_circle, size: 80),
+              photo == null || photo == "" 
+              ?IconButton(
+              icon: Icon(Icons.account_circle, size: 120),
+              color: Colors.black87,
               onPressed: (){},
             )
-            :
-            new CircleAvatar(
+            :new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
               backgroundImage: new NetworkImage(photo)),
@@ -118,7 +118,7 @@ class Profile extends State<ProfilePage> {
             children: <Widget>[
               new Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
-                child: new Text("Saeed Clapton",
+                child: new Text(user,
                     style: new TextStyle(fontWeight: FontWeight.bold, 
                     fontSize: 18)),
               ),
