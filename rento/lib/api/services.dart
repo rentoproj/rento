@@ -118,6 +118,7 @@ class UserAuth{
 
   static String getEmail()
   {
+    print("pre email getter no email ?");
     return user.email;
   }
 }
