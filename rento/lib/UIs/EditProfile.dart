@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rento/components/Field.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/api/FirestoreServices.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EditProfile extends StatefulWidget {
   @override
