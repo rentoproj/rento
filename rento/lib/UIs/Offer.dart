@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'crud.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/api/services.dart';
 //import 'MainPage.dart';

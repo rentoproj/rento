@@ -10,12 +10,20 @@ final Color flightBorderColor = Color(0xFFE6E6E6);
 final Color chipBackgroundColor = Color(0xFFF6F6F6);
 String query;
 
-class SearchPage2 extends StatefulWidget
-{
+class SearchPage2 extends StatefulWidget{
   SearchPage createState() => new SearchPage();
 }
-
 class SearchPage extends State<SearchPage2> {
+  
+ @override
+  void initState() {
+    // TODO: implement initState
+    query = "";
+    super.initState();
+   
+  }
+  
+  FlightListingBottomPartState bottom = new FlightListingBottomPartState();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -36,10 +44,7 @@ class SearchPage extends State<SearchPage2> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: <Widget>[
-              FlightListTopPart(),
-              SizedBox(
-                height: 20.0,
-              ),
+              FlightListTopPart(this),
               FlightListingBottomPart(),
             ],
           ),
@@ -51,20 +56,17 @@ class SearchPage extends State<SearchPage2> {
 class FlightListingBottomPart extends StatefulWidget {
   @override
   FlightListingBottomPartState createState() {
-    return new FlightListingBottomPartState("");
+    return new FlightListingBottomPartState();
   }
 }
 
 class FlightListingBottomPartState extends State<FlightListingBottomPart> {
-  String query;
-  FlightListingBottomPartState(String query);
-  @override
-  void setState(fn) {
-    // TODO: implement setState
-    super.setState(fn);
-  }
+
+ // FlightListingBottomPartState(String query);
+
   @override
   Widget build(BuildContext context) {
+    print(query);
     return Padding(
       padding: EdgeInsets.only(left: 0.0),
       child: Column(
@@ -81,7 +83,7 @@ class FlightListingBottomPartState extends State<FlightListingBottomPart> {
             height: 10.0,
           ),
           StreamBuilder(
-            stream: FirestoreServices.searchItem("Tent"),
+            stream: FirestoreServices.searchItem(query),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
@@ -94,7 +96,7 @@ class FlightListingBottomPartState extends State<FlightListingBottomPart> {
   }
 }
 
-Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
+Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots)
 {
   return ListView.builder(
     shrinkWrap: true,
@@ -109,12 +111,18 @@ Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
         String id = doc.documentID;
         String url = doc.data['photo'];
         int price =doc.data['price'];
+        print(name);
       return ItemBlock(name, des, url, loc, price, id);
     }
   );
 }
 
+
+
 class FlightListTopPart extends StatelessWidget {
+ SearchPage refreach;
+ FlightListTopPart(this.refreach);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -144,7 +152,8 @@ class FlightListTopPart extends StatelessWidget {
                     ),
                     child: TextField(
                       onChanged: (text) {
-                        query = text;
+                        //print(query);
+                        this.refreach.setState((){query = text;}); 
                       },
                       style: dropDownMenuItemStyle,
                       cursorColor: appTheme.primaryColor,
@@ -158,8 +167,9 @@ class FlightListTopPart extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              //FlightListingBottomPartState.setState(fn);
-                              // FlightListingBottomPart().createState();
+                             // FlightListingBottomPartState(query).initState();
+                             // print(SearchPage().getQuery());
+                              //FlightListingBottomPart().createState();
                             },
                             child: Icon(
                               Icons.search,

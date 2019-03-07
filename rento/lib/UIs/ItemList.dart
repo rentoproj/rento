@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 import 'Offer.dart';
 import 'package:rento/components/itemBlock1.dart';
 import 'package:rento/api/FirestoreServices.dart';

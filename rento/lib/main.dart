@@ -34,14 +34,16 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
+
       home: UserAuth.isLoggedIn() ? LoginScreen2() : MainPage(),
+
       routes: <String, WidgetBuilder>{
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
 //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
-        '/EditProfile': (BuildContext context) => new EditProfile("qwer@rento.com"),
+        '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
         '/MainPage': (BuildContext context) => new MainPage(),

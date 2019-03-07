@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'services.dart';
 class FirestoreServices {
   //SEARCH QUERY
   static Stream<QuerySnapshot> searchItem(String searchTerm) {
