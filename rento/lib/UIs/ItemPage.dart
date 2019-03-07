@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';

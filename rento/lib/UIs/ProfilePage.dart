@@ -42,6 +42,7 @@ class Profile extends State<ProfilePage> {
         ),
         drawer: new SideMenu(),
         body: Column(children: <Widget>[
+          SizedBox(height: 20.0),
           FutureBuilder(
             future: FirestoreServices.getProfileDetails('qwer@rento.com'),
             builder:(context, snapshot){

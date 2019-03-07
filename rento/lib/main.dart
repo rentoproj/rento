@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: ProfilePage(),
+      home: LoginScreen2(),
       routes: <String, WidgetBuilder>{
         '/CreateAccountPage': (BuildContext context) => new CreateAccountPage(),
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
-        '/EditProfile': (BuildContext context) => new EditProfile("qwer@rento.com"),
+        '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
         '/MainPage': (BuildContext context) => new MainPage(),
