@@ -89,6 +89,7 @@ class Profile extends State<ProfilePage> {
   }
 
   Widget _buildUserIdentity(String user, String photo) {
+    photo == null || photo == "" ?  photo = "https://cdn1.iconfinder.com/data/icons/avatar-1-2/512/User2-512.png" : photo = photo;
     return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -98,19 +99,11 @@ class Profile extends State<ProfilePage> {
             child: new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
-              child:
-              photo == null || photo == "" 
-              ?IconButton(
-              icon: Icon(Icons.account_circle, size: 120),
-              color: Colors.black87,
-              onPressed: (){},
-            )
-            :new CircleAvatar(
-              radius: 60.0,
-              backgroundColor: Colors.grey,
-              backgroundImage: new NetworkImage(photo)),
+              backgroundImage:
+              photo != null && photo != "" ? new NetworkImage(photo) : null,
               // backgroundImage: user.avatarUrl != null ? new NetworkImage(
               //     user.avatarUrl) : null,
+              child: photo == null || photo == "" ? Icon(Icons.account_circle, size: 140, color: Colors.black54,) : null,              
             ),
             padding: const EdgeInsets.only(right: 15.0),
           ),
