@@ -14,6 +14,7 @@ import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
+import 'API/services.dart';
 // 
 void main() async{
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
@@ -35,7 +36,7 @@ class MyAppState extends State<MyApp> {
         primaryColor:  Colors.deepOrange[800]
       ),
 
-      home: UserAuth.isLoggedIn() ? LoginScreen2() : MainPage(),
+      home: UserAuth.isLoggedIn() ? MainPage() : LoginScreen2() ,
 
       routes: <String, WidgetBuilder>{
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
