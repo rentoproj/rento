@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 //pages
 import 'UIs/LoginScreen2.dart';
-import 'UIs/ItemPage.dart';
 import 'UIs/RentalHistory.dart';
 import 'UIs/ItemRequest1.dart';
 import 'UIs/ProfilePage.dart';
@@ -14,6 +12,7 @@ import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
+import 'api/services.dart';
 // 
 void main() async{
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
@@ -34,9 +33,7 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-
-      home: UserAuth.isLoggedIn() ? LoginScreen2() : MainPage(),
-
+      home: UserAuth.isLoggedIn() ?  MainPage(): LoginScreen2(),
       routes: <String, WidgetBuilder>{
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
 //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
