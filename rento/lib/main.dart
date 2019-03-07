@@ -40,7 +40,7 @@ class MyAppState extends State<MyApp> {
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ItemRequest1.dart' : (BuildContext context) => new ItemRequest1(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
-        '/EditProfile': (BuildContext context) => new EditProfile("qwer@rento.com"),
+        '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
         '/MainPage': (BuildContext context) => new MainPage(),
