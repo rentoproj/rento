@@ -39,7 +39,7 @@ class MyAppState extends State<MyApp> {
 //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
-        '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
+        '/EditProfile': (BuildContext context) => new EditProfile(),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
         '/MainPage': (BuildContext context) => new MainPage(),
