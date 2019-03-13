@@ -91,6 +91,7 @@ class Profile extends State<ProfilePage> {
   }
 
   Widget _buildUserIdentity(String user, String photo) {
+    photo == null || photo == "" ?  photo = "https://cdn1.iconfinder.com/data/icons/avatar-1-2/512/User2-512.png" : photo = photo;
     return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -100,19 +101,11 @@ class Profile extends State<ProfilePage> {
             child: new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
-              child:
-              photo == null || photo == "" ? 
-              IconButton(
-              icon: Icon(Icons.account_circle, size: 80),
-              onPressed: (){},
-            )
-            :
-            new CircleAvatar(
-              radius: 60.0,
-              backgroundColor: Colors.grey,
-              backgroundImage: new NetworkImage(photo)),
+              backgroundImage:
+              photo != null && photo != "" ? new NetworkImage(photo) : null,
               // backgroundImage: user.avatarUrl != null ? new NetworkImage(
               //     user.avatarUrl) : null,
+              child: photo == null || photo == "" ? Icon(Icons.account_circle, size: 140, color: Colors.black54,) : null,              
             ),
             padding: const EdgeInsets.only(right: 15.0),
           ),
@@ -120,7 +113,7 @@ class Profile extends State<ProfilePage> {
             children: <Widget>[
               new Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
-                child: new Text("Saeed Clapton",
+                child: new Text(user,
                     style: new TextStyle(fontWeight: FontWeight.bold, 
                     fontSize: 18)),
               ),
