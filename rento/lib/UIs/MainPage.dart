@@ -99,6 +99,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                     ),
                     child: TextField(
                       onChanged: (text) {
+                        query = text;
                         //appBloc.addToLocation.add(text);
                       },
                       style: dropDownMenuItemStyle,
