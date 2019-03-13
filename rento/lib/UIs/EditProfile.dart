@@ -7,12 +7,8 @@ import 'package:rento/api/FirestoreServices.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class EditProfile extends StatefulWidget {
   @override
-  String email;
   Map initValues;
-  EditProfile(this.email);
-  //UserAuth.isLoggedIn()
-
-  _MyHomePageState createState() => _MyHomePageState(email);
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<EditProfile> {
@@ -24,7 +20,7 @@ class _MyHomePageState extends State<EditProfile> {
   // TextEditingController     nameCont = new TextEditingController(),
   //   phoneCont = new TextEditingController(),
   //   bioCont = new TextEditingController();
-  _MyHomePageState(this.email);
+  _MyHomePageState(){this.email = UserAuth.getEmail();}
 
   /* @override
   void dispose() {
