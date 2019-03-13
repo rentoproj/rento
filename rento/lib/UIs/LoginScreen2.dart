@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:rento/UIs/MainPage.dart';
-
-
+import 'package:rento/api/services.dart';
 class LoginScreen2 extends StatefulWidget {
   @override
   _LoginScreen2State createState() => new _LoginScreen2State();
@@ -11,8 +9,7 @@ class LoginScreen2 extends StatefulWidget {
 class _LoginScreen2State extends State<LoginScreen2>
     with TickerProviderStateMixin {
   final formKey = new GlobalKey<FormState>();
-  String email;
-  String password;
+  String email, password, dispName, phone;
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -152,16 +149,11 @@ class _LoginScreen2State extends State<LoginScreen2>
       appBar: AppBar(
         title: Text('LogIn'),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: Colors.white,
-          image: DecorationImage(
-            colorFilter: new ColorFilter.mode(
-                Colors.black.withOpacity(0.05), BlendMode.dstATop),
-            image: AssetImage(''),
-            fit: BoxFit.cover,
-          ),
         ),
         child: Form(
           key: formKey,
@@ -189,8 +181,7 @@ class _LoginScreen2State extends State<LoginScreen2>
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 40.0, right: 40.0),
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   border: Border(
@@ -237,9 +228,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                   ],
                 ),
               ),
-              Divider(
-
-              ),
+              Divider(),
               new Row(
                 children: <Widget>[
                   new Expanded(
@@ -259,8 +248,7 @@ class _LoginScreen2State extends State<LoginScreen2>
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 40.0, right: 40.0),
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   border: Border(
@@ -293,33 +281,43 @@ class _LoginScreen2State extends State<LoginScreen2>
                   ],
                 ),
               ),
-              Divider(
-
-              ),
+              Divider(),
               new Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: new FlatButton(
-                      child: new Text(
-                        "SignUp Now?",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.redAccent,
-                          fontSize: 15.0,
+                  Column(
+                    children: <Widget>[
+                      FlatButton(
+                        child: new Text(
+                          "SignUp Now?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.redAccent,
+                            fontSize: 15.0,
+                          ),
+                          textAlign: TextAlign.end,
                         ),
-                        textAlign: TextAlign.end,
+                        onPressed: () => gotoSignup(),
                       ),
-                      onPressed: () => gotoSignup(),
-                    ),
+                      FlatButton(
+                        child: new Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.redAccent,
+                            fontSize: 15.0,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                        onPressed: () => dialogTriggerRP(context),
+                      ),
+                    ],
                   ),
                 ],
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 30.0, right: 30.0),
+                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                 alignment: Alignment.center,
                 child: new Row(
                   children: <Widget>[
@@ -333,14 +331,22 @@ class _LoginScreen2State extends State<LoginScreen2>
                           if (validateAndSave()) {
                             FirebaseAuth.instance
                                 .signInWithEmailAndPassword(
-                                    email: email, password: password).then((FirebaseUser user){
+                                    email: email, password: password)
+                                .then((FirebaseUser user) {
                               print("success TO LOGIN");
                               //FirebaseAuth.instance.signOut();
-                              Navigator.of(context)
-                                  .pushNamed('/SearchPage2');
-                            })
-                                .catchError((e) {
+                              Navigator.of(context).pushNamed('/MainPage');
+                            }).catchError((e) {
+                              print("fail TO LOGIN");
                               print('Error: $e');
+                              dialogTriggerEP(context);
+                              final snackBar = 
+                                new SnackBar(
+                                  content:
+                                      new Text('Incorrect Email or Password'),
+                                );
+                              setState(){Scaffold.of(context).showSnackBar(snackBar);
+                              }
                             });
                           }
                         },
@@ -379,18 +385,12 @@ class _LoginScreen2State extends State<LoginScreen2>
   Widget SignupPage() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SignUp'),
+        title: Text('Sign Up'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: Colors.white,
-          image: DecorationImage(
-            colorFilter: new ColorFilter.mode(
-                Colors.black.withOpacity(0.05), BlendMode.dstATop),
-            image: AssetImage(''),
-            fit: BoxFit.cover,
-          ),
         ),
         child: Form(
           key: formKey,
@@ -405,7 +405,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                     child: new Padding(
                       padding: const EdgeInsets.only(left: 40.0),
                       child: new Text(
-                        "EMAIL",
+                        "Display Name",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
@@ -418,8 +418,73 @@ class _LoginScreen2State extends State<LoginScreen2>
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 40.0, right: 40.0),
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Colors.redAccent,
+                        width: 0.5,
+                        style: BorderStyle.solid),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+                child: new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    new Expanded(
+                      child: TextFormField(
+                        textAlign: TextAlign.left,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Khalid Saeed',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        validator: (dispName) {
+                          if (dispName.isEmpty) {
+                            return "Field can\'t be empty";
+                          }
+                          //NOTE: IMPLEMENT A NAME REGEX
+                          // String p ="";
+                          // RegExp regExp = new RegExp(p);
+                          // if (regExp.hasMatch(email)) {
+                          //   // So, the email is valid
+                          //   return null;
+                          // }
+                          // return 'Email is not valid';
+                        },
+                        onSaved: (value) => dispName = value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+
+              Divider(),
+
+
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: new Text(
+                        "Emai",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.redAccent,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   border: Border(
@@ -466,16 +531,14 @@ class _LoginScreen2State extends State<LoginScreen2>
                   ],
                 ),
               ),
-              Divider(
-
-              ),
+              Divider(),
               new Row(
                 children: <Widget>[
                   new Expanded(
                     child: new Padding(
                       padding: const EdgeInsets.only(left: 40.0),
                       child: new Text(
-                        "PASSWORD",
+                        "Phone Number",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
@@ -488,8 +551,70 @@ class _LoginScreen2State extends State<LoginScreen2>
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 40.0, right: 40.0),
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Colors.redAccent,
+                        width: 0.5,
+                        style: BorderStyle.solid),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+                child: new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    new Expanded(
+                      child: TextFormField(
+                        textAlign: TextAlign.left,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '+966592553553',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        validator: (phone) {
+                          if (phone.isEmpty) {
+                            return "Field can\'t be empty";
+                          }
+                          //NOTE: IMPLEMENT A PHONE NUMBER REGEX
+                          // String p ="";
+                          // RegExp regExp = new RegExp(p);
+                          // if (regExp.hasMatch(email)) {
+                          //   // So, the email is valid
+                          //   return null;
+                          // }
+                          // return 'Email is not valid';
+                        },
+                        onSaved: (value) => phone = value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Divider(),
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: new Text(
+                        "Password",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.redAccent,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   border: Border(
@@ -522,16 +647,14 @@ class _LoginScreen2State extends State<LoginScreen2>
                   ],
                 ),
               ),
-              Divider(
-
-              ),
+              Divider(),
               new Row(
                 children: <Widget>[
                   new Expanded(
                     child: new Padding(
                       padding: const EdgeInsets.only(left: 40.0),
                       child: new Text(
-                        "CONFIRM PASSWORD",
+                        "Confirm Password",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
@@ -544,8 +667,7 @@ class _LoginScreen2State extends State<LoginScreen2>
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 40.0, right: 40.0),
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   border: Border(
@@ -574,9 +696,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                   ],
                 ),
               ),
-              Divider(
-
-              ),
+              Divider(),
               new Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
@@ -598,8 +718,7 @@ class _LoginScreen2State extends State<LoginScreen2>
               ),
               new Container(
                 width: MediaQuery.of(context).size.width,
-                margin:
-                    const EdgeInsets.only(left: 30.0, right: 30.0),
+                margin: const EdgeInsets.only(left: 30.0, right: 30.0),
                 alignment: Alignment.center,
                 child: new Row(
                   children: <Widget>[
@@ -613,17 +732,22 @@ class _LoginScreen2State extends State<LoginScreen2>
                           if (validateAndSave()) {
                             FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
-                                    email: email, password: password).then((onValue) {
+                                    email: email, password: password)
+                                .then((FirebaseUser user) {
+                                  print("user created");
+                                  FirebaseService.newUser(email: email, phone: phone, name: dispName);                                  
+                                  //NOTE: instantiate login credintials (user singleton)/ add new user to firestore 
                               Navigator.of(context)
-                                  .pushReplacementNamed('/SearchPage2');
-                            })
-                                .catchError((e) {
+                                  .pushReplacementNamed('/MainPage');
+                            }).catchError((e) {
                               print('Error: $e');
                               Scaffold.of(context).showSnackBar(
                                 new SnackBar(
-                                  content: new Text('Incorrect Email or Password'),
+                                  content:
+                                      new Text('Incorrect Email or Password'),
                                 ),
                               );
+
                             });
                           }
                         },
@@ -677,6 +801,99 @@ class _LoginScreen2State extends State<LoginScreen2>
     );
   }
 
+  bool valiAndSave() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      print('$email');
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> dialogTriggerRP(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ResetPassword();
+        });
+  }
+
+  Widget ResetPassword() {
+    final key = new GlobalKey<FormState>();
+    return Form(
+      key: key,
+      child: AlertDialog(
+        title: Text('Enter Your Email'),
+        
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+                child: new TextFormField(
+              autofocus: true,
+              decoration: new InputDecoration(
+                  labelText: 'Email', hintText: 'info@rento.com'),
+              validator: (email) {
+                if (email.isEmpty) {
+                  return "Field can\'t be empty";
+                }
+                String p = "[a-zA-Z0-9\+\.\_\%\-\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+";
+                RegExp regExp = new RegExp(p);
+                if (regExp.hasMatch(email)) {
+                  // So, the email is valid
+                  return null;
+                }
+                return 'Email is not valid';
+              },
+              onSaved: (value) => email = value,
+            )),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              FirebaseAuth.instance
+                  .sendPasswordResetEmail(email: email)
+                  .then((user) {
+                print("success TO ResetEmail");
+                Navigator.of(context).pop();
+              }).catchError((e) {
+                print("Email Dose Not Exist");
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> dialogTriggerEP(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return wrongEmailorPass();
+        });
+  }
+
+  Widget wrongEmailorPass() {
+    return AlertDialog(
+      title: Text('Wrong Email or Password'),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
+    );
+  }
+
   PageController _controller =
       new PageController(initialPage: 1, viewportFraction: 1.0);
 
@@ -684,28 +901,6 @@ class _LoginScreen2State extends State<LoginScreen2>
   Widget build(BuildContext context) {
     return Container(
         height: MediaQuery.of(context).size.height,
-//      child: new GestureDetector(
-//        onHorizontalDragStart: _onHorizontalDragStart,
-//        onHorizontalDragUpdate: _onHorizontalDragUpdate,
-//        onHorizontalDragEnd: _onHorizontalDragEnd,
-//        behavior: HitTestBehavior.translucent,
-//        child: Stack(
-//          children: <Widget>[
-//            new FractionalTranslation(
-//              translation: Offset(-1 - (scrollPercent / (1 / numCards)), 0.0),
-//              child: SignupPage(),
-//            ),
-//            new FractionalTranslation(
-//              translation: Offset(0 - (scrollPercent / (1 / numCards)), 0.0),
-//              child: HomePage(),
-//            ),
-//            new FractionalTranslation(
-//              translation: Offset(1 - (scrollPercent / (1 / numCards)), 0.0),
-//              child: LoginPage(),
-//            ),
-//          ],
-//        ),
-//      ),
         child: PageView(
           controller: _controller,
           physics: new AlwaysScrollableScrollPhysics(),

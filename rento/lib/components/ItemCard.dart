@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:rento/UIs/ItemPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -18,7 +16,7 @@ class RequestBlock extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new MyApp1("-KriJ8Sg4lWIoNswKWc4")),
+                builder: (context) => new ItemPage(id)),
           );
           //pushItem(item);
         },

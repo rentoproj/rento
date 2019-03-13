@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
-
 class FirestoreServices {
   //SEARCH QUERY
   static Stream<QuerySnapshot> searchItem(String searchTerm) {
-    String des, name, loc, id;
     return Firestore.instance
         .collection("Item")
         .where("name", isGreaterThanOrEqualTo: searchTerm)
@@ -34,20 +31,10 @@ class FirestoreServices {
   }
 
   //AFTER SEARCH GET ITEM DETAILS
-  static void getItemDetails(String itemID) {
-    String des, name, loc, id;
-    Firestore.instance
-        .collection("Item/$itemID/itemDetails")
-        .getDocuments()
-        .then((QuerySnapshot s) {
-      DocumentSnapshot doc = s.documents[0];
-      print("itemDetails: ${doc.data.keys}");
-      // des = doc.data['description'];
-      // loc = doc.data['sellerID'];
-      // name = doc.data['name '];
-      // id = doc.documentID;
-      // print('${des}, ${name},  ${loc},  ${id}');
-    });
+  static Future<DocumentSnapshot> getItemDetails(String itemID) {
+   return Firestore.instance
+        .collection("Item").document(itemID).get();
+       
   }
 
   //ITEM RATE OF
@@ -72,7 +59,6 @@ class FirestoreServices {
   }
 
    static Future<DocumentSnapshot> getProfileDetails(String email){
-    print("pre db ${email}");
     return Firestore.instance
         .collection("Users")
         .document(email)
