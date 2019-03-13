@@ -119,11 +119,11 @@ class _MyHomePageState extends State<EditProfile> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return ResetPassword();
+          return resetPassword();
         });
   }
 
-  Widget ResetPassword() {
+  Widget resetPassword() {
     return AlertDialog(
         title: Text('An Email Send To Your Email'),
         actions: <Widget>[
