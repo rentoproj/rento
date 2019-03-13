@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rento/components/Avatar.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/components/StarRating.dart';
 import 'package:rento/components/Comment.dart';
@@ -165,7 +166,8 @@ class Profile extends State<ProfilePage> {
     this.intPhone = data['phone'];
     return Column(
       children: <Widget>[
-       _buildUserIdentity(intName, imageURL),
+      //  _buildUserIdentity(intName),
+       Avatar(imageURL, 200.0),
        Divider(),
        _bibleField(),
        Divider(),
