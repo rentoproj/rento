@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 class LoginScreen2 extends StatefulWidget {
   @override
   _LoginScreen2State createState() => new _LoginScreen2State();
@@ -9,8 +8,7 @@ class LoginScreen2 extends StatefulWidget {
 class _LoginScreen2State extends State<LoginScreen2>
     with TickerProviderStateMixin {
   final formKey = new GlobalKey<FormState>();
-  String email;
-  String password;
+  String email, password, dispName, phone;
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -386,7 +384,7 @@ class _LoginScreen2State extends State<LoginScreen2>
   Widget SignupPage() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SignUp'),
+        title: Text('Sign Up'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -406,7 +404,73 @@ class _LoginScreen2State extends State<LoginScreen2>
                     child: new Padding(
                       padding: const EdgeInsets.only(left: 40.0),
                       child: new Text(
-                        "EMAIL",
+                        "Display Name",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.redAccent,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Colors.redAccent,
+                        width: 0.5,
+                        style: BorderStyle.solid),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+                child: new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    new Expanded(
+                      child: TextFormField(
+                        textAlign: TextAlign.left,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Khalid Saeed',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        validator: (dispName) {
+                          if (dispName.isEmpty) {
+                            return "Field can\'t be empty";
+                          }
+                          //NOTE: IMPLEMENT A NAME REGEX
+                          // String p ="";
+                          // RegExp regExp = new RegExp(p);
+                          // if (regExp.hasMatch(email)) {
+                          //   // So, the email is valid
+                          //   return null;
+                          // }
+                          // return 'Email is not valid';
+                        },
+                        onSaved: (value) => dispName = value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+
+              Divider(),
+
+
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: new Text(
+                        "Emai",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
@@ -473,7 +537,70 @@ class _LoginScreen2State extends State<LoginScreen2>
                     child: new Padding(
                       padding: const EdgeInsets.only(left: 40.0),
                       child: new Text(
-                        "PASSWORD",
+                        "Phone Number",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.redAccent,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        color: Colors.redAccent,
+                        width: 0.5,
+                        style: BorderStyle.solid),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 0.0, right: 10.0),
+                child: new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    new Expanded(
+                      child: TextFormField(
+                        textAlign: TextAlign.left,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '+966592553553',
+                          hintStyle: TextStyle(color: Colors.grey),
+                        ),
+                        validator: (phone) {
+                          if (phone.isEmpty) {
+                            return "Field can\'t be empty";
+                          }
+                          //NOTE: IMPLEMENT A PHONE NUMBER REGEX
+                          // String p ="";
+                          // RegExp regExp = new RegExp(p);
+                          // if (regExp.hasMatch(email)) {
+                          //   // So, the email is valid
+                          //   return null;
+                          // }
+                          // return 'Email is not valid';
+                        },
+                        onSaved: (value) => phone = value,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Divider(),
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: new Text(
+                        "Password",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
@@ -526,7 +653,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                     child: new Padding(
                       padding: const EdgeInsets.only(left: 40.0),
                       child: new Text(
-                        "CONFIRM PASSWORD",
+                        "Confirm Password",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.redAccent,
@@ -605,7 +732,10 @@ class _LoginScreen2State extends State<LoginScreen2>
                             FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
                                     email: email, password: password)
-                                .then((onValue) {
+                                .then((FirebaseUser user) {
+                                  print("user created");
+                                  FirebaseService.newUser(email: email, phone: phone, name: dispName);                                  
+                                  //NOTE: instantiate login credintials (user singleton)/ add new user to firestore 
                               Navigator.of(context)
                                   .pushReplacementNamed('/MainPage');
                             }).catchError((e) {
@@ -616,6 +746,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                                       new Text('Incorrect Email or Password'),
                                 ),
                               );
+
                             });
                           }
                         },
