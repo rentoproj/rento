@@ -39,6 +39,14 @@ class FirestoreServices {
        
   }
 
+  //
+  static Future<QuerySnapshot> getItemPhotos(String itemID) {
+   return Firestore.instance
+        .collection("Item").document(itemID).collection("photos").getDocuments();
+        
+        //.then((val){print("IMAGES RETURN BRRRRRRRRRRRRRR${val.documents.length}");}); 
+  }
+
   //ITEM RATE OF
   static void getItemRates(String itemID) {
     Firestore.instance

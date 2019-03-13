@@ -387,7 +387,6 @@ class _LoginScreen2State extends State<LoginScreen2>
       appBar: AppBar(
         title: Text('Sign Up'),
       ),
-      resizeToAvoidBottomPadding: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
