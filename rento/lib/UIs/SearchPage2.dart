@@ -82,8 +82,8 @@ class FlightListingBottomPartState extends State<FlightListingBottomPart> {
           SizedBox(
             height: 10.0,
           ),
-          StreamBuilder(
-            stream: FirestoreServices.searchItem(query),
+          FutureBuilder(
+            future: FirestoreServices.searchItem(query),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
@@ -152,8 +152,8 @@ class FlightListTopPart extends StatelessWidget {
                     ),
                     child: TextField(
                       onChanged: (text) {
+                        query = text;
                         //print(query);
-                        this.refreach.setState((){query = text;}); 
                       },
                       style: dropDownMenuItemStyle,
                       cursorColor: appTheme.primaryColor,
@@ -167,6 +167,8 @@ class FlightListTopPart extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
+                              this.refreach.setState((){}); 
+
                              // FlightListingBottomPartState(query).initState();
                              // print(SearchPage().getQuery());
                               //FlightListingBottomPart().createState();

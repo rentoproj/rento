@@ -34,11 +34,7 @@ class FirebaseService {
     }
   }
 
-  Future<void> AddData(Map e) async{
-    
-      Firestore.instance.collection("Users").add(e);
-      
-  }
+
   static void AupdateData(n,p,b){
     print("entered");
     print("$n $p $b");
@@ -51,15 +47,15 @@ class FirebaseService {
     ).then((onVal){print("complete");});
   }
 
-  static void sendRequest(String email, String eDate, String itemID, String url, String rDate, String sID, String sDate, String state, String name, String location, String desc)
+  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc})
   {
     Firestore.instance.collection('Requests').add({
-      'BuyerID': email,
+      'BuyerID': buyerID,
       'EndDate': eDate,
       'ItemID': itemID,
-      'Photo': url,
+      'Photo': imgUrl,
       'ReqDate': rDate,
-      'SellerID':sID,
+      'SellerID':sellerID,
       'StartDate':sDate,
       'State': state,
       'name': name,
@@ -91,6 +87,19 @@ class FirebaseService {
     static Stream <DocumentSnapshot> updateSideM (){
     return Firestore.instance.collection("Users").document(UserAuth.getEmail()).snapshots();
   }
+
+  static Future <void> addToWishlist({String itemID, String photoURL, String name, String desc, String location, int price, String wisherID})
+  {
+    return Firestore.instance.collection("Wishlist").add({
+      'itemID': itemID,
+      'photoURL': photoURL,
+      'name': name,
+      'desc': desc,
+      'location': location,
+      'price': price,
+      'wisherID': wisherID 
+    });
+  }
 }
 
 class UserAuth{
@@ -118,6 +127,7 @@ class UserAuth{
 
   static String getEmail()
   {
+    print("pre email getter no email ?");
     return user.email;
   }
 }
