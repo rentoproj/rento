@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'services.dart';
 class FirestoreServices {
   //SEARCH QUERY
-  static Stream<QuerySnapshot> searchItem(String searchTerm) {
+  static Future<QuerySnapshot> searchItem(String searchTerm) {
     return Firestore.instance
         .collection("Item")
-        .where("name", isGreaterThanOrEqualTo: searchTerm)
-        .snapshots();
+        .where("name", isGreaterThanOrEqualTo: searchTerm).getDocuments();
     //     .then((QuerySnapshot s) {
     //   int i = 0;
     //   while (i <= s.documents.length) {
@@ -22,10 +22,12 @@ class FirestoreServices {
     // });
   }
 
+  //GET USER'S ITEM LIST
   static Stream<QuerySnapshot> getItemList(){
-    return Firestore.instance.collection('Item').snapshots();
+    return Firestore.instance.collection('Item').where("sellerID", isEqualTo: UserAuth.getEmail()).snapshots();
   }
 
+  //GET REQUESTS OF A USER
   static Stream<QuerySnapshot> getRequests(){
     return Firestore.instance.collection('Requests').snapshots();
   }
@@ -48,6 +50,7 @@ class FirestoreServices {
     });
   }
 
+  //NOT TESTED
   static void getItemRequestedDates(String itemID) {
     Firestore.instance
         .collection("Item/$itemID/Dates")
@@ -58,10 +61,20 @@ class FirestoreServices {
     });
   }
 
-   static Future<DocumentSnapshot> getProfileDetails(String email){
+  //GET CURRENT USER PROFILE
+  static Future<DocumentSnapshot> getProfileDetails(String email){
     return Firestore.instance
         .collection("Users")
         .document(email)
         .get();
   }
+
+  //GET WISHLIST
+  static Future <QuerySnapshot> getWishlist(){
+    return Firestore.instance
+    .collection("Wishlist")
+    .where("wisherID", isEqualTo: UserAuth.getEmail())
+    .getDocuments();
+  }
+
 }

@@ -4,15 +4,15 @@ import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 
-class ItemPage extends StatefulWidget {
+class RentItem extends StatefulWidget {
   final String itemID;
-  ItemPage(this.itemID);
+  RentItem(this.itemID);
   State<StatefulWidget> createState() {
     return MyApp1State(itemID);
   }
 }
 
-class MyApp1State extends State<ItemPage> {
+class MyApp1State extends State<RentItem> {
   final String itemID;
   MyApp1State(this.itemID);
   DateTime _date = new DateTime.now();
@@ -20,6 +20,7 @@ class MyApp1State extends State<ItemPage> {
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
 
+  String _sellerID;
   String _name = "Rent Item";
   String _location = "None";
   String _decription = "None";
@@ -34,7 +35,7 @@ class MyApp1State extends State<ItemPage> {
         initialDate: _date,
         firstDate: _date,
         lastDate: new DateTime(2021));
-    if (picked != null) { 
+    if (picked != null) {
       setState(() {
         _date = picked;
         _fdate = picked;
@@ -95,54 +96,74 @@ class MyApp1State extends State<ItemPage> {
           new Builder(builder: (BuildContext context) {
             bottomNavigationBar:
             return BottomNavigationBar(
-              onTap: (int) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    // return object of type Dialog
-                    return AlertDialog(
-                      title: new Text("Confirm Request"),
-                      content: new Text("Send a request for $_name"),
-                      actions: <Widget>[
-                        new FlatButton(
-                          child: new Text("Confirm"),
-                          onPressed: () {
-                            FirebaseService.sendRequest(
-                              "qwer@rento.com",
-                              _fdate.toString(),
-                              this.itemID,
-                              this._path,
-                              DateTime.now().toString(),
-                              "adc@rento.com",
-                              _date.toString(),
-                              "Waiting for acceptance",
-                              _name,
-                              _location,
-                              _decription
-                            );
-                            Navigator.of(context)
-                                .pushReplacementNamed('/RentalHistory');
-                          },
-                        ),
-                        // usually buttons at the bottom of the dialog
-                        new FlatButton(
-                          child: new Text("Cancel"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+              onTap: (int) {},
               items: [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.add),
+                  icon: IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          // return object of type Dialog
+                          return AlertDialog(
+                            title: new Text("Confirm Request"),
+                            content: new Text("Send a request for $_name"),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text("Confirm"),
+                                onPressed: () {
+                                  FirebaseService.sendRequest(
+                                      buyerID: UserAuth.getEmail(),
+                                      eDate: _fdate.toString(),
+                                      itemID: this.itemID,
+                                      imgUrl: this._path,
+                                      rDate: DateTime.now().toString(),
+                                      sellerID: this._sellerID,
+                                      sDate: _date.toString(),
+                                      state: "Waiting for acceptance",
+                                      name: _name,
+                                      location: _location,
+                                      desc: _decription);
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/RentalHistory');
+                                },
+                              ),
+                              // usually buttons at the bottom of the dialog
+                              new FlatButton(
+                                child: new Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
                   title: Text('Rent Now'),
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.list), title: Text('add to wish list')),
+                  icon: IconButton(
+                    icon: Icon(Icons.list),
+                    onPressed: (){
+                      FirebaseService.addToWishlist(
+                        wisherID: UserAuth.getEmail(),
+                        name: this._name,
+                        itemID: this.itemID,
+                        photoURL: this._path,
+                        location: this._location,
+                        desc: this._decription,
+                        price: this._price
+                      ).then((onValue){
+                        
+                        Navigator.pop(context);
+                      });
+                    },
+                    ),
+                  title: Text('Add to Wishlist'),
+                ),
               ],
             );
           }),
@@ -183,6 +204,7 @@ class MyApp1State extends State<ItemPage> {
     this._path = data['photo'];
     this._price = data['price'];
     this._category = data['category'];
+    this._sellerID = data['sellerID'];
     print(_path);
     print(_name);
 
