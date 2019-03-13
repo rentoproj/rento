@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rento/UIs/ItemPage.dart';
+import 'package:rento/UIs/RentItem.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ItemBlock extends StatelessWidget {
@@ -16,7 +16,7 @@ class ItemBlock extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new ItemPage(this.id)),
+                builder: (context) => new RentItem(this.id)),
           );
           //pushItem(item);
         },

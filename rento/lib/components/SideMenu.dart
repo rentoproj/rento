@@ -42,6 +42,20 @@ class SideMenuState extends State<SideMenu> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.add),
+            title: Text('Offer an Item'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/Offer');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.favorite_border),
+            title: Text('Wishlist'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/Wishlist');
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () {

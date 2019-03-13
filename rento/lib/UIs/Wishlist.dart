@@ -1,47 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Offer.dart';
 import 'package:rento/components/itemBlock1.dart';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/components/SideMenu.dart';
 
-class ItemList extends StatefulWidget {
-  _ItemListPageState createState() => new _ItemListPageState();
+class Wishlist extends StatefulWidget {
+  _WishlistState createState() => new _WishlistState();
 }
 
-class _ItemListPageState extends State<ItemList> {
+class _WishlistState extends State<Wishlist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("Item List"),
+        title: new Text("Wishlist"),
       ),
       drawer: SideMenu(),
       body: Stack(
         children: <Widget>[
-          StreamBuilder(
-            stream: FirestoreServices.getItemList(),
+          FutureBuilder(
+            future: FirestoreServices.getWishlist(),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
                   : _buildItems(context, snapshot.data.documents);
             },
-          ),
-          Positioned(
-            right: 30,
-            bottom: 30,
-            width: 70,
-            height: 70,
-            child: FloatingActionButton(
-              child: Icon(
-                Icons.add,
-                size: 30,
-              ),
-              backgroundColor: Colors.deepOrange,
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => OfferItem()));
-              },
-            ),
           ),
         ],
       ),
@@ -50,7 +32,9 @@ class _ItemListPageState extends State<ItemList> {
 }
 
 Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots) {
-  return ListView.builder(
+  return snapshots.length == 0 
+  ?_noDataFound() 
+  :ListView.builder(
       shrinkWrap: true,
       itemCount: snapshots.length,
       physics: ClampingScrollPhysics(),
@@ -58,14 +42,32 @@ Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots) {
       itemBuilder: (context, i) {
         DocumentSnapshot doc = snapshots[i];
         print("${doc.data.values}");
-        String des = doc.data['description'];
+        String des = doc.data['desc'];
         String loc = doc.data['location'];
         String name = doc.data['name'];
-        String id = doc.documentID;
+        String id = doc.data['itemID'];
         print("$des $loc $name $id");
-        String url = doc.data['photo'];
+        String url = doc.data['photoURL'];
         int price = doc.data['price'];
         bool isAvailable = doc.data['isAvailable'];
         return ItemBlock(name, des, url, loc, price, id);
       });
+}
+
+Widget _noDataFound()
+{
+  return Center(
+      child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      
+      children:<Widget>[
+        Icon(Icons.mood_bad,
+         size: 40,
+         color: Colors.black54,),
+        Text("You don't have any items in your wishlist\nTry adding some!",
+         textAlign: TextAlign.center,
+         style: TextStyle(color: Colors.black54),),
+      ]
+    ),
+  );
 }
