@@ -5,7 +5,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 
 class ImageSlider extends StatefulWidget {
   final double size;
-  Future<List<String>> images;
+  List<Image> images;
   ImageSlider({this.images, this.size});
 
   _ImageSliderState createState() => _ImageSliderState();
@@ -27,7 +27,8 @@ class _ImageSliderState extends State<ImageSlider> {
       child: new Carousel(
         boxFit: BoxFit.cover,
         images: [
-            image.network();
+            Image.network(""),
+            
         ],
       ),
           );
