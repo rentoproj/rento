@@ -17,7 +17,7 @@ class _ImageSliderState extends State<ImageSlider> {
     return FutureBuilder(
       
       future:widget.images,
-      builder: _imageSliderBuilder(context, widget.images),
+     // builder: _imageSliderBuilder(context, widget.images),
     );
   }
 
@@ -27,7 +27,7 @@ class _ImageSliderState extends State<ImageSlider> {
       child: new Carousel(
         boxFit: BoxFit.cover,
         images: [
-            image.network();
+            //image.network();
         ],
       ),
           );

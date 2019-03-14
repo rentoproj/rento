@@ -29,9 +29,16 @@ class SideMenuState extends State<SideMenu> {
           ),
           ListTile(
             leading: Icon(Icons.history),
-            title: Text('Rental Histroy'),
+            title: Text('Rental Histroy(seller)'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/RentalHistory');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.history),
+            title: Text('Rental Histroy(buyer)'),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/RHBuyer');
             },
           ),
           ListTile(

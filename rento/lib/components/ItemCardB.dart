@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rento/UIs/RentalItemS.dart';
+import 'package:rento/UIs/RentalItemB.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 
-class RequestBlock extends StatelessWidget {
+class RequestBlockB extends StatelessWidget {
   String name, desc, id, imgURL, loc, state;
 
-  RequestBlock(
+  RequestBlockB(
       this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
 //l
   @override
@@ -17,7 +17,7 @@ class RequestBlock extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new RentalItem(id)),
+                builder: (context) => new RentalItemB(id)),
           );
           //pushItem(item);
         },
