@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:rento/api/services.dart';
 //pages
 import 'UIs/LoginScreen2.dart';
 import 'UIs/RentalHistory.dart';
@@ -10,7 +12,6 @@ import 'UIs/MainPage.dart';
 import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
-import 'api/services.dart';
 import 'UIs/Wishlist.dart';
 import'UIs/RentItem.dart';
 import 'components/ItemCard.dart';
@@ -43,14 +44,12 @@ class MyAppState extends State<MyApp> {
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/RHBuyer' : (BuildContext context)=> new RHBuyer(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
-        '/EditProfile': (BuildContext context) => new EditProfile("adc@rento.com"),
+        '/EditProfile': (BuildContext context) => new EditProfile(),
         '/Offer': (BuildContext context) => new OfferItem(),
         '/SearchPage2': (BuildContext context) => new SearchPage2(),
         '/MainPage': (BuildContext context) => new MainPage(),
         '/ItemList' : (BuildContext context) => new ItemList(),
         '/Wishlist' : (BuildContext context) => new Wishlist(),
-
-
       },
     );
   }

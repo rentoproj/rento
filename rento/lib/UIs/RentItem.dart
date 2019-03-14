@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/components/ImageSlider.dart';
 
 class RentItem extends StatefulWidget {
   final String itemID;
@@ -211,7 +212,7 @@ class RentItemState extends State<RentItem> {
 
     return ListView(
       children: <Widget>[
-        itemImage(_path),
+        ImageSlider(widget.itemID ,200.0),
         new Center(
           widthFactor: MediaQuery.of(context).size.width / 2,
           child: new ListTile(
