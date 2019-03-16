@@ -71,7 +71,7 @@ class RequestBlock extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   letterSpacing: 0.5,
-                                  fontSize: 20.0,
+                                  fontSize: 15.0,
                                 ))]),
                             Row(children: <Widget>[
                             new Icon(Icons.event_available),
@@ -79,7 +79,7 @@ class RequestBlock extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   letterSpacing: 0.5,
-                                  fontSize: 20.0,
+                                  fontSize: 15.0,
                                 ))]),
                           ],
                         ),

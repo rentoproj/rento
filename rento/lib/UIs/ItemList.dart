@@ -17,6 +17,7 @@ class _ItemListPageState extends State<ItemList> {
       ),
       drawer: SideMenu(),
       body: Stack(
+        fit:StackFit.expand,
         children: <Widget>[
           StreamBuilder(
             stream: FirestoreServices.getItemList(),
