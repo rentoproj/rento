@@ -77,7 +77,7 @@ class RentItemState extends State<RentItem> {
     final sizedBox = new Container(
       margin: new EdgeInsets.only(left: 10.0, right: 10.0),
       child: new SizedBox(
-        height: MediaQuery.of(context).size.height - 136,
+        height: MediaQuery.of(context).size.height - 166,
         child: description,
       ),
     );

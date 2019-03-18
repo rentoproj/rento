@@ -242,7 +242,6 @@ class _OfferItemPageState extends State<OfferItem> {
                   'price': this.itemPrice,
                   'location': this.itemLocation,
                   'photo': onValue,
-                  //'state': "request",
                 }).then((result) {
                   dialogTrigger(context);
                 }).catchError((e) {

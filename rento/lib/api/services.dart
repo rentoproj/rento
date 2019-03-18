@@ -56,6 +56,9 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+  static void DeleteRequest(ReqID){
+    Firestore.instance.collection('Requests').document(ReqID).delete();
+  }
 
   static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc})
   {

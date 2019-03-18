@@ -34,6 +34,7 @@ class FirestoreServices {
   static Stream<QuerySnapshot> getRequestsB(){
     return Firestore.instance.collection('Requests').where('BuyerID', isEqualTo:UserAuth.getEmail()).snapshots();
   }
+  
 
   //AFTER SEARCH GET ITEM DETAILS
   static Future<DocumentSnapshot> getItemDetails(String itemID) {
