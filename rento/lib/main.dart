@@ -13,7 +13,7 @@ import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
 import 'UIs/Wishlist.dart';
-import'UIs/RentItem.dart';
+import 'UIs/RentItem.dart';
 import 'components/ItemCard.dart';
 import 'UIs/RentalItemS.dart';
 import 'UIs/RHBuyer.dart';

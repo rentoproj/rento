@@ -110,6 +110,11 @@ class FirebaseService {
       'wisherID': wisherID 
     });
   }
+
+  static Future <void> deleteWishListItem(id)
+  {
+    return Firestore.instance.collection('Wishlist').document(id).delete();
+  }
 }
 
 class UserAuth{
@@ -137,7 +142,6 @@ class UserAuth{
 
   static String getEmail()
   {
-    print("pre email getter no email ?");
     return user.email;
   }
 }

@@ -104,12 +104,15 @@ class _MyHomePageState extends State<EditProfile> {
     this.intBio = data['Bio'];
     this.intName = data['name'];
     this.intPhone = data['phone'];
+    name = new Field(new Icon(Icons.person), "Name", intName);
+    phone = new Field(new Icon(Icons.phone_android), "Phone", intPhone);
+    Bio = new Field(new Icon(Icons.info), "Bio", intBio);
     print(email);
     return Column(
       children: <Widget>[
-        name = new Field(new Icon(Icons.person), "Name", intName),
-        phone = new Field(new Icon(Icons.phone_android), "Phone", intPhone),
-        Bio = new Field(new Icon(Icons.info), "Bio", intBio),
+        name,
+        phone,
+        Bio
       ],
     );
   }

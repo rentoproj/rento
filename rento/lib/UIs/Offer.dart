@@ -233,6 +233,7 @@ class _OfferItemPageState extends State<OfferItem> {
             child: Text('Offer Item'),
             textColor: Colors.blue,
             onPressed: () {
+              dialogTrigger(context);
               uploadImage().then((onValue) {
                 print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
                 // Navigator.of(context).pop();
@@ -242,8 +243,8 @@ class _OfferItemPageState extends State<OfferItem> {
                   'price': this.itemPrice,
                   'location': this.itemLocation,
                   'photo': onValue,
+                  'sellerID' :UserAuth.getEmail(),
                 }).then((result) {
-                  dialogTrigger(context);
                 }).catchError((e) {
                   print(e);
                 });
