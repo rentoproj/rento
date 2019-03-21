@@ -46,6 +46,17 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+  static void ItemupdateData(ID,n,int p,b){
+    print("entered");
+    print("$n $p $b");
+    Firestore.instance.collection('Item').document(ID).updateData(
+      {
+        'name':n,
+        'price':p,
+        'description':b
+      }
+    ).then((onVal){print("complete");});
+  }
   static void UpdateRequestState(ReqID,newstate){
     print("entered");
     
@@ -59,7 +70,12 @@ class FirebaseService {
   static void DeleteRequest(ReqID){
     Firestore.instance.collection('Requests').document(ReqID).delete();
   }
-
+ static void DeleteItem(ItemID){
+    Firestore.instance.collection('Item').document(ItemID).delete();
+  /*  Firestore.instance.collection("Requests")
+    .where("ItemID", isEqualTo: ItemID)
+    .delete();*/
+  }
   static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc})
   {
     Firestore.instance.collection('Requests').add({
