@@ -74,6 +74,7 @@ class RequestBlock extends StatelessWidget {
                                   fontSize: 20.0,
                                 ))
                                 ]),
+                            GoogleMaps(10, 10, ""),
                             Row(children: <Widget>[
                             new Icon(Icons.event_available),
                             new Text(this.state,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rento/UIs/RentalItemB.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:rento/components/GoogleMap.dart';
 
 
 class RequestBlockB extends StatelessWidget {
@@ -41,7 +42,6 @@ class RequestBlockB extends StatelessWidget {
                   new Text("   "),
                   new Flexible(
                       child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       // crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -73,6 +73,7 @@ class RequestBlockB extends StatelessWidget {
                                   letterSpacing: 0.5,
                                   fontSize: 20.0,
                                 ))]),
+                            GoogleMaps(10, 10, ""),
                             Row(children: <Widget>[
                             new Icon(Icons.event_available),
                             new Text(this.state,

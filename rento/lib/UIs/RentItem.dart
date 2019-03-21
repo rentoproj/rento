@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/ImageSlider.dart';
 
 class RentItem extends StatefulWidget {
@@ -296,6 +297,7 @@ class RentItemState extends State<RentItem> {
           ),
           leading: new Icon(Icons.star),
         ),
+        GoogleMaps(50,50,""),
       ],
     );
   }
