@@ -13,6 +13,7 @@ import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
 import 'UIs/Wishlist.dart';
+import 'package:rento/components/GoogleMap.dart';
 // 
 void main() async{
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
@@ -45,6 +46,8 @@ class MyAppState extends State<MyApp> {
         '/MainPage': (BuildContext context) => new MainPage(),
         '/ItemList' : (BuildContext context) => new ItemList(),
         '/Wishlist' : (BuildContext context) => new Wishlist(),
+        '/GoogleMap' : (BuildContext context) => new GoogleMaps(100,100,"ID"),
+        //'/GoogleSet' : (BuildContext context) => new MapsDemo(),
       },
     );
   }
