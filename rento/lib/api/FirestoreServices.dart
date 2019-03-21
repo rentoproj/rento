@@ -29,7 +29,10 @@ class FirestoreServices {
 
   //GET REQUESTS OF A USER
   static Stream<QuerySnapshot> getRequests(){
-    return Firestore.instance.collection('Requests').snapshots();
+    return Firestore.instance.collection('Requests').where('SellerID', isEqualTo:UserAuth.getEmail()).snapshots();
+  }
+  static Stream<QuerySnapshot> getRequestsB(){
+    return Firestore.instance.collection('Requests').where('BuyerID', isEqualTo:UserAuth.getEmail()).snapshots();
   }
 
   //AFTER SEARCH GET ITEM DETAILS
@@ -37,6 +40,12 @@ class FirestoreServices {
    return Firestore.instance
         .collection("Item").document(itemID).get();
        
+  }
+  static Future <DocumentSnapshot> getRequestDetails(String RequestID){
+    print(" the request id is $RequestID");
+    return Firestore.instance
+    .collection("Requests").document(RequestID).get();
+    
   }
 
   //
@@ -84,5 +93,5 @@ class FirestoreServices {
     .where("wisherID", isEqualTo: UserAuth.getEmail())
     .getDocuments();
   }
-
+ 
 }

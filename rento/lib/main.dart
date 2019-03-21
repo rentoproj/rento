@@ -14,6 +14,10 @@ import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
 import 'UIs/Wishlist.dart';
 import 'package:rento/components/GoogleMap.dart';
+import'UIs/RentItem.dart';
+import 'components/ItemCard.dart';
+import 'UIs/RentalItemS.dart';
+import 'UIs/RHBuyer.dart';
 // 
 void main() async{
   //MapView.setApiKey('AIzaSyBTM7tUit-IU6DS0of0rG89rLcaFX1aiFU');
@@ -39,6 +43,7 @@ class MyAppState extends State<MyApp> {
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
 //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
+        '/RHBuyer' : (BuildContext context)=> new RHBuyer(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
         '/EditProfile': (BuildContext context) => new EditProfile(),
         '/Offer': (BuildContext context) => new OfferItem(),

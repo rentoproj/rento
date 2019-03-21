@@ -46,6 +46,16 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+  static void UpdateRequestState(ReqID,newstate){
+    print("entered");
+    
+    Firestore.instance.collection('Requests').document(ReqID).updateData(
+      {
+        'State':newstate,
+        
+      }
+    ).then((onVal){print("complete");});
+  }
 
   static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc})
   {

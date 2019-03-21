@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rento/components/ItemCard.dart';
+import 'package:rento/components/ItemCardB.dart';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/components/SideMenu.dart';
 
-class RentalHistory extends StatefulWidget {
-  _ItemListPageState createState() => new _ItemListPageState();
+class RHBuyer extends StatefulWidget {
+  _ItemListPageStateB createState() => new _ItemListPageStateB();
 }
 
-class _ItemListPageState extends State<RentalHistory> {
+class _ItemListPageStateB extends State<RHBuyer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("Rental History"),
+        title: new Text("Rental History(Buyer)"),
         
       ),drawer: SideMenu(),
       body:
         Stack(
           children: <Widget>[
             StreamBuilder(
-            stream: FirestoreServices.getRequests(),
+            stream: FirestoreServices.getRequestsB(),
                   builder: (context, snapshot) {
                     return !snapshot.hasData
                         ? Center(child: CircularProgressIndicator())
@@ -51,7 +51,7 @@ Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
         String url = doc.data['Photo'];
         String state =doc.data['State'];
         print('iam eree!!');
-      return RequestBlock(name, des, url, loc, state, id);
+      return RequestBlockB(name, des, url, loc, state, id);
     }
   );
 }

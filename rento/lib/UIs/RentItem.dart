@@ -9,13 +9,13 @@ class RentItem extends StatefulWidget {
   final String itemID;
   RentItem(this.itemID);
   State<StatefulWidget> createState() {
-    return MyApp1State(itemID);
+    return RentItemState(itemID);
   }
 }
 
-class MyApp1State extends State<RentItem> {
+class RentItemState extends State<RentItem> {
   final String itemID;
-  MyApp1State(this.itemID);
+  RentItemState(this.itemID);
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
   DateTime _fdate = new DateTime.now();
@@ -197,6 +197,7 @@ class MyApp1State extends State<RentItem> {
       });
     }
   }
+ 
 
   Widget _buildDetails(BuildContext context, dynamic data) {
     this._name = data['name'];
