@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rento/UIs/RentalItemS.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'GoogleMap.dart';
 
 class RequestBlock extends StatelessWidget {
   String name, desc, id, imgURL, loc, state;
-
+  GoogleMaps map;
   RequestBlock(
       this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
 //l
@@ -72,7 +72,8 @@ class RequestBlock extends StatelessWidget {
                                 style: TextStyle(
                                   letterSpacing: 0.5,
                                   fontSize: 20.0,
-                                ))]),
+                                ))
+                                ]),
                             Row(children: <Widget>[
                             new Icon(Icons.event_available),
                             new Text(this.state,
