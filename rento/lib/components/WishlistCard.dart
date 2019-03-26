@@ -6,9 +6,10 @@ import 'package:rento/api/services.dart';
 class WishlistCard extends StatelessWidget {
   String name, desc, id, imgURL, loc, wishID;
   int price;
+  Function onPress;
 
   WishlistCard(this.name, this.desc, this.imgURL, this.loc, this.price, this.id,
-      this.wishID);
+      this.wishID, {onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +114,9 @@ class WishlistCard extends StatelessWidget {
                 child: Text('Delete'),
                 textColor: Colors.blue,
                 onPressed: () {
-                  FirebaseService.deleteWishListItem(this.id);
+                  FirebaseService.deleteWishListItem(this.wishID);
                   Navigator.pop(context);
+                  onPress();
                 },
               )
             ],

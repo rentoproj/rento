@@ -86,11 +86,11 @@ class FirestoreServices {
   }
 
   //GET WISHLIST
-  static Future <QuerySnapshot> getWishlist(){
+  static Stream <QuerySnapshot> getWishlist(){
     return Firestore.instance
     .collection("Wishlist")
     .where("wisherID", isEqualTo: UserAuth.getEmail())
-    .getDocuments();
+    .snapshots();
   }
  
 }

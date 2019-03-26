@@ -113,6 +113,7 @@ class FirebaseService {
 
   static Future <void> deleteWishListItem(id)
   {
+    print("delete entered");
     return Firestore.instance.collection('Wishlist').document(id).delete();
   }
 }
