@@ -825,12 +825,10 @@ class _LoginScreen2State extends State<LoginScreen2>
       key: key,
       child: AlertDialog(
         title: Text('Enter Your Email'),
-        
         content: new Row(
           children: <Widget>[
             new Expanded(
                 child: new TextFormField(
-              autofocus: true,
               decoration: new InputDecoration(
                   labelText: 'Email', hintText: 'info@rento.com'),
               validator: (email) {
