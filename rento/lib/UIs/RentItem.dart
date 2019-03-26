@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
-import 'package:rento/components/GoogleMap.dart';
-import 'package:rento/components/ImageSlider.dart';
 
 class RentItem extends StatefulWidget {
   final String itemID;
@@ -79,7 +77,7 @@ class RentItemState extends State<RentItem> {
     final sizedBox = new Container(
       margin: new EdgeInsets.only(left: 10.0, right: 10.0),
       child: new SizedBox(
-        height: MediaQuery.of(context).size.height - 136,
+        height: MediaQuery.of(context).size.height - 166,
         child: description,
       ),
     );
@@ -213,7 +211,7 @@ class RentItemState extends State<RentItem> {
 
     return ListView(
       children: <Widget>[
-        ImageSlider(widget.itemID ,200.0),
+        itemImage(_path),
         new Center(
           widthFactor: MediaQuery.of(context).size.width / 2,
           child: new ListTile(
@@ -297,7 +295,6 @@ class RentItemState extends State<RentItem> {
           ),
           leading: new Icon(Icons.star),
         ),
-        GoogleMaps(50,50,""),
       ],
     );
   }
@@ -319,4 +316,3 @@ class itemImage extends StatelessWidget {
   }
 }
 
-/// FirebaseTodos.getTodo("-KriJ8Sg4lWIoNswKWc4").then(_updateTodo);

@@ -20,8 +20,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
- 
-
+  multi_image_picker: ^4.0.0
   cloud_firestore:
   firebase_core: ^0.2.5+1
   firebase_auth: 
@@ -32,9 +31,10 @@ dependencies:
   cached_network_image:
   rxdart:
   carousel_pro:
-  google_maps_flutter: 
+  google_maps_flutter: ^0.4.0
   geo_location_finder: ^1.0.7
-
+  
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2

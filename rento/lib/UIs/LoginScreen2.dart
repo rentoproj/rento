@@ -340,13 +340,10 @@ class _LoginScreen2State extends State<LoginScreen2>
                               print("fail TO LOGIN");
                               print('Error: $e');
                               dialogTriggerEP(context);
-                              final snackBar = 
-                                new SnackBar(
-                                  content:
-                                      new Text('Incorrect Email or Password'),
-                                );
-                              setState(){Scaffold.of(context).showSnackBar(snackBar);
-                              }
+                              final snackBar = SnackBar(
+                                content: Text('Wrong Email or Passwor'),
+                              );
+                              Scaffold.of(context).showSnackBar(snackBar);
                             });
                           }
                         },
@@ -387,6 +384,7 @@ class _LoginScreen2State extends State<LoginScreen2>
       appBar: AppBar(
         title: Text('Sign Up'),
       ),
+      resizeToAvoidBottomPadding: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -812,14 +810,14 @@ class _LoginScreen2State extends State<LoginScreen2>
   }
 
   Future<void> dialogTriggerRP(BuildContext context) async {
-    return showDialog(
+    return showDialog<String>(
         context: context,
         builder: (BuildContext context) {
-          return ResetPassword();
+          return resetPassword();
         });
   }
 
-  Widget ResetPassword() {
+  Widget resetPassword() {
     final key = new GlobalKey<FormState>();
     return Form(
       key: key,
