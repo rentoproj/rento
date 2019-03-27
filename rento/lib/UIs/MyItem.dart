@@ -3,25 +3,25 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
-import 'package:rento/components/ImageSlider.dart';
+import 'package:rento/UIs/EditItem.dart';
 
-class RentItem extends StatefulWidget {
+class MyItem extends StatefulWidget {
   final String itemID;
-  RentItem(this.itemID);
+  MyItem(this.itemID);
   State<StatefulWidget> createState() {
-    return RentItemState(itemID);
+    return MyItemState(itemID);
   }
 }
 
-class RentItemState extends State<RentItem> {
+class MyItemState extends State<MyItem> {
   final String itemID;
-  RentItemState(this.itemID);
+  MyItemState(this.itemID);
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
 
-  String _sellerID;
+  
   String _name = "Rent Item";
   String _location = "None";
   String _decription = "None";
@@ -78,10 +78,7 @@ class RentItemState extends State<RentItem> {
     final sizedBox = new Container(
       margin: new EdgeInsets.only(left: 10.0, right: 10.0),
       child: new SizedBox(
-
-
         height: MediaQuery.of(context).size.height - 166,
-
         child: description,
       ),
     );
@@ -104,69 +101,26 @@ class RentItemState extends State<RentItem> {
               items: [
                 BottomNavigationBarItem(
                   icon: IconButton(
-                    icon: Icon(Icons.add),
+                    icon: Icon(Icons.edit),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          // return object of type Dialog
-                          return AlertDialog(
-                            title: new Text("Confirm Request"),
-                            content: new Text("Send a request for $_name"),
-                            actions: <Widget>[
-                              new FlatButton(
-                                child: new Text("Confirm"),
-                                onPressed: () {
-                                  FirebaseService.sendRequest(
-                                      buyerID: UserAuth.getEmail(),
-                                      eDate: _fdate.toString(),
-                                      itemID: this.itemID,
-                                      imgUrl: this._path,
-                                      rDate: DateTime.now().toString(),
-                                      sellerID: this._sellerID,
-                                      sDate: _date.toString(),
-                                      state: "Waiting for acceptance",
-                                      name: _name,
-                                      location: _location,
-                                      desc: _decription);
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/RentalHistory');
-                                },
-                              ),
-                              // usually buttons at the bottom of the dialog
-                              new FlatButton(
-                                child: new Text("Cancel"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+             Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => new EditItem(this.itemID)),
+          );
                     },
                   ),
-                  title: Text('Rent Now'),
+                  title: Text('Edit'),
                 ),
                 BottomNavigationBarItem(
                   icon: IconButton(
-                    icon: Icon(Icons.list),
+                    icon: Icon(Icons.delete),
                     onPressed: (){
-                      FirebaseService.addToWishlist(
-                        wisherID: UserAuth.getEmail(),
-                        name: this._name,
-                        itemID: this.itemID,
-                        photoURL: this._path,
-                        location: this._location,
-                        desc: this._decription,
-                        price: this._price
-                      ).then((onValue){
-                        
-                        Navigator.pop(context);
-                      });
+                      FirebaseService.DeleteItem(itemID);
+                      Navigator.of(context).pop();
                     },
                     ),
-                  title: Text('Add to Wishlist'),
+                  title: Text('Delete'),
                 ),
               ],
             );
@@ -209,13 +163,13 @@ class RentItemState extends State<RentItem> {
     this._path = data['photo'];
     this._price = data['price'];
     this._category = data['category'];
-    this._sellerID = data['sellerID'];
+    
     print(_path);
     print(_name);
 
     return ListView(
       children: <Widget>[
-        ImageSlider(widget.itemID ,200.0),
+        itemImage(_path),
         new Center(
           widthFactor: MediaQuery.of(context).size.width / 2,
           child: new ListTile(
