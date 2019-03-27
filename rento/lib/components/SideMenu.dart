@@ -94,10 +94,18 @@ Widget _buildDetails (BuildContext context, DocumentSnapshot snap){
                 Navigator.of(context).pushNamed('/ProfilePage');
               },
             ):
-            new CircleAvatar(
+            new FlatButton(
+              
+           child: new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
-              backgroundImage: new NetworkImage(photo))
+              backgroundImage: new NetworkImage(photo)
+              ),
+              onPressed: (){
+                Navigator.of(context).pushNamed('/ProfilePage');
+              },
+              
+            )
           );
   }
 }
