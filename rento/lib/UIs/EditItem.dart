@@ -104,7 +104,7 @@ class _EditItemState extends State<EditItem> {
       children: <Widget>[
         name = new Field(new Icon(Icons.label), "Name", intName),
         Price = new Field(new Icon(Icons.monetization_on), "Price", "$tPrice"),
-        Description= new Field(new Icon(Icons.info), "Bio", intDescription),
+        Description= new Field(new Icon(Icons.info), "Description", intDescription),
       ],
     );
   }
