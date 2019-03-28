@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rento/UIs/RentalItemS.dart';
+import 'package:rento/UIs/RentItem.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'GoogleMap.dart';
+import 'package:rento/api/services.dart';
 
-class RequestBlock extends StatelessWidget {
-  String name, desc, id, imgURL, loc, state;
-  GoogleMaps map;
-  RequestBlock(
-      this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
-//l
+class WishlistCard extends StatelessWidget {
+  String name, desc, id, imgURL, loc, wishID;
+  int price;
+  Function onPress;
+
+  WishlistCard(this.name, this.desc, this.imgURL, this.loc, this.price, this.id,
+      this.wishID, {onPress});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -16,8 +18,7 @@ class RequestBlock extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => new RentalItem(id)),
+            MaterialPageRoute(builder: (context) => new RentItem(this.id)),
           );
           //pushItem(item);
         },
@@ -63,34 +64,71 @@ class RequestBlock extends StatelessWidget {
                           )),
                       new Text(" "),
                       new Container(
-                        child: Wrap(
+                        child: Row(
                           children: <Widget>[
-                            Row(children:<Widget>[
                             new Icon(Icons.location_on),
                             new Text(this.loc,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   letterSpacing: 0.5,
-                                  fontSize: 15.0,
-                                ))]),
-                            Row(children: <Widget>[
-                            new Icon(Icons.event_available),
-                            new Text(this.state,
-                                overflow: TextOverflow.ellipsis,
+                                  fontSize: 20.0,
+                                )),
+                            new Icon(Icons.monetization_on),
+                            new Text(this.price.toString() + "SR/day",
                                 style: TextStyle(
                                   letterSpacing: 0.5,
-                                  fontSize: 15.0,
-                                ))]),
+                                  fontSize: 20.0,
+                                ))
                           ],
                         ),
                       )
                     ],
-                  ))
+                  )),
+                  new IconButton(
+                    icon: Icon(Icons.delete),
+                    color: Colors.redAccent,
+                    onPressed: () {
+                      _showDialog(context);
+                    },
+                    padding: EdgeInsets.all(0),
+                    alignment: Alignment.centerRight,
+                  ),
                 ],
               ),
             ),
           ),
         ));
+  }
+
+  Future<bool> _showDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:
+                Text('Delete ${this.name}?', style: TextStyle(fontSize: 15.0)),
+            content: Text('Delete ${this.name} from your wishlist?'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Delete'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  FirebaseService.deleteWishListItem(this.wishID);
+                  Navigator.pop(context);
+                  onPress();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  completeSnackbar(BuildContext context) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text("Item Deleted Successfully"),
+      duration: Duration(seconds: 3),
+    ));
   }
 }
 
