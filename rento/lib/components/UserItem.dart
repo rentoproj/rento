@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:rento/UIs/RentalItemB.dart';
+import 'package:rento/UIs/MyItem.dart';
+import 'package:rento/UIs/RentItem.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+class UserItem extends StatelessWidget {
+  String name, desc, id, imgURL, loc;
+  int price;
 
-class RequestBlockB extends StatelessWidget {
-  String name, desc, id, imgURL, loc, state;
+  UserItem(this.name, this.desc, this.imgURL, this.loc, this.price, this.id);
 
-  RequestBlockB(
-      this.name, this.desc, this.imgURL, this.loc, this.state, this.id);
-//l
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -17,7 +17,7 @@ class RequestBlockB extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new RentalItemB(id)),
+                builder: (context) => new MyItem(this.id)),
           );
           //pushItem(item);
         },
@@ -63,24 +63,21 @@ class RequestBlockB extends StatelessWidget {
                           )),
                       new Text(" "),
                       new Container(
-                        child: Wrap(
+                        child: Row(
                           children: <Widget>[
-                            Row(children:<Widget>[
                             new Icon(Icons.location_on),
                             new Text(this.loc,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   letterSpacing: 0.5,
-                                  fontSize: 15.0,
-                                ))]),
-                            Row(children: <Widget>[
-                            new Icon(Icons.event_available),
-                            new Text(this.state,
-                                overflow: TextOverflow.ellipsis,
+                                  fontSize: 20.0,
+                                )),
+                            new Icon(Icons.monetization_on),
+                            new Text(this.price.toString() + "SR/day",
                                 style: TextStyle(
                                   letterSpacing: 0.5,
-                                  fontSize: 15.0,
-                                ))]),
+                                  fontSize: 20.0,
+                                ))
                           ],
                         ),
                       )

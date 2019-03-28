@@ -94,6 +94,7 @@ Widget _buildDetails (BuildContext context, DocumentSnapshot snap){
               onPressed: (){
                 Navigator.of(context).pushNamed('/ProfilePage');
               },
+
             )
             :GestureDetector(
               onTap: (){

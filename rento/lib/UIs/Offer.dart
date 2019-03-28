@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/api/services.dart';
 
+
 class OfferItem extends StatefulWidget {
   _OfferItemPageState createState() => new _OfferItemPageState();
 }
@@ -238,7 +239,7 @@ class _OfferItemPageState extends State<OfferItem> {
             onPressed: () {
               dialogTrigger(context);
               uploadImage().then((onValue) {
-                print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
+                print("trieeed to AAAAAAAAAAAAd");
                 // Navigator.of(context).pop();
                 FirebaseService.createOffer({
                   'name': this.itemName,
@@ -246,10 +247,11 @@ class _OfferItemPageState extends State<OfferItem> {
                   'price': this.itemPrice,
                   'location': this.itemLocation,
                   'photo': onValue,
-                  'sellerID' :UserAuth.getEmail(),
+                  'sellerID': UserAuth.getEmail()
                 }).then((result) {
+                  print('d5lt wlllaah');
                 }).catchError((e) {
-                  print(e);
+                  print(e+'error');
                 });
               });
             },

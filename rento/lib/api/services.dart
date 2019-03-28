@@ -46,6 +46,17 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+  static void ItemupdateData(ID,n,int p,b){
+    print("entered");
+    print("$n $p $b");
+    Firestore.instance.collection('Item').document(ID).updateData(
+      {
+        'name':n,
+        'price':p,
+        'description':b
+      }
+    ).then((onVal){print("complete");});
+  }
   static void UpdateRequestState(ReqID,newstate){
     print("entered");
     
@@ -56,8 +67,16 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
-
-  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc})
+  static void DeleteRequest(ReqID){
+    Firestore.instance.collection('Requests').document(ReqID).delete();
+  }
+ static void DeleteItem(ItemID){
+    Firestore.instance.collection('Item').document(ItemID).delete();
+  /*  Firestore.instance.collection("Requests")
+    .where("ItemID", isEqualTo: ItemID)
+    .delete();*/
+  }
+  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc,int code})
   {
     Firestore.instance.collection('Requests').add({
       'BuyerID': buyerID,
@@ -70,7 +89,8 @@ class FirebaseService {
       'State': state,
       'name': name,
       'location' : location,
-      'desc' : desc
+      'desc' : desc,
+      'code' :code
     });
 
   }
@@ -91,9 +111,26 @@ class FirebaseService {
 
   static Future <void> createOffer(data)
   {
-
-    return Firestore.instance.collection("Item").add(data);
+     var id;
+    print('hadaa al id '+id+data['photo']);
+     
+    Firestore.instance.collection("Item").add(data).then((onValue){
+     id= onValue.documentID;
+     print('hadaa al id '+id);
+      Firestore.instance.collection("Item").document(id).collection('photos').add({'photoURL':data['photo']});
+    });
+    
   }
+ /* static Future <void> createOffer2(id)
+  {
+      
+    Firestore.instance.collection("Item").add(data).then((onValue){
+     id= onValue.documentID;
+     print(id);
+      Firestore.instance.collection("Item").document(id).collection('photos').add(data['photo']);
+    });
+    
+  }*/
 
     static Stream <DocumentSnapshot> updateSideM (){
     return Firestore.instance.collection("Users").document(UserAuth.getEmail()).snapshots();
