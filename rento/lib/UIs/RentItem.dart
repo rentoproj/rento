@@ -4,7 +4,6 @@ import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/components/ImageSlider.dart';
-import 'package:rento/components/ProfileCard.dart';
 
 class RentItem extends StatefulWidget {
   final String itemID;
@@ -79,7 +78,7 @@ class RentItemState extends State<RentItem> {
     final sizedBox = new Container(
       margin: new EdgeInsets.only(left: 10.0, right: 10.0),
       child: new SizedBox(
-        height: MediaQuery.of(context).size.height - 160,
+        height: MediaQuery.of(context).size.height - 136,
         child: description,
       ),
     );
@@ -210,7 +209,6 @@ class RentItemState extends State<RentItem> {
     this._sellerID = data['sellerID'];
     print(_path);
     print(_name);
-    print(_sellerID + " THIS IS THE USER ID");
 
     return ListView(
       children: <Widget>[
@@ -224,7 +222,6 @@ class RentItemState extends State<RentItem> {
             ),
           ),
         ),
-        new ProfileCard(_sellerID),
         new ListTile(
           title: new Text(
             "Description",

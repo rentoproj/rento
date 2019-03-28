@@ -41,15 +41,14 @@ class FirestoreServices {
         .collection("Item").document(itemID).get();
        
   }
-
-  //REQUEST DETAILS
   static Future <DocumentSnapshot> getRequestDetails(String RequestID){
     print(" the request id is $RequestID");
     return Firestore.instance
     .collection("Requests").document(RequestID).get();
+    
   }
 
-  //ITEM LIST OF IMAGES
+  //
   static Future<QuerySnapshot> getItemPhotos(String itemID) {
    return Firestore.instance
         .collection("Item").document(itemID).collection("photos").getDocuments();
@@ -88,11 +87,11 @@ class FirestoreServices {
   }
 
   //GET WISHLIST
-  static Stream <QuerySnapshot> getWishlist(){
+  static Future <QuerySnapshot> getWishlist(){
     return Firestore.instance
-      .collection("Wishlist")
-      .where("wisherID", isEqualTo: UserAuth.getEmail())
-      .snapshots();
+    .collection("Wishlist")
+    .where("wisherID", isEqualTo: UserAuth.getEmail())
+    .getDocuments();
   }
  
 }
