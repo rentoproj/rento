@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/api/services.dart';
-//import 'MainPage.dart';
 
 class OfferItem extends StatefulWidget {
   _OfferItemPageState createState() => new _OfferItemPageState();
@@ -21,23 +20,26 @@ class _OfferItemPageState extends State<OfferItem> {
   File _imageFile;
   bool _uploaded = false;
   String _downloadUrl;
-  StorageReference _reference =
-      FirebaseStorage.instance.ref().child('myImage.jpeg');
 
-  Future getImage(bool isCamera) async {
+
+  Future <File> getImage(bool isCamera) async {
     File image;
+    print("Image picker entered with camera option $isCamera");
     if (isCamera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
     } else {
-      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      image = await ImagePicker.pickImage(source: ImageSource.gallery).catchError((onError){
+        print("CAUGHT ERROR @ PICKER$onError");
+      }).then((val){print("image picker then for some reason");});
     }
-    setState(() {
-      _imageFile = image;
-    });
+    // setState(() {
+    //   _imageFile = image;
+    // });
   }
 
   Future<String> uploadImage() async {
-    StorageReference ref = FirebaseStorage.instance.ref().child("image");
+    String imageName = UserAuth.getEmail() + DateTime.now().toIso8601String();
+    StorageReference ref = FirebaseStorage.instance.ref().child(imageName.hashCode.toString());
     StorageUploadTask uploadTask = ref.putFile(_imageFile);
 
     var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
@@ -55,12 +57,12 @@ class _OfferItemPageState extends State<OfferItem> {
     // });
   }
 
-  Future downloadImage() async {
-    String downloadAddress = await _reference.getDownloadURL();
-    setState(() {
-      _downloadUrl = downloadAddress;
-    });
-  }
+  // Future downloadImage() async {
+  //   String downloadAddress = await _reference.getDownloadURL();
+  //   setState(() {
+  //     _downloadUrl = downloadAddress;
+  //   });
+  // }
 
   String newValue;
   String itemName;
@@ -69,6 +71,7 @@ class _OfferItemPageState extends State<OfferItem> {
   String itemLocation;
   String imageURL;
 
+          
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -77,7 +80,7 @@ class _OfferItemPageState extends State<OfferItem> {
       ),drawer: SideMenu(),
       body: new ListView(
         children: <Widget>[
-          _imageFile == null
+            _imageFile == null
               ? Container()
               : Image.file(
                   _imageFile,
@@ -93,7 +96,7 @@ class _OfferItemPageState extends State<OfferItem> {
           new RaisedButton(
             child: new Text('Upload From Gallery'),
             onPressed: () {
-              getImage(false);
+              getImage(false).then((obj){print(".then of getImage");}).catchError((error){print("Error caught $error @ getImage.onerror");});
             },
           ),    
           
@@ -267,7 +270,7 @@ class _OfferItemPageState extends State<OfferItem> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Job Done', style: TextStyle(fontSize: 15.0)),
-            content: Text('Item is Offered'),
+            content: Text('Your item is now offered!\nCheck your item list to view its details.'),
             actions: <Widget>[
               FlatButton(
                 child: Text('OK'),

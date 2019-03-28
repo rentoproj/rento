@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:rento/api/services.dart';
 
 class RentalItemB extends StatefulWidget {
   final String itemID;
@@ -15,8 +13,6 @@ class RentalItemB extends StatefulWidget {
 class RentalItemStateB extends State<RentalItemB> {
   final String itemID;
   RentalItemStateB(this.itemID);
-  
-
   String _BuyerID;
   String _name = "Rent Item";
   String _location = "None";
@@ -172,9 +168,6 @@ class RentalItemStateB extends State<RentalItemB> {
           ),),
           leading: new Icon(Icons.date_range),
         )
-        
-       
-     
       ],
     );
   }
@@ -195,5 +188,3 @@ class itemImage extends StatelessWidget {
     return Container(child: image);
   }
 }
-
-/// FirebaseTodos.getTodo("-KriJ8Sg4lWIoNswKWc4").then(_updateTodo);
