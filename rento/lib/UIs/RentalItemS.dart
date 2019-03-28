@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/services.dart';
+import 'dart:math';
 
 //555
 class RentalItem extends StatefulWidget {
@@ -28,9 +29,11 @@ class RentalItemState extends State<RentalItem> {
   String _startDate = "";
   String _endDate = "";
   String _State = "";
-  static const platform = const MethodChannel('sendSms');
-
-  _showDialog() async {
+    String _code = "";
+String FormCode="";
+ static const platform = const MethodChannel('sendSms');
+  
+   _showDialog() async {
     await showDialog<String>(
       context: context,
       child: new AlertDialog(
@@ -38,7 +41,16 @@ class RentalItemState extends State<RentalItem> {
         content: new Row(
           children: <Widget>[
             new Expanded(
-              child: new TextField(
+              child: new TextFormField(
+                onSaved: (value){
+                    FormCode=value;
+                },
+               validator: (FormCode){
+                  if(FormCode!=_code){
+                      return "invalid code";
+                  }
+                  else return null;
+               },
                 autofocus: true,
                 decoration: new InputDecoration(
                     labelText: 'enter the code sent to the buyer'),
@@ -85,6 +97,7 @@ class RentalItemState extends State<RentalItem> {
     this._endDate = data['EndDate'];
     this._State = data['State'];
     this._BuyerID = data['BuyerID'];
+    this._code = data['Code'];
     //build function returns a "Widget"
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -170,7 +183,7 @@ Widget buildBottomBar()
             if(_State=="Waiting for acceptance"){
               print("w8ing acceptance");
               return BottomNavigationBar(
-                type: BottomNavigationBarType.shifting,
+                
               onTap: (int) {},
               items: [
                 BottomNavigationBarItem(
@@ -178,6 +191,7 @@ Widget buildBottomBar()
                     icon: Icon(Icons.check),
                     onPressed: (){
                       FirebaseService.UpdateRequestState(itemID, "Waiting for pickup");
+                      Navigator.pop(context);
                       }
 
                   ),
@@ -227,7 +241,8 @@ Widget buildBottomBar()
               ],
             );
 
-            } else if(_State=="On Rent"){
+            }
+             else if(_State=="On Rent"){
               print("on rent now!");
               return BottomNavigationBar(
             

@@ -3,11 +3,11 @@ import 'package:rento/UIs/MyItem.dart';
 import 'package:rento/UIs/RentItem.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ItemBlock extends StatelessWidget {
+class UserItem extends StatelessWidget {
   String name, desc, id, imgURL, loc;
   int price;
 
-  ItemBlock(this.name, this.desc, this.imgURL, this.loc, this.price, this.id);
+  UserItem(this.name, this.desc, this.imgURL, this.loc, this.price, this.id);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ItemBlock extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => new RentItem(this.id)),
+                builder: (context) => new MyItem(this.id)),
           );
           //pushItem(item);
         },

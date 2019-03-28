@@ -4,6 +4,7 @@ import 'Offer.dart';
 import 'package:rento/components/itemBlock1.dart';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/components/SideMenu.dart';
+import 'package:rento/components/UserItem.dart';
 
 class ItemList extends StatefulWidget {
   _ItemListPageState createState() => new _ItemListPageState();
@@ -17,7 +18,7 @@ class _ItemListPageState extends State<ItemList> {
       ),
       drawer: SideMenu(),
       body: Stack(
-        fit:StackFit.expand,
+        //fit:StackFit.expand,
         children: <Widget>[
           StreamBuilder(
             stream: FirestoreServices.getItemList(),
@@ -67,6 +68,6 @@ Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots) {
         String url = doc.data['photo'];
         int price = doc.data['price'];
         bool isAvailable = doc.data['isAvailable'];
-        return ItemBlock(name, des, url, loc, price, id);
+        return UserItem(name, des, url, loc, price, id);
       });
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
+import 'dart:math';
 
 class RentalItemB extends StatefulWidget {
   final String itemID;
@@ -26,9 +27,13 @@ class RentalItemStateB extends State<RentalItemB> {
   String _startDate = "";
   String _endDate = "";
   String _State = "";
+  int _code=0;
+
+
   
 
   _showDialog() async {
+    
     await showDialog<String>(
       context: context,
       child: new AlertDialog(
@@ -36,30 +41,23 @@ class RentalItemStateB extends State<RentalItemB> {
         content: new Row(
           children: <Widget>[
             new Expanded(
-              child: new TextField(
-                autofocus: true,
-                decoration: new InputDecoration(
-                    labelText: 'enter the code sent to the buyer'),
-              ),
+              child: new Text("the code is $_code" ),
             )
           ],
         ),
         actions: <Widget>[
-          new FlatButton(
-              child: const Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
+          
           new FlatButton(
               child: const Text('confirm'),
               onPressed: () {
-                FirebaseService.UpdateRequestState(itemID, "On Rent");
+                
                 Navigator.of(context).pushReplacementNamed('/RentalHistory');
               })
         ],
       ),
     );
   }
+ 
 
   Widget build (BuildContext context){
     return FutureBuilder(
@@ -83,6 +81,8 @@ class RentalItemStateB extends State<RentalItemB> {
     this._endDate = data['EndDate'];
     this._State = data['State'];
     this._BuyerID = data['BuyerID'];
+    this._code = data['code'];
+    
     //build function returns a "Widget"
     return new Scaffold(
       resizeToAvoidBottomPadding: false,

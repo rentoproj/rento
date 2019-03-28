@@ -4,6 +4,7 @@ import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/components/ImageSlider.dart';
+import 'dart:math';
 
 class RentItem extends StatefulWidget {
   final String itemID;
@@ -29,6 +30,7 @@ class RentItemState extends State<RentItem> {
   double _rate = 0.0;
   int _price = 0;
   String _path = "";
+  int _code = 1000 + Random().nextInt(9999 - 1000);
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -128,7 +130,8 @@ class RentItemState extends State<RentItem> {
                                       state: "Waiting for acceptance",
                                       name: _name,
                                       location: _location,
-                                      desc: _decription);
+                                      desc: _decription,
+                                      code: _code);
                                   Navigator.of(context)
                                       .pushReplacementNamed('/RentalHistory');
                                 },
