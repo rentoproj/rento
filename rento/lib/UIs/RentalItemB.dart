@@ -15,7 +15,6 @@ class RentalItemB extends StatefulWidget {
 class RentalItemStateB extends State<RentalItemB> {
   final String itemID;
   RentalItemStateB(this.itemID);
-
   String _BuyerID;
   String _SellerID;
   String _name = "Rent Item";
