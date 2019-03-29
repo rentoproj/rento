@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rento/components/WishlistCard.dart';
+import 'package:rento/components/itemBlock1.dart';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/components/SideMenu.dart';
 
@@ -17,8 +17,8 @@ class _WishlistState extends State<Wishlist> {
       drawer: SideMenu(),
       body: Stack(
         children: <Widget>[
-          StreamBuilder(
-            stream: FirestoreServices.getWishlist(),
+          FutureBuilder(
+            future: FirestoreServices.getWishlist(),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
@@ -48,10 +48,9 @@ Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots) {
         String id = doc.data['itemID'];
         print("$des $loc $name $id");
         String url = doc.data['photoURL'];
-        String wishID = doc.documentID;
         int price = doc.data['price'];
         bool isAvailable = doc.data['isAvailable'];
-        return WishlistCard(name, des, url, loc, price, id, wishID);
+        return ItemBlock(name, des, url, loc, price, id);
       });
 }
 

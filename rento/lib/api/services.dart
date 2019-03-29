@@ -95,7 +95,7 @@ class FirebaseService {
 
   }
 
-  static void newUser({email, name, phone, imgURL})
+  static void newUser({email, name, phone})
   {
     Firestore.instance.collection("Users").document(email).setData(
       {
@@ -104,7 +104,6 @@ class FirebaseService {
         'isBanned': false,
         'name': name,
         'phone':phone,
-        'photoURL':imgURL,
       }
     );
   }
@@ -148,12 +147,6 @@ class FirebaseService {
       'wisherID': wisherID 
     });
   }
-
-  static Future <void> deleteWishListItem(id)
-  {
-    print("delete entered");
-    return Firestore.instance.collection('Wishlist').document(id).delete();
-  }
 }
 
 class UserAuth{
@@ -181,6 +174,7 @@ class UserAuth{
 
   static String getEmail()
   {
+    print("pre email getter no email ?");
     return user.email;
   }
 }

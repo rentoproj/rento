@@ -735,11 +735,10 @@ class _LoginScreen2State extends State<LoginScreen2>
                                     email: email, password: password)
                                 .then((FirebaseUser user) {
                                   print("user created");
-                                  FirebaseService.newUser(email: email, phone: phone, name: dispName, imgURL: "https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/DefaultProfileImg.png?alt=media&token=f3ff1227-3777-4416-ac36-06d32be2d91b");                                  
-                                  FirebaseAuth.instance
-                                    .signInWithEmailAndPassword(email: email, password: password).then((FirebaseUser user) {
-                                  print("success TO LOGIN");
-                                  Navigator.of(context).pushNamed('/MainPage');});
+                                  FirebaseService.newUser(email: email, phone: phone, name: dispName);                                  
+                                  //NOTE: instantiate login credintials (user singleton)/ add new user to firestore 
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/MainPage');
                             }).catchError((e) {
                               print('Error: $e');
                               Scaffold.of(context).showSnackBar(
@@ -826,10 +825,12 @@ class _LoginScreen2State extends State<LoginScreen2>
       key: key,
       child: AlertDialog(
         title: Text('Enter Your Email'),
+        
         content: new Row(
           children: <Widget>[
             new Expanded(
                 child: new TextFormField(
+              autofocus: true,
               decoration: new InputDecoration(
                   labelText: 'Email', hintText: 'info@rento.com'),
               validator: (email) {

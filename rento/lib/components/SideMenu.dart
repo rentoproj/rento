@@ -88,24 +88,23 @@ Widget _buildDetails (BuildContext context, DocumentSnapshot snap){
             //   print('DETAILS PRESSED');
             //   },
             currentAccountPicture:
-            photo == null || photo == ""
-            ?IconButton(
+            photo == null || photo == "" ? IconButton(
               icon: Icon(Icons.account_circle, size: 80),
               onPressed: (){
                 Navigator.of(context).pushNamed('/ProfilePage');
               },
-
-            )
-            :GestureDetector(
-              onTap: (){
-                Navigator.of(context).pushNamed('/ProfilePage');
-              },
-              child: new CircleAvatar(
+            ):
+            new FlatButton(
+              
+           child: new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
               backgroundImage: new NetworkImage(photo)
-              
               ),
+              onPressed: (){
+                Navigator.of(context).pushNamed('/ProfilePage');
+              },
+              
             )
           );
   }
