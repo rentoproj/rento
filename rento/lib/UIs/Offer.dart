@@ -30,8 +30,8 @@ class _OfferItemPageState extends State<OfferItem> {
   Future getImage(bool isCamera) async {
     File image;
     if (isCamera) {
-      //image = await ImagePicker.pickImage(source: ImageSource.camera);
-      loadAssets();
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+      //loadAssets();
     } else {
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
