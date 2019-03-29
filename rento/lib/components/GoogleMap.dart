@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:geolocator/geolocator.dart';
-import 'package:geo_location_finder/geo_location_finder.dart';
+//import 'package:geo_location_finder/geo_location_finder.dart';
 // import 'package:location/location.dart';
  import 'package:flutter/services.dart';
 
@@ -125,37 +125,37 @@ class _GoogleMapsState extends State<GoogleMaps>  {
   //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude, longitude))));
   // }
   Future<void> _getLocation(BuildContext context) async {
-      Map<dynamic, dynamic> locationMap;
+      // Map<dynamic, dynamic> locationMap;
 
-      String result;
+      // String result;
 
-      try {
-        locationMap = await GeoLocation.getLocation;
-        var status = locationMap["status"];
-        if ((status is String && status == "true") ||
-            (status is bool) && status) {
-          lat = locationMap["latitude"];
-          lng = locationMap["longitude"];
+      // try {
+      //   locationMap = await GeoLocation.getLocation;
+      //   var status = locationMap["status"];
+      //   if ((status is String && status == "true") ||
+      //       (status is bool) && status) {
+      //     lat = locationMap["latitude"];
+      //     lng = locationMap["longitude"];
 
-          if (lat is String) {
-            result = "Location: ($lat, $lng)";
-          } else {
-            // lat and lng are not string, you need to check the data type and use accordingly.
-            // it might possible that else will be called in Android as we are getting double from it.
-            result = "Location: ($lat, $lng)";
-          }
-        } else {
-          result = locationMap["message"];
-        }
-      } on PlatformException {
-        result = 'Failed to get location';
-      }
+      //     if (lat is String) {
+      //       result = "Location: ($lat, $lng)";
+      //     } else {
+      //       // lat and lng are not string, you need to check the data type and use accordingly.
+      //       // it might possible that else will be called in Android as we are getting double from it.
+      //       result = "Location: ($lat, $lng)";
+      //     }
+      //   } else {
+      //     result = locationMap["message"];
+      //   }
+      // } on PlatformException {
+      //   result = 'Failed to get location';
+      // }
 
-      if (!mounted) return;
+      // if (!mounted) return;
 
-      setState(() {
-        _result = result;
-      });
+      // setState(() {
+      //   _result = result;
+      // });
     }
 
 }
