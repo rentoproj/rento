@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 class Field extends StatelessWidget {
   String  _Label , _Hint ;
   String textv;
-  Function onChange;
   TextEditingController controller = new TextEditingController();
  Icon _MyIcon;
-  Field(this._MyIcon,  this._Label, this._Hint, {this.onChange});
+  Field(this._MyIcon,  this._Label, this._Hint);
 
   Widget build(BuildContext context) {
     return new TextField(
@@ -21,9 +20,7 @@ class Field extends StatelessWidget {
               ),
               
              onChanged: (value){
-               this.textv = value;
-               print(textv);
-               onChange();
+               this.textv= value;
              },
     );
   }

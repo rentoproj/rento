@@ -104,15 +104,12 @@ class _MyHomePageState extends State<EditProfile> {
     this.intBio = data['Bio'];
     this.intName = data['name'];
     this.intPhone = data['phone'];
-    name = new Field(new Icon(Icons.person), "Name", intName);
-    phone = new Field(new Icon(Icons.phone_android), "Phone", intPhone);
-    Bio = new Field(new Icon(Icons.info), "Bio", intBio);
     print(email);
     return Column(
       children: <Widget>[
-        name,
-        phone,
-        Bio
+        name = new Field(new Icon(Icons.person), "Name", intName),
+        phone = new Field(new Icon(Icons.phone_android), "Phone", intPhone),
+        Bio = new Field(new Icon(Icons.info), "Bio", intBio),
       ],
     );
   }
@@ -145,3 +142,24 @@ class _MyHomePageState extends State<EditProfile> {
     );
   }
 }
+
+
+// new Field(new Icon(Icons.lock_open),"Password","write your old password here"),
+//  new Field(new Icon(Icons.lock),"New password","write the new password here"),
+// new Field(new Icon(Icons.repeat),"Confirm","write the new password agine"),
+// ****how to confirm that the both passwords are the same*** https://stackoverflow.com/questions/50155348/how-to-validate-a-form-field-based-on-the-value-of-the-other
+//**  https://github.com/shiang/flutter-form-with-validation-BLOC/issues/1    this one using bloc   */
+
+            //FirebaseAuth.instance
+            //       .signInWithEmailAndPassword(email: email, password: oldPass)
+            //       .then((FirebaseUser user) {
+            //     print("Old Password => pass");
+            //     user.updatePassword(newPass).then((val){
+            //       print("Old Password => Updated");
+            //     });
+                
+            //   }).catchError((e) {
+            //     print('Error: $e');
+            //     print("Old Password => Wrong");
+            //    // dialogTriggerEP(context);
+            //   });

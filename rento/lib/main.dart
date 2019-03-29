@@ -13,8 +13,7 @@ import 'package:rento/UIs/Offer.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'UIs/ItemList.dart';
 import 'UIs/Wishlist.dart';
-import 'package:rento/components/GoogleMap.dart';
-import 'UIs/RentItem.dart';
+import'UIs/RentItem.dart';
 import 'components/ItemCard.dart';
 import 'UIs/RentalItemS.dart';
 import 'UIs/RHBuyer.dart';
@@ -38,9 +37,7 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData( 
         primaryColor:  Colors.deepOrange[800]
       ),
-      home: 
-      //RentItem("-LZWLtC8tdqKmZ3MCYlA"),
-      UserAuth.isLoggedIn() ?  MainPage(): LoginScreen2(),
+      home: UserAuth.isLoggedIn() ?  MainPage(): LoginScreen2(),
       routes: <String, WidgetBuilder>{
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
 //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
@@ -53,8 +50,6 @@ class MyAppState extends State<MyApp> {
         '/MainPage': (BuildContext context) => new MainPage(),
         '/ItemList' : (BuildContext context) => new ItemList(),
         '/Wishlist' : (BuildContext context) => new Wishlist(),
-        '/GoogleMap' : (BuildContext context) => new GoogleMaps(100,100,"ID"),
-        //'/GoogleSet' : (BuildContext context) => new MapsDemo(),
       },
     );
   }
