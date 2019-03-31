@@ -46,6 +46,15 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+  static void UpdateRate(ID,Rate){
+   
+    Firestore.instance.collection('Users').document(ID).updateData(
+      {
+        'ProfileRate':Rate,
+        
+      }
+    );
+  }
   static void ItemupdateData(ID,n,int p,b){
     print("entered");
     print("$n $p $b");
@@ -91,6 +100,18 @@ class FirebaseService {
       'location' : location,
       'desc' : desc,
       'code' :code
+    });
+
+  }
+  static void AddRate(Seller,Buyer,comment,rate,date)
+  {
+    Firestore.instance.collection('UserRates').add({
+      'CommenterID': Seller,
+      'UserID': Buyer,
+      'Date': date,
+      'Rate': rate,
+      'Comment': comment,
+      
     });
 
   }

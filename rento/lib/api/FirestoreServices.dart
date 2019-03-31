@@ -34,7 +34,12 @@ class FirestoreServices {
   static Stream<QuerySnapshot> getRequestsB(){
     return Firestore.instance.collection('Requests').where('BuyerID', isEqualTo:UserAuth.getEmail()).snapshots();
   }
-  
+  static  getUserRates(RatedUser){
+    return Firestore.instance.collection('UserRates').where('UserID', isEqualTo:RatedUser).snapshots();
+  }
+  static  getUserRate(User){
+    return Firestore.instance.collection('Users').document(User).snapshots();
+  }
 
   //AFTER SEARCH GET ITEM DETAILS
   static Future<DocumentSnapshot> getItemDetails(String itemID) {
