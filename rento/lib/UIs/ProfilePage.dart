@@ -98,7 +98,8 @@ class Profile extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           new Padding(
-            child: new CircleAvatar(
+            child:  
+            new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
               backgroundImage:

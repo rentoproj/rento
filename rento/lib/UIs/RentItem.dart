@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
+import 'package:rento/components/ProfileCard.dart';
 
 class RentItem extends StatefulWidget {
   final String itemID;
