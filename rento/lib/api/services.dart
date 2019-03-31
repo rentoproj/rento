@@ -109,8 +109,7 @@ class FirebaseService {
     );
   }
 
-  static Future <void> createOffer(data)
-  {
+  static Future <void> createOffer(data){
      var id;
     print('hadaa al id '+id+data['photo']);
      

@@ -21,47 +21,45 @@ class _OfferItemPageState extends State<OfferItem> {
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
 
-  List<File> _imageFile;
+  List<File> _imagesFile;
+  List<NetworkImage> _images = new List<NetworkImage>();
+  List<String> _URLs = new List<String>();
   bool _uploaded = false;
   String _downloadUrl, _error;
   StorageReference _reference =
       FirebaseStorage.instance.ref().child('myImage.jpeg');
 
   Future getImage(bool isCamera) async {
-    List<File> image;
+    List<File> images = List<File>();
     if (isCamera) {
       await ImagePicker.pickImage(source: ImageSource.camera).then((val) {
-        image.add(val);
+        images.add(val);
+        uploadImage(val);
       });
       //loadAssets();
     } else {
       await ImagePicker.pickImage(source: ImageSource.gallery).then((val) {
-        image.add(val);
+        images.add(val);
+        uploadImage(val);
       });
     }
     setState(() {
-      _imageFile = image;
-      print(image);
+      _imagesFile = images;
     });
   }
 
-  Future<String> uploadImage() async {
-    // StorageReference ref = FirebaseStorage.instance.ref().child("image");
-    // StorageUploadTask uploadTask = ref.putFile(_imageFile);
-
-    // var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-    // var url = downUrl.toString();
-    // imageURL = url;
-    // return url;
-
-    // StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
-    // String downloadAddress = await _reference.getDownloadURL();
-    // imageURL = downloadAddress.toString();
-    // setState(() {
-    //  _uploaded = true;
-     // imageURL =downloadAddress;
-
-    // });
+  Future<void> uploadImage(File file) async {
+    StorageReference ref = FirebaseStorage.instance.ref().child(file.path);
+    StorageUploadTask uploadTask = ref.putFile(file);
+    var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    var url = downUrl.toString();
+    _URLs.add(url);
+    //CREATE IMAGE FROM FILE
+    _images.add(NetworkImage(url));
+    setState(() {
+      _uploaded = true;
+      this._images = _images;
+    });
   }
 
   Future downloadImage() async {
@@ -86,29 +84,43 @@ class _OfferItemPageState extends State<OfferItem> {
       drawer: SideMenu(),
       body: new ListView(
         children: <Widget>[
-          _imageFile == null
+          _imagesFile == null
               ? Container()
-              : 
-                  Container(
-                    height: 100.0,
-                    child: new Carousel(
-                      boxFit: BoxFit.cover,
-                     // images: images,
-                      autoplay: false,
-                    ),
+              : Container(
+                  height: 300.0,
+                  child: new Carousel(
+                    boxFit: BoxFit.cover,
+                    images: _images,
+                    autoplay: false,
                   ),
-      
-          new RaisedButton(
-            child: new Text('Take a picture'),
-            onPressed: () {
-              getImage(true);
-            },
-          ),
-          new RaisedButton(
-            child: new Text('Upload From Gallery'),
-            onPressed: () {
-              getImage(false);
-            },
+                ),
+
+          Row(
+            children: <Widget>[
+              
+              Row(
+                children: <Widget>[
+                  new OutlineButton(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    highlightedBorderColor: Colors.deepOrangeAccent,
+                    child: new Text('Take a picture'),
+                    onPressed: () {
+                      getImage(true);
+                    },
+                  ),
+                  Container(
+                    child: Icon(Icons.camera_alt),
+                  )
+                ],
+              ),
+              new RaisedButton(
+                child: new Text('Upload From Gallery'),
+                onPressed: () {
+                  getImage(false);
+                },
+              ),
+            ],
           ),
 
           new ListTile(
@@ -246,27 +258,20 @@ class _OfferItemPageState extends State<OfferItem> {
             child: Text('Offer Item'),
             textColor: Colors.blue,
             onPressed: () {
-              uploadImage().then((onValue) {
-                print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
-                // Navigator.of(context).pop();
-                FirebaseService.createOffer({
-                  'name': this.itemName,
-                  'description': this.itemDescription,
-                  'price': this.itemPrice,
-                  'location': this.itemLocation,
-                  'photo': onValue,
-                }).then((result) {
-                  dialogTrigger(context);
-                }).catchError((e) {
-                  print(e);
-                });
+              //uploadImage();
+              FirebaseService.createOffer({
+                'name': this.itemName,
+                'description': this.itemDescription,
+                'price': this.itemPrice,
+                'location': this.itemLocation,
+                'photo': _imagesFile[0],
+              }).then((result) {
+                dialogTrigger(context);
+              }).catchError((e) {
+                print(e);
               });
             },
           ),
-          // new RaisedButton(
-          //   child: new Text('Save as a Draft'),
-          //   onPressed: () {},
-          // ),
         ],
       ),
     );
