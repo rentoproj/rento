@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/api/services.dart';
+import 'package:flutter/services.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+
 //import 'MainPage.dart';
 
 class OfferItem extends StatefulWidget {
@@ -18,41 +21,45 @@ class _OfferItemPageState extends State<OfferItem> {
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
 
-  File _imageFile;
+  List<File> _imageFile;
   bool _uploaded = false;
   String _downloadUrl, _error;
   StorageReference _reference =
       FirebaseStorage.instance.ref().child('myImage.jpeg');
 
   Future getImage(bool isCamera) async {
-    File image;
+    List<File> image;
     if (isCamera) {
-      image = await ImagePicker.pickImage(source: ImageSource.camera);
+      await ImagePicker.pickImage(source: ImageSource.camera).then((val) {
+        image.add(val);
+      });
       //loadAssets();
     } else {
-      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      await ImagePicker.pickImage(source: ImageSource.gallery).then((val) {
+        image.add(val);
+      });
     }
     setState(() {
       _imageFile = image;
+      print(image);
     });
   }
 
-
   Future<String> uploadImage() async {
-    StorageReference ref = FirebaseStorage.instance.ref().child("image");
-    StorageUploadTask uploadTask = ref.putFile(_imageFile);
+    // StorageReference ref = FirebaseStorage.instance.ref().child("image");
+    // StorageUploadTask uploadTask = ref.putFile(_imageFile);
 
-    var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-    var url = downUrl.toString();
-    imageURL = url;
-    return url;
+    // var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    // var url = downUrl.toString();
+    // imageURL = url;
+    // return url;
 
     // StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
     // String downloadAddress = await _reference.getDownloadURL();
     // imageURL = downloadAddress.toString();
     // setState(() {
     //  _uploaded = true;
-    //  // imageURL =downloadAddress;
+     // imageURL =downloadAddress;
 
     // });
   }
@@ -81,11 +88,16 @@ class _OfferItemPageState extends State<OfferItem> {
         children: <Widget>[
           _imageFile == null
               ? Container()
-              : Image.file(
-                  _imageFile,
-                  height: 300.0,
-                  width: 300.0,
-                ),
+              : 
+                  Container(
+                    height: 100.0,
+                    child: new Carousel(
+                      boxFit: BoxFit.cover,
+                     // images: images,
+                      autoplay: false,
+                    ),
+                  ),
+      
           new RaisedButton(
             child: new Text('Take a picture'),
             onPressed: () {
@@ -234,9 +246,8 @@ class _OfferItemPageState extends State<OfferItem> {
             child: Text('Offer Item'),
             textColor: Colors.blue,
             onPressed: () {
-              dialogTrigger(context);
               uploadImage().then((onValue) {
-                print("trieeed to AAAAAAAAAAAAd");
+                print("$onValue THE  GOODD DAAMN PRINTED URLSDASDFWNDFKN");
                 // Navigator.of(context).pop();
                 FirebaseService.createOffer({
                   'name': this.itemName,
@@ -244,12 +255,10 @@ class _OfferItemPageState extends State<OfferItem> {
                   'price': this.itemPrice,
                   'location': this.itemLocation,
                   'photo': onValue,
-                  'sellerID': UserAuth.getEmail()
                 }).then((result) {
-                  print('d5lt wlllaah');
-                  
+                  dialogTrigger(context);
                 }).catchError((e) {
-                  print(e+'error');
+                  print(e);
                 });
               });
             },
