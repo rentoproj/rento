@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/api/services.dart';
-
 //import 'MainPage.dart';
 
 class OfferItem extends StatefulWidget {
@@ -21,7 +20,7 @@ class _OfferItemPageState extends State<OfferItem> {
 
   File _imageFile;
   bool _uploaded = false;
-  String _downloadUrl;
+  String _downloadUrl, _error;
   StorageReference _reference =
       FirebaseStorage.instance.ref().child('myImage.jpeg');
 
@@ -29,6 +28,7 @@ class _OfferItemPageState extends State<OfferItem> {
     File image;
     if (isCamera) {
       image = await ImagePicker.pickImage(source: ImageSource.camera);
+      //loadAssets();
     } else {
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
@@ -36,6 +36,7 @@ class _OfferItemPageState extends State<OfferItem> {
       _imageFile = image;
     });
   }
+
 
   Future<String> uploadImage() async {
     StorageReference ref = FirebaseStorage.instance.ref().child("image");
@@ -70,12 +71,12 @@ class _OfferItemPageState extends State<OfferItem> {
   String itemLocation;
   String imageURL;
 
-
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Offer Item"),
-      ),drawer: SideMenu(),
+      ),
+      drawer: SideMenu(),
       body: new ListView(
         children: <Widget>[
           _imageFile == null
@@ -85,7 +86,7 @@ class _OfferItemPageState extends State<OfferItem> {
                   height: 300.0,
                   width: 300.0,
                 ),
-            new RaisedButton(
+          new RaisedButton(
             child: new Text('Take a picture'),
             onPressed: () {
               getImage(true);
@@ -96,8 +97,8 @@ class _OfferItemPageState extends State<OfferItem> {
             onPressed: () {
               getImage(false);
             },
-          ),    
-          
+          ),
+
           new ListTile(
             title: new TextField(
               //controller: _nameFieldTextController,
@@ -208,8 +209,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 }),
             trailing: Text('${_ftime.hour} :${_ftime.minute}'),
           ),
-          
-          
+
           // new RaisedButton(
           //   child: new Text('Upload to storage'),
           //   onPressed: () {
@@ -225,7 +225,7 @@ class _OfferItemPageState extends State<OfferItem> {
           //         },
           //       ),
           // _downloadUrl == null ? Container() : Image.network(_downloadUrl),
-          
+
           // new RaisedButton(
           //   child: new Text('Offer Item'),
           //   onPressed: () {},
