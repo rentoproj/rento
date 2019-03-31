@@ -6,7 +6,7 @@ class FirestoreServices {
   static Future<QuerySnapshot> searchItem(String searchTerm) {
     return Firestore.instance
         .collection("Item")
-        .where("name", isGreaterThanOrEqualTo: searchTerm).getDocuments();
+        .where("name", isGreaterThanOrEqualTo: searchTerm ).getDocuments();
     //     .then((QuerySnapshot s) {
     //   int i = 0;
     //   while (i <= s.documents.length) {
@@ -34,6 +34,7 @@ class FirestoreServices {
   static Stream<QuerySnapshot> getRequestsB(){
     return Firestore.instance.collection('Requests').where('BuyerID', isEqualTo:UserAuth.getEmail()).snapshots();
   }
+  
 
   //AFTER SEARCH GET ITEM DETAILS
   static Future<DocumentSnapshot> getItemDetails(String itemID) {
@@ -41,15 +42,14 @@ class FirestoreServices {
         .collection("Item").document(itemID).get();
        
   }
-
-  //REQUEST DETAILS
   static Future <DocumentSnapshot> getRequestDetails(String RequestID){
     print(" the request id is $RequestID");
     return Firestore.instance
     .collection("Requests").document(RequestID).get();
+    
   }
 
-  //ITEM LIST OF IMAGES
+  //
   static Future<QuerySnapshot> getItemPhotos(String itemID) {
    return Firestore.instance
         .collection("Item").document(itemID).collection("photos").getDocuments();
@@ -88,10 +88,11 @@ class FirestoreServices {
   }
 
   //GET WISHLIST
-  static Stream <QuerySnapshot> getWishlist(){
+  static Future <QuerySnapshot> getWishlist(){
     return Firestore.instance
-      .collection("Wishlist")
-      .where("wisherID", isEqualTo: UserAuth.getEmail())
-      .snapshots();
+    .collection("Wishlist")
+    .where("wisherID", isEqualTo: UserAuth.getEmail())
+    .getDocuments();
   }
+ 
 }

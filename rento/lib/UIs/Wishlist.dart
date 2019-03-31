@@ -17,8 +17,8 @@ class _WishlistState extends State<Wishlist> {
       drawer: SideMenu(),
       body: Stack(
         children: <Widget>[
-          StreamBuilder(
-            stream: FirestoreServices.getWishlist(),
+          FutureBuilder(
+            future:FirestoreServices.getWishlist(),
             builder: (context, snapshot) {
               return !snapshot.hasData
                   ? Center(child: CircularProgressIndicator())
