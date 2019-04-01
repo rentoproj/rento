@@ -28,18 +28,19 @@ class RentalItemStateB extends State<RentalItemB> {
   String _startDate = "";
   String _endDate = "";
   String _State = "";
-  int _code=0;
+  String _code=null;
   double itemRating = 0;
   double userRating = 0;
   String comment;
-    String _CurrentRate="";
-  String _FinalRate="";
+  double _CurrentRate=0.0;
+  String _FinalRate="0";
   int _RatesLength = 0;
   double _DoubleFinalRating=0.0;
+  double tempRate = 0;
 
 Future<bool> dialogTrigger(BuildContext context) async {
-   _RatesLength= FirestoreServices.getUserRates(_SellerID).length;
-    _CurrentRate =FirestoreServices.getUserRate(_SellerID).data['ProfileRate'];
+  //  _RatesLength= await FirestoreServices.getUserRates(_SellerID).length;
+    // _CurrentRate = await FirestoreServices.getUserRate(_SellerID).data['ProfileRate'];
 
     return showDialog(
         context: context,
@@ -70,12 +71,13 @@ Future<bool> dialogTrigger(BuildContext context) async {
                   child: StarRating(
                     color: Colors.yellow[600],
                     starCount: 5,
-                    rating: double.parse(_CurrentRate),
+                    rating: tempRate,
                     size: 30,
                     onRatingChanged: (rating2) =>
                         setState(() {
+                          tempRate=rating2;
                           userRating=rating2;
-                           this._DoubleFinalRating = (_RatesLength*double.parse(_CurrentRate))*rating2/_RatesLength+1;
+                           this._DoubleFinalRating = (_RatesLength*_CurrentRate)*rating2/_RatesLength+1;
                         _FinalRate=_DoubleFinalRating.toString();
                         
                         }
