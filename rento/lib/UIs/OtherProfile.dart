@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/components/Avatar.dart';
 import 'package:rento/components/SideMenu.dart';
@@ -126,7 +127,8 @@ class ProfileState extends State<OtherProfile> {
     this.intBio = data['Bio'];
     this.intName = data['name'];
     this.intPhone = data['phone'];
-    this.rating = data['ProfileRate'];
+    dynamic d = data['ProfileRate'];
+    this.rating = d;
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -169,16 +171,52 @@ class ProfileState extends State<OtherProfile> {
               ])),
 
           Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: comments.length,
-              itemBuilder: (context, index) {
-                final comment = comments[index];
-                return new Comment(comment._text, comment._dateTime,
-                    comment._uName, comment._head);
+            child: StreamBuilder(
+              stream: FirestoreServices.getUserRates(UserAuth.getEmail()),
+              builder: (context, snapshot) {
+                return snapshot == null
+                    ? CircularProgressIndicator()
+                    : buildComments(context, snapshot.data.documents);
               },
             ),
           )
         ]));
+  }
+
+  buildComments(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return snapshot.length == 0
+    ?_noDataFound()
+    :ListView.builder(
+      shrinkWrap: true,
+      itemCount: snapshot.length,
+      physics: ClampingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        DocumentSnapshot doc = snapshot[index];
+        String text = doc.data['Comment'];
+        DateTime date = doc.data['Date'];
+        String uName = doc.data['CommenterID'];
+        return new Comment(
+            text, date.toString().substring(0, 16), uName, "");
+      },
+    );
+  }
+
+  Widget _noDataFound() {
+    return Center(
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        Icon(
+          Icons.mood_bad,
+          size: 40,
+          color: Colors.black54,
+        ),
+        Text(
+          "You don't have any comments yet",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black54),
+        ),
+      ]),
+    );
   }
 }

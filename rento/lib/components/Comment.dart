@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Comment extends StatelessWidget {
   String _text, _uName, _head;
-  DateTime _dateTime;
+  String _dateTime;
   Comment(this._text, this._dateTime, this._uName, this._head);
 
   Widget build(BuildContext context) {
@@ -23,12 +23,7 @@ class Comment extends StatelessWidget {
               labelText: _head,
               prefixText: _uName+": ",
               prefixStyle: TextStyle(color: Colors.black87),
-              suffixText: _dateTime.year.toString() +
-                  "/" +
-                  _dateTime.month.toString() +
-                  "/" +
-                  _dateTime.day.toString() +
-                  '\n',
+              suffixText: _dateTime,
               
               disabledBorder: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),

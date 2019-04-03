@@ -34,11 +34,11 @@ class FirestoreServices {
   static Stream<QuerySnapshot> getRequestsB(){
     return Firestore.instance.collection('Requests').where('BuyerID', isEqualTo:UserAuth.getEmail()).snapshots();
   }
-  static  getUserRates(RatedUser){
-    return Firestore.instance.collection('UserRates').where('UserID', isEqualTo:RatedUser).snapshots();
+  static Stream<QuerySnapshot> getUserRates(String userID){
+    return Firestore.instance.collection('UserRates').where('UserID', isEqualTo:userID).snapshots();
   }
-  static  getUserRate(User){
-    return Firestore.instance.collection('Users').document(User).snapshots();
+  static Stream<DocumentSnapshot> getUserRate(String userID){
+    return Firestore.instance.collection('Users').document(userID).snapshots();
   }
 
   //AFTER SEARCH GET ITEM DETAILS
@@ -93,11 +93,11 @@ class FirestoreServices {
   }
 
   //GET WISHLIST
-  static Future <QuerySnapshot> getWishlist(){
+  static Stream <QuerySnapshot> getWishlist(){
     return Firestore.instance
     .collection("Wishlist")
     .where("wisherID", isEqualTo: UserAuth.getEmail())
-    .getDocuments();
+    .snapshots();
   }
  
 }
