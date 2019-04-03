@@ -42,97 +42,7 @@ String FormCode="";
   double userRating = 0;
   String comment;
  static const platform = const MethodChannel('sendSms');
- 
-  Future<bool> dialogTrigger(BuildContext context) async {
-   _RatesLength= FirestoreServices.getUserRates(_BuyerID).length;
-    _CurrentRate =FirestoreServices.getUserRate(_BuyerID).data['ProfileRate'];
-
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          margin: const EdgeInsets.only(left: 20.0, right: 20.0);
-
-          return SimpleDialog(
-            children: <Widget>[   
-              Text('Please Rate the Item',textAlign: TextAlign.center, style: new TextStyle(fontSize: 25)),
-                Container(
-                  padding:EdgeInsets.all(10.0),
-                  margin: EdgeInsets.fromLTRB(50, 0, 30, 30),
-                  child: StarRating(
-                    color: Colors.yellow[600],
-                    starCount: 5,
-                    rating: itemRating,
-                    size: 30,
-                    onRatingChanged: (rating) =>
-                        setState(() => this.itemRating = rating),
-                  ),
-                ),
-                Text('Rate the User',textAlign: TextAlign.center, style: new TextStyle(fontSize: 25),),
-
-                Container(
-                  padding:EdgeInsets.all(10.0),
-                  margin: EdgeInsets.fromLTRB(50, 0, 30, 30),
-                  child: StarRating(
-                    color: Colors.yellow[600],
-                    starCount: 5,
-                    rating: double.parse(_CurrentRate),
-                    size: 30,
-                    onRatingChanged: (rating2) =>
-                        setState(() {
-                          userRating=rating2;
-                           this._DoubleFinalRating = (_RatesLength*double.parse(_CurrentRate))*rating2/_RatesLength+1;
-                        _FinalRate=_DoubleFinalRating.toString();
-                        
-                        }
-                        ),
-                  ),
-                ),
-                Text('Comment', textAlign: TextAlign.center, style: new TextStyle(fontSize: 25)),
-                 
-                new Container(
-                  padding:EdgeInsets.all(10.0),
-                  margin: EdgeInsets.all(8.0),
-                  // hack textfield height
-                  //padding: EdgeInsets.only(bottom: 40.0),
-                  child: TextField(
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      contentPadding: 
-                      new EdgeInsets.only(
-                    left: 10.0,
-                    top: 10.0,
-                    bottom: 10.0,
-                    right: 10.0),
-                      hintText: "Please leave a comment",
-                      border: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                    borderSide: new BorderSide(
-                        color: Colors.green,
-                        style: BorderStyle.solid,
-                        width: 2),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      this.comment = value;
-                    },
-                  ),
-                ),
-                FlatButton(
-                child: Text('OK'),
-                textColor: Colors.blue,
-                onPressed: () {
-                  FirebaseService.UpdateRate(this._BuyerID, _FinalRate);
-                  FirebaseService.AddRate(this._SellerID,this._BuyerID,this.comment,this.userRating,DateTime.now());
-                  Navigator.of(context).pushReplacementNamed('/MainPage');
-                },
-              )
-            ],
-            
-          );
-        });
-  }
-  
+   
    _showDialog() async {
     await showDialog<String>(
       context: context,
@@ -383,7 +293,11 @@ Widget buildBottomBar()
                   icon: IconButton(
                     icon: Icon(Icons.star_half),
                     onPressed: (){
-                     dialogTrigger(context);
+                     showDialog(
+                        context: context,
+                        builder: (_) {
+                          return RateDialoge();
+                        });
                       }
 
                   ),
@@ -414,6 +328,76 @@ class itemImage extends StatelessWidget {
       height: MediaQuery.of(context).size.height / 5,
     );
     return Container(child: image);
+  }
+}
+
+//RATE DIALOG
+class RateDialoge extends StatefulWidget {
+  @override
+  DialogState createState() => DialogState();
+}
+
+class DialogState extends State<RateDialoge> {
+  double itemRating = 1, userRating = 1;
+  String comment;
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      children: <Widget>[
+        Text(
+          'Rate the User',
+          textAlign: TextAlign.center,
+          style: new TextStyle(fontSize: 25),
+        ),
+        Container(
+          padding: EdgeInsets.all(10.0),
+          margin: EdgeInsets.fromLTRB(50, 0, 30, 30),
+          child: StarRating(
+            color: Colors.yellow[600],
+            starCount: 5,
+            rating: userRating,
+            size: 30,
+            onRatingChanged: (rating) => setState(() {
+                  userRating = rating;
+                }),
+          ),
+        ),
+        Text('Comment',
+            textAlign: TextAlign.center, style: new TextStyle(fontSize: 25)),
+        new Container(
+          padding: EdgeInsets.all(10.0),
+          margin: EdgeInsets.all(8.0),
+          // hack textfield height
+          //padding: EdgeInsets.only(bottom: 40.0),
+          child: TextField(
+            maxLines: 5,
+            decoration: InputDecoration(
+              contentPadding: new EdgeInsets.only(
+                  left: 10.0, top: 10.0, bottom: 10.0, right: 10.0),
+              hintText: "Please leave a comment",
+              border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(25.0),
+                borderSide: new BorderSide(
+                    color: Colors.green, style: BorderStyle.solid, width: 2),
+              ),
+            ),
+            onChanged: (value) {
+              this.comment = value;
+            },
+          ),
+        ),
+        FlatButton(
+          child: Text('OK'),
+          textColor: Colors.blue,
+          onPressed: () {
+            // FirebaseService.UpdateRate(this._SellerID, _FinalRate);
+            // FirebaseService.AddRate(this._BuyerID, this._SellerID,
+            //     this.comment, this.userRating, DateTime.now());
+            print("object");
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
   }
 }
 
