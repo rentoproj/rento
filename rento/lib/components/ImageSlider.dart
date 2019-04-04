@@ -20,6 +20,7 @@ class _ImageSliderState extends State<ImageSlider> {
     return FutureBuilder(
       future: FirestoreServices.getItemPhotos(widget.itemID),
       builder: (context, snapshot){
+        widget.images.clear();
         return !snapshot.hasData ? Center(child: CircularProgressIndicator())
         :_imageSliderBuilder(context, snapshot.data.documents);
         },

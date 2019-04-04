@@ -24,7 +24,9 @@ class HomeScreenState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0.0,
+      ),
       drawer: new SideMenu(),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -60,7 +62,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
         ClipPath(
           clipper: CustomShapeClipper(),
           child: Container(
-            height: 350.0,
+            height: 300.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -70,14 +72,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 50.0,
-                ),
-                /* *********************************
-                            Silde menu
-                 ******************************** */
-                
-                SizedBox(
-                  height: 50.0,
+                  height: 30.0,
                 ),
                 Text(
                   'What would you\nlike to lease?',

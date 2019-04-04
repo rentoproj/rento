@@ -7,6 +7,9 @@ import 'package:rento/api/services.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
+import 'package:rento/components/GoogleMap.dart';
+import 'package:rento/components/ImageSlider.dart';
+
 //555
 class RentalItem extends StatefulWidget {
   final String itemID;
@@ -29,11 +32,11 @@ class RentalItemState extends State<RentalItem> {
   String _startDate = "";
   String _endDate = "";
   String _State = "";
-    String _code = "";
-String FormCode="";
- static const platform = const MethodChannel('sendSms');
-  
-   _showDialog() async {
+  String _code = "";
+  String FormCode = "";
+  static const platform = const MethodChannel('sendSms');
+
+  _showDialog() async {
     await showDialog<String>(
       context: context,
       child: new AlertDialog(
@@ -42,15 +45,15 @@ String FormCode="";
           children: <Widget>[
             new Expanded(
               child: new TextFormField(
-                onSaved: (value){
-                    FormCode=value;
+                onSaved: (value) {
+                  FormCode = value;
                 },
-               validator: (FormCode){
-                  if(FormCode!=_code){
-                      return "invalid code";
-                  }
-                  else return null;
-               },
+                validator: (FormCode) {
+                  if (FormCode != _code) {
+                    return "invalid code";
+                  } else
+                    return null;
+                },
                 autofocus: true,
                 decoration: new InputDecoration(
                     labelText: 'enter the code sent to the buyer'),
@@ -75,15 +78,14 @@ String FormCode="";
     );
   }
 
-  Widget build (BuildContext context){
+  Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FirestoreServices.getRequestDetails(itemID),
-      builder: (context, snapshot) {
-              return !snapshot.hasData
-                  ? Center(child: CircularProgressIndicator())
-                  : buildPage(context, snapshot.data);
-      }
-    );
+        future: FirestoreServices.getRequestDetails(itemID),
+        builder: (context, snapshot) {
+          return !snapshot.hasData
+              ? Center(child: CircularProgressIndicator())
+              : buildPage(context, snapshot.data);
+        });
   }
 
   @override
@@ -111,13 +113,13 @@ String FormCode="";
             child: new Container(
               margin: new EdgeInsets.only(left: 10.0, right: 10.0),
               child: new SizedBox(
-                height: MediaQuery.of(context).size.height-170,
+                height: MediaQuery.of(context).size.height - 170,
                 child: new Card(
                     child: Row(children: <Widget>[
                   Expanded(
-                    child: ListView(
+                      child: ListView(
                     children: <Widget>[
-                      itemImage(_path),
+                      ImageSlider(itemID, 200.0),
                       new Center(
                         widthFactor: MediaQuery.of(context).size.width / 2,
                         child: new ListTile(
@@ -127,6 +129,10 @@ String FormCode="";
                           ),
                         ),
                       ),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
                       new ListTile(
                         title: new Text(
                           "Description",
@@ -134,6 +140,12 @@ String FormCode="";
                         ),
                         subtitle: new Text("$_decription"),
                       ),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
                       new ListTile(
                         leading: new Icon(Icons.transform),
                         title: new Text("$_State"),
@@ -154,6 +166,19 @@ String FormCode="";
                             )),
                         leading: new Icon(Icons.location_on),
                       ),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
+                      Container(height: 300, child: GoogleMaps(itemID)),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
                       new ListTile(
                         title: new Text(
                           "from :${_startDate.substring(0, 16)} to:${_endDate.substring(0, 16)}",
@@ -176,130 +201,102 @@ String FormCode="";
     );
   }
 
-Widget buildBottomBar()
-{
-  return new Builder(builder: (BuildContext context) {
-            print("IAM INSIDE $_State  lama");
-            if(_State=="Waiting for acceptance"){
-              print("w8ing acceptance");
-              return BottomNavigationBar(
-                
-              onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: (){
-                      FirebaseService.UpdateRequestState(itemID, "Waiting for pickup");
-                      Navigator.pop(context);
-                      }
+  Widget buildBottomBar() {
+    return new Builder(builder: (BuildContext context) {
+      print("IAM INSIDE $_State  lama");
+      if (_State == "Waiting for acceptance") {
+        print("w8ing acceptance");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.check),
+                  onPressed: () {
+                    FirebaseService.UpdateRequestState(
+                        itemID, "Waiting for pickup");
+                    Navigator.pop(context);
+                  }),
+              title: Text('Accept'),
+            ),
+            BottomNavigationBarItem(
+              icon: IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  FirebaseService.DeleteRequest(itemID);
 
-                  ),
-                  title: Text('Accept'),
-                ),
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.cancel),
-                    onPressed: (){
-                      FirebaseService.DeleteRequest(itemID);
-
-                        Navigator.pop(context);
-
-                    },
-                    ),
-                  title: Text('Reject'),
-                ),
-              ],
-            );
-
-            }else if (_State=="Waiting for pickup") {
-              print("w8ing piickup");
-              return BottomNavigationBar(
-
-              onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.confirmation_number),
-                    onPressed: (){
-                      _showDialog();
-                      }
-
-                  ),
-                  title: Text('send pickup confirmation code'),
-                ),
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.cancel),
-                    onPressed: (){
-                      FirebaseService.DeleteRequest(itemID);
-                      }
-
-                  ),
-                  title: Text('Cancel'),
-                ),
-              ],
-            );
-
-            }
-             else if(_State=="On Rent"){
-              print("on rent now!");
-              return BottomNavigationBar(
-            
-
-                 onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.refresh),
-
-                  ),
-                  title: Text('Rented to $_BuyerID'),
-                ),
-                BottomNavigationBarItem(
-                  title: Text('Chat with $_BuyerID'),
-                  icon: Icon(Icons.chat)),
-
-              ],
-              );
-
-            }else if(_State=="Complete"){
-              print("COMPLETED");
-              return BottomNavigationBar(
-
-              onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: (){
-                      FirebaseService.DeleteRequest(itemID);
-                      }
-
-                  ),
-                  title: Text('Delete'),
-                ),
-                 BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.star_half),
-                    onPressed: (){
-                     //pop the rate
-                      }
-
-                  ),
-                  title: Text('Rate $_BuyerID'),
-                ),
-              ],
-            );
-
-            }
-
-          }
-          );
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text('Reject'),
+            ),
+          ],
+        );
+      } else if (_State == "Waiting for pickup") {
+        print("w8ing piickup");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.confirmation_number),
+                  onPressed: () {
+                    _showDialog();
+                  }),
+              title: Text('send pickup confirmation code'),
+            ),
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.cancel),
+                  onPressed: () {
+                    FirebaseService.DeleteRequest(itemID);
+                  }),
+              title: Text('Cancel'),
+            ),
+          ],
+        );
+      } else if (_State == "On Rent") {
+        print("on rent now!");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                icon: Icon(Icons.refresh),
+              ),
+              title: Text('Rented to $_BuyerID'),
+            ),
+            BottomNavigationBarItem(
+                title: Text('Chat with $_BuyerID'), icon: Icon(Icons.chat)),
+          ],
+        );
+      } else if (_State == "Complete") {
+        print("COMPLETED");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    FirebaseService.DeleteRequest(itemID);
+                  }),
+              title: Text('Delete'),
+            ),
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.star_half),
+                  onPressed: () {
+                    //pop the rate
+                  }),
+              title: Text('Rate $_BuyerID'),
+            ),
+          ],
+        );
+      }
+    });
+  }
 }
-
-}
-
 
 class itemImage extends StatelessWidget {
   String path;

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
 import 'package:rento/components/ProfileCard.dart';
@@ -220,6 +221,7 @@ class RentItemState extends State<RentItem> {
     return ListView(
       children: <Widget>[
         ImageSlider(widget.itemID ,200.0),
+        SizedBox(height: 15),
         new Center(
           widthFactor: MediaQuery.of(context).size.width / 2,
           child: new ListTile(
@@ -229,6 +231,11 @@ class RentItemState extends State<RentItem> {
             ),
           ),
         ),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
         new ListTile(
           title: new Text(
             "Description",
@@ -236,6 +243,12 @@ class RentItemState extends State<RentItem> {
           ),
           subtitle: new Text("$_decription"),
         ),
+        SizedBox(height: 15),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
         new ListTile(
           leading: new Icon(Icons.category),
           title: new Text("$_category"),
@@ -256,6 +269,22 @@ class RentItemState extends State<RentItem> {
               )),
           leading: new Icon(Icons.location_on),
         ),
+        SizedBox(height: 15),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
+        Container(
+            height: 300,
+            child: GoogleMaps(itemID),
+        ),
+        SizedBox(height: 15),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
         new ListTile(
           title: Text("Starting Date:"),
           subtitle: new IconButton(

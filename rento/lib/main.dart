@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/components/GoogleMap.dart';
+import 'package:rento/components/RentalHistorySlider.dart';
 //pages
 import 'UIs/LoginScreen2.dart';
 import 'UIs/RentalHistory.dart';
@@ -40,7 +42,7 @@ class MyAppState extends State<MyApp> {
       home: UserAuth.isLoggedIn() ?  MainPage(): LoginScreen2(),
       routes: <String, WidgetBuilder>{
         '/LoginScreen2' : (BuildContext context) => new LoginScreen2(),
-//'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
+        //'/ItemPage' : (BuildContext context) => new ItemPage("deHPdJNYm582VcJSRx5w"),
         '/RentalHistory' : (BuildContext context) => new RentalHistory(),
         '/RHBuyer' : (BuildContext context)=> new RHBuyer(),
         '/ProfilePage': (BuildContext context) => new ProfilePage(),
@@ -50,6 +52,8 @@ class MyAppState extends State<MyApp> {
         '/MainPage': (BuildContext context) => new MainPage(),
         '/ItemList' : (BuildContext context) => new ItemList(),
         '/Wishlist' : (BuildContext context) => new Wishlist(),
+        '/RentalHistorySlider' : (BuildContext context) => new RentalHistorySlider(),
+        '/GoogleMaps' : (BuildContext context) => new GoogleMaps(""),
       },
     );
   }
