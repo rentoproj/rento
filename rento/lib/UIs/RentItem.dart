@@ -6,6 +6,7 @@ import 'package:rento/api/services.dart';
 import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
 import 'package:rento/components/ProfileCard.dart';
+import 'OtherProfile.dart';
 
 class RentItem extends StatefulWidget {
   final String itemID;
@@ -229,6 +230,7 @@ class RentItemState extends State<RentItem> {
             ),
           ),
         ),
+        new ProfileCard(_sellerID),
         new ListTile(
           title: new Text(
             "Description",

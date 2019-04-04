@@ -296,7 +296,7 @@ Widget buildBottomBar()
                      showDialog(
                         context: context,
                         builder: (_) {
-                          return RateDialoge();
+                          return RateDialoge(_SellerID, _BuyerID);
                         });
                       }
 
@@ -334,17 +334,20 @@ class itemImage extends StatelessWidget {
 //RATE DIALOG
 class RateDialoge extends StatefulWidget {
   @override
-  DialogState createState() => DialogState();
+  String sellerID, buyerID;
+  RateDialoge(this.sellerID, this.buyerID);
+  DialogState createState() => DialogState(sellerID, buyerID);
 }
 
 class DialogState extends State<RateDialoge> {
   double itemRating = 1, userRating = 1;
-  String comment;
+  String comment, sellerID, buyerID;
+  DialogState(this.sellerID, buyerID);
   Widget build(BuildContext context) {
     return SimpleDialog(
       children: <Widget>[
         Text(
-          'Rate the User',
+          'Rate this buyer',
           textAlign: TextAlign.center,
           style: new TextStyle(fontSize: 25),
         ),
@@ -389,10 +392,9 @@ class DialogState extends State<RateDialoge> {
           child: Text('OK'),
           textColor: Colors.blue,
           onPressed: () {
-            // FirebaseService.UpdateRate(this._SellerID, _FinalRate);
-            // FirebaseService.AddRate(this._BuyerID, this._SellerID,
-            //     this.comment, this.userRating, DateTime.now());
-            print("object");
+            // FirebaseService.UpdateRate(this.sellerID, userRating); SEEMS USELSESS AFTER UPDATING ADDUSERRATE
+            FirebaseService.AddUserRate(buyerID, sellerID,
+            this.comment, this.userRating, DateTime.now());
             Navigator.pop(context);
           },
         )
@@ -400,5 +402,3 @@ class DialogState extends State<RateDialoge> {
     );
   }
 }
-
-/// FirebaseTodos.getTodo("-KriJ8Sg4lWIoNswKWc4").then(_updateTodo);

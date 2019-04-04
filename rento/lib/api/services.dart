@@ -46,15 +46,7 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
-  static void UpdateRate(ID,Rate){
-   
-    Firestore.instance.collection('Users').document(ID).updateData(
-      {
-        'ProfileRate':Rate,
-        
-      }
-    );
-  }
+
   static void ItemupdateData(ID,n,int p,b){
     print("entered");
     print("$n $p $b");
@@ -103,15 +95,26 @@ class FirebaseService {
     });
 
   }
-  static void AddRate(Seller,Buyer,comment,rate,date)
+  static void AddUserRate(userID, commenter, comment, rate, date)
   {
     Firestore.instance.collection('UserRates').add({
-      'CommenterID': Seller,
-      'UserID': Buyer,
+      'CommenterID': commenter,
+      'UserID': userID,
       'Date': date,
       'Rate': rate,
       'Comment': comment,
-      
+    }).then((onValue){
+      Firestore.instance.collection('UserRates').where('UserID', isEqualTo: userID).getDocuments()
+      .then((snapshots){
+        int count = snapshots.documents.length;
+        double total =0;
+        for (int i =0; i<count;i++)
+        {
+          total += snapshots.documents[i].data[rate];
+        }
+        double avg = total/count;
+        Firestore.instance.collection('Users').document(userID).setData({'ProfileRate':avg});
+      });
     });
 
   }
@@ -121,7 +124,7 @@ class FirebaseService {
     Firestore.instance.collection("Users").document(email).setData(
       {
         'Bio': "",
-        'ProfileRate':0,
+        'ProfileRate':0.00001,
         'isBanned': false,
         'name': name,
         'phone':phone,
@@ -174,6 +177,20 @@ class FirebaseService {
   {
     print("delete entered");
     return Firestore.instance.collection('Wishlist').document(id).delete();
+  }
+
+  static void addItemRate({String itemID, double rate})
+  {
+    Firestore.instance.collection('Item').document(itemID).get().then((onValue){
+      double totalRate = onValue.data['Rate'];
+      int count = onValue.data['RateCount'];
+      count++;
+      totalRate += rate;
+      Firestore.instance.collection('Item').document(itemID).setData({
+        'Rate':totalRate,
+        'RateCount':count,
+        });
+    });
   }
 }
 

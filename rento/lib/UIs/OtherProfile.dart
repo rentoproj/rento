@@ -212,7 +212,7 @@ class ProfileState extends State<OtherProfile> {
           color: Colors.black54,
         ),
         Text(
-          "You don't have any comments yet",
+          "There are no comments for this user yet",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black54),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rento/api/services.dart';
+import 'MainPage.dart';
 class LoginScreen2 extends StatefulWidget {
   @override
   _LoginScreen2State createState() => new _LoginScreen2State();
@@ -335,7 +336,8 @@ class _LoginScreen2State extends State<LoginScreen2>
                                 .then((FirebaseUser user) {
                               print("success TO LOGIN");
                               //FirebaseAuth.instance.signOut();
-                              Navigator.of(context).pushNamed('/MainPage');
+                              Navigator.of(context)..pushReplacement(
+                                    MaterialPageRoute(builder: (context)=>MainPage()));
                             }).catchError((e) {
                               print("fail TO LOGIN");
                               print('Error: $e');
@@ -739,7 +741,9 @@ class _LoginScreen2State extends State<LoginScreen2>
                                   FirebaseAuth.instance
                                     .signInWithEmailAndPassword(email: email, password: password).then((FirebaseUser user) {
                                   print("success TO LOGIN");
-                                  Navigator.of(context).pushNamed('/MainPage');});
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context)=>MainPage())
+                                   );});
                             }).catchError((e) {
                               print('Error: $e');
                               Scaffold.of(context).showSnackBar(

@@ -31,7 +31,9 @@ class ProfileCard extends StatelessWidget {
   buildDetails(BuildContext context, DocumentSnapshot data){
     String imgURL = data.data['photoURL'];
     String name = data.data['name'];
-    double rate = data.data['ProfileRate'];
+    dynamic d = data.data['ProfileRate'];
+    print ("WHY CANT U HANDLE THIS FFS $d");
+    double rate = d+0000.1;
     print("BUILD ENTERED AT PROFILE CARD");
     return InkWell(
         onTap: () {

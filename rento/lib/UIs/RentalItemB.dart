@@ -258,7 +258,7 @@ class RentalItemStateB extends State<RentalItemB> {
                     showDialog(
                         context: context,
                         builder: (_) {
-                          return RateDialoge();
+                          return RateDialoge(_SellerID, _BuyerID, itemID);
                         });
                   }),
               title: Text('Rate $_SellerID'),
@@ -290,12 +290,15 @@ class itemImage extends StatelessWidget {
 
 class RateDialoge extends StatefulWidget {
   @override
-  DialogState createState() => DialogState();
+  String sellerID, buyerID, itemID;
+  RateDialoge(this.sellerID, this.buyerID, this.itemID);
+  DialogState createState() => DialogState(sellerID, buyerID, itemID);
 }
 
 class DialogState extends State<RateDialoge> {
   double itemRating = 1, userRating = 1;
-  String comment;
+  String comment, sellerID, buyerID, itemID;
+  DialogState(this.sellerID, this.buyerID, this.itemID);
   Widget build(BuildContext context) {
     return SimpleDialog(
       children: <Widget>[
@@ -314,7 +317,7 @@ class DialogState extends State<RateDialoge> {
           ),
         ),
         Text(
-          'Rate the User',
+          'Rate this buyer',
           textAlign: TextAlign.center,
           style: new TextStyle(fontSize: 25),
         ),
@@ -359,10 +362,10 @@ class DialogState extends State<RateDialoge> {
           child: Text('OK'),
           textColor: Colors.blue,
           onPressed: () {
-            // FirebaseService.UpdateRate(this._SellerID, _FinalRate);
-            // FirebaseService.AddRate(this._BuyerID, this._SellerID,
-            //     this.comment, this.userRating, DateTime.now());
-            print("object");
+            // FirebaseService.UpdateRate(this.sellerID, userRating); SEEMS USELSESS AFTER UPDATING ADDUSERRATE
+            FirebaseService.AddUserRate(sellerID, buyerID, this.comment,
+                this.userRating, DateTime.now());
+              FirebaseService.addItemRate(itemID: itemID, rate: itemRating);
             Navigator.pop(context);
           },
         )
