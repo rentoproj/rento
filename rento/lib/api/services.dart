@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'DatesChecker.dart';
 
 class FirebaseService {
   FirebaseService() {
@@ -206,15 +207,23 @@ class UserAuth{
 
   static bool isLoggedIn()
   {
-    if (user == null)
+    if (user == null){
+      DatesChecker.destroy();
       return false;
+    }
 
-    else return true;
+    else
+    {
+      new DatesChecker(user.email);
+      return true;
+    } 
   }
 
   static Future <void> logout()
   {
-    return FirebaseAuth.instance.signOut();
+    return FirebaseAuth.instance.signOut().whenComplete((){
+      DatesChecker.destroy();
+    });
   }
 
   static String getEmail()
