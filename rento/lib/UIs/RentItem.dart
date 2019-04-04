@@ -133,7 +133,7 @@ class RentItemState extends State<RentItem> {
                                       name: _name,
                                       location: _location,
                                       desc: _decription,
-                                      code: _code);
+                                      code: _code.toString());
                                   Navigator.of(context)
                                       .pushReplacementNamed('/RentalHistory');
                                 },
@@ -215,6 +215,14 @@ class RentItemState extends State<RentItem> {
     this._price = data['price'];
     this._category = data['category'];
     this._sellerID = data['sellerID'];
+    int count = data['RateCount'];
+    double totalRate = data['Rate'];
+    //make sure no divisin by zero happens
+    this._rate = count == 0 
+    ?0
+    :totalRate/count;
+    //rate calculation end
+    
     print(_path);
     print(_name);
 

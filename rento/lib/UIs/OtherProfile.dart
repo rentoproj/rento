@@ -25,14 +25,6 @@ class ProfileState extends State<OtherProfile> {
   ProfileState(this.profileID);
   double rating;
   String intName, intPhone, intBio, imageURL, email;
-  List<cmnt> comments = [
-    new cmnt(
-        "very understanding seller", DateTime.now(), "Sami", "Good seller"),
-    new cmnt("always returns items on time", DateTime.now(), "Khalid",
-        "always on time"),
-    new cmnt("Definilty would rent item to him again !", DateTime.now(),
-        "Basim Banjar", "Likes")
-  ];
 
   @override
   Widget build(BuildContext context) {

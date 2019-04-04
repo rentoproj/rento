@@ -163,6 +163,13 @@ class MyItemState extends State<MyItem> {
     this._path = data['photo'];
     this._price = data['price'];
     this._category = data['category'];
+    int count = data['RateCount'];
+    double totalRate = data['Rate'];
+    //make sure no divisin by zero happens
+    this._rate = count == 0 
+    ?0
+    :totalRate/count;
+    //rate calculation end
     
     print(_path);
     print(_name);

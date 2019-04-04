@@ -6,10 +6,6 @@ import 'package:rento/api/services.dart';
 import 'dart:math';
 import 'package:rento/components/StarRating.dart';
 
-double itemRating = 0;
-double userRating = 0;
-String comment = "";
-
 class RentalItemB extends StatefulWidget {
   final String itemID;
   RentalItemB(this.itemID);

@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:rento/components/StarRating.dart';
 
-
 //555
 class RentalItem extends StatefulWidget {
   final String itemID;
@@ -31,19 +30,17 @@ class RentalItemState extends State<RentalItem> {
   String _startDate = "";
   String _endDate = "";
   String _State = "";
-  String _CurrentRate="";
-  String _FinalRate="";
+  String _CurrentRate = "";
+  String _FinalRate = "";
   int _RatesLength = 0;
-  double _DoubleFinalRating=0.0;
+  double _DoubleFinalRating = 0.0;
 
-    String _code = "";
-String FormCode="";
- double itemRating = 0;
-  double userRating = 0;
+  String _code = "";
+  String FormCode = "";
   String comment;
- static const platform = const MethodChannel('sendSms');
-   
-   _showDialog() async {
+  static const platform = const MethodChannel('sendSms');
+
+  _showDialog() async {
     await showDialog<String>(
       context: context,
       child: new AlertDialog(
@@ -52,15 +49,15 @@ String FormCode="";
           children: <Widget>[
             new Expanded(
               child: new TextFormField(
-                onSaved: (value){
-                    FormCode=value;
+                onSaved: (value) {
+                  FormCode = value;
                 },
-               validator: (FormCode){
-                  if(FormCode!=_code){
-                      return "invalid code";
-                  }
-                  else return null;
-               },
+                validator: (FormCode) {
+                  if (FormCode != _code) {
+                    return "invalid code";
+                  } else
+                    return null;
+                },
                 autofocus: true,
                 decoration: new InputDecoration(
                     labelText: 'enter the code sent to the buyer'),
@@ -85,15 +82,14 @@ String FormCode="";
     );
   }
 
-  Widget build (BuildContext context){
+  Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FirestoreServices.getRequestDetails(itemID),
-      builder: (context, snapshot) {
-              return !snapshot.hasData
-                  ? Center(child: CircularProgressIndicator())
-                  : buildPage(context, snapshot.data);
-      }
-    );
+        future: FirestoreServices.getRequestDetails(itemID),
+        builder: (context, snapshot) {
+          return !snapshot.hasData
+              ? Center(child: CircularProgressIndicator())
+              : buildPage(context, snapshot.data);
+        });
   }
 
   @override
@@ -121,11 +117,11 @@ String FormCode="";
             child: new Container(
               margin: new EdgeInsets.only(left: 10.0, right: 10.0),
               child: new SizedBox(
-                height: MediaQuery.of(context).size.height-170,
+                height: MediaQuery.of(context).size.height - 170,
                 child: new Card(
                     child: Row(children: <Widget>[
                   Expanded(
-                    child: ListView(
+                      child: ListView(
                     children: <Widget>[
                       itemImage(_path),
                       new Center(
@@ -186,134 +182,106 @@ String FormCode="";
     );
   }
 
-Widget buildBottomBar()
-{
-  return new Builder(builder: (BuildContext context) {
-            print("IAM INSIDE $_State  lama");
-            if(_State=="Waiting for acceptance"){
-              print("w8ing acceptance");
-              return BottomNavigationBar(
-                
-              onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: (){
-                      FirebaseService.UpdateRequestState(itemID, "Waiting for pickup");
-                      Navigator.pop(context);
-                      }
+  Widget buildBottomBar() {
+    return new Builder(builder: (BuildContext context) {
+      print("IAM INSIDE $_State  lama");
+      if (_State == "Waiting for acceptance") {
+        print("w8ing acceptance");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.check),
+                  onPressed: () {
+                    FirebaseService.UpdateRequestState(
+                        itemID, "Waiting for pickup");
+                    Navigator.pop(context);
+                  }),
+              title: Text('Accept'),
+            ),
+            BottomNavigationBarItem(
+              icon: IconButton(
+                icon: Icon(Icons.cancel),
+                onPressed: () {
+                  FirebaseService.DeleteRequest(itemID);
 
-                  ),
-                  title: Text('Accept'),
-                ),
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.cancel),
-                    onPressed: (){
-                      FirebaseService.DeleteRequest(itemID);
-
-                        Navigator.pop(context);
-
-                    },
-                    ),
-                  title: Text('Reject'),
-                ),
-              ],
-            );
-
-            }else if (_State=="Waiting for pickup") {
-              print("w8ing piickup");
-              return BottomNavigationBar(
-
-              onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.confirmation_number),
-                    onPressed: (){
-                      _showDialog();
-                      }
-
-                  ),
-                  title: Text('send pickup confirmation code'),
-                ),
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.cancel),
-                    onPressed: (){
-                      FirebaseService.DeleteRequest(itemID);
-                      }
-
-                  ),
-                  title: Text('Cancel'),
-                ),
-              ],
-            );
-
-            }
-             else if(_State=="On Rent"){
-              print("on rent now!");
-              return BottomNavigationBar(
-            
-
-                 onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.refresh),
-
-                  ),
-                  title: Text('Rented to $_BuyerID'),
-                ),
-                BottomNavigationBarItem(
-                  title: Text('Chat with $_BuyerID'),
-                  icon: Icon(Icons.chat)),
-
-              ],
-              );
-
-            }else if(_State=="Complete"){
-              print("COMPLETED");
-              return BottomNavigationBar(
-
-              onTap: (int) {},
-              items: [
-                BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: (){
-                      FirebaseService.DeleteRequest(itemID);
-                      }
-
-                  ),
-                  title: Text('Delete'),
-                ),
-                 BottomNavigationBarItem(
-                  icon: IconButton(
-                    icon: Icon(Icons.star_half),
-                    onPressed: (){
-                     showDialog(
+                  Navigator.pop(context);
+                },
+              ),
+              title: Text('Reject'),
+            ),
+          ],
+        );
+      } else if (_State == "Waiting for pickup") {
+        print("w8ing piickup");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.confirmation_number),
+                  onPressed: () {
+                    _showDialog();
+                  }),
+              title: Text('send pickup confirmation code'),
+            ),
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.cancel),
+                  onPressed: () {
+                    FirebaseService.DeleteRequest(itemID);
+                  }),
+              title: Text('Cancel'),
+            ),
+          ],
+        );
+      } else if (_State == "On Rent") {
+        print("on rent now!");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                icon: Icon(Icons.refresh),
+              ),
+              title: Text('Rented to $_BuyerID'),
+            ),
+            BottomNavigationBarItem(
+                title: Text('Chat with $_BuyerID'), icon: Icon(Icons.chat)),
+          ],
+        );
+      } else if (_State == "Complete") {
+        print("COMPLETED");
+        return BottomNavigationBar(
+          onTap: (int) {},
+          items: [
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    FirebaseService.DeleteRequest(itemID);
+                  }),
+              title: Text('Delete'),
+            ),
+            BottomNavigationBarItem(
+              icon: IconButton(
+                  icon: Icon(Icons.star_half),
+                  onPressed: () {
+                    showDialog(
                         context: context,
                         builder: (_) {
                           return RateDialoge(_SellerID, _BuyerID);
                         });
-                      }
-
-                  ),
-                  title: Text('Rate $_BuyerID'),
-                ),
-              ],
-            );
-
-            }
-
-          }
-          );
+                  }),
+              title: Text('Rate $_BuyerID'),
+            ),
+          ],
+        );
+      }
+    });
+  }
 }
-
-}
-
 
 class itemImage extends StatelessWidget {
   String path;
@@ -393,8 +361,8 @@ class DialogState extends State<RateDialoge> {
           textColor: Colors.blue,
           onPressed: () {
             // FirebaseService.UpdateRate(this.sellerID, userRating); SEEMS USELSESS AFTER UPDATING ADDUSERRATE
-            FirebaseService.AddUserRate(buyerID, sellerID,
-            this.comment, this.userRating, DateTime.now());
+            FirebaseService.AddUserRate(buyerID, sellerID, this.comment,
+                this.userRating, DateTime.now());
             Navigator.pop(context);
           },
         )

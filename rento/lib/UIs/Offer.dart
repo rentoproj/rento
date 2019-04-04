@@ -244,7 +244,9 @@ class _OfferItemPageState extends State<OfferItem> {
                   'price': this.itemPrice,
                   'location': this.itemLocation,
                   'photo': onValue,
-                  'sellerID': UserAuth.getEmail()
+                  'sellerID': UserAuth.getEmail(),
+                  'RateCount' : 0,
+                  'Rate' : 0.00001,
                 }).then((result) {
                   print('d5lt wlllaah');
                   

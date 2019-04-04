@@ -77,7 +77,7 @@ class FirebaseService {
     .where("ItemID", isEqualTo: ItemID)
     .delete();*/
   }
-  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc,int code})
+  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc, String code})
   {
     Firestore.instance.collection('Requests').add({
       'BuyerID': buyerID,
@@ -219,7 +219,6 @@ class UserAuth{
 
   static String getEmail()
   {
-    print("pre email getter no email ?");
     return user.email;
   }
 }
