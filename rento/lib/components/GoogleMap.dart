@@ -1,161 +1,129 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:geolocator/geolocator.dart';
-import 'package:geo_location_finder/geo_location_finder.dart';
-// import 'package:location/location.dart';
- import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:rento/api/FirestoreServices.dart';
 
 class GoogleMaps extends StatefulWidget {
-  double hight, width;
-  String itemID;
-  Marker marker;
-  double currentLat = 0.0, currentLong = 0.0;
-  
-  GoogleMaps(this.hight, this.width, this.itemID);
-
-  _GoogleMapsState createState() => _GoogleMapsState();
+  @override
+  _MyAppState createState() => _MyAppState();
+  String itemID = "";
+  GoogleMaps(this.itemID);
 }
 
-class _GoogleMapsState extends State<GoogleMaps>  {
-  GoogleMapController mapController;
-  //Position position ;
-  String _result;
-  double lat = 32.4325, lng = -23.2345452;
-  
-  _GoogleMapsState();
-  void initState() { 
-    super.initState();
-    String _result = 'Unknown';
-    lat = 32.4325; 
-    lng = -23.2345452;
-    _getLocation(context);
-    // Geolocator().getCurrentPosition().then((current){
-    //   setState(() {
-    //     widget.currentLat = current.latitude;
-    //     widget.currentLong = current.longitude;
-    //   });
-    // });
+class _MyAppState extends State<GoogleMaps> {
+  Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _marker = {};
+  var geo = Geolocator();
+  static double latitude = 11.5481917, longitude = 42.0491457;
+  LatLng _lastMapPosition = LatLng(latitude, longitude);
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-       child: Stack(
-         children: <Widget>[
-           _googleMap(context),
-           //_zoomInOut(),
-           _setLocation(widget.currentLat, widget.currentLong),
-           //_getMyLocation(),
-         ],
-
-       ),
-    );
-  }
-
-  Widget _googleMap(BuildContext contetx) {
-    return Container(
-      child: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(lat, lng), zoom: 12),
-        onMapCreated: (controller){
-          setState(() {
-            mapController = controller;
-          });
-        },
-        
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.itemID != "" 
+              ? FirestoreServices.getLatLng(widget.itemID).then((snapshot){
+                print(snapshot.data['Lat']);
+                  _lastMapPosition = LatLng(snapshot.data['Lat'], snapshot.data['Lng']);
+                  print("HENAAAA"+_lastMapPosition.toString());
+                  _moveTo(_lastMapPosition);
+              })     
+              : _onACurrentButtonPressed();
+    _marker.add(Marker(
+      markerId: MarkerId(_lastMapPosition.toString()),
+      position: _lastMapPosition,
+      infoWindow: InfoWindow(
+        title: 'Item Name',
+        snippet: 'seller name',
       ),
+      icon: BitmapDescriptor.defaultMarker,
+    ));
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+            children: <Widget>[
+              GoogleMap(
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _lastMapPosition,
+                  zoom: 8.0,
+                ),
+                markers: _marker,
+                onCameraMove: _onCameraMove,
+              ),
+              widget.itemID != "" 
+              ? Container()
+              : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Align(
+                alignment: Alignment.topRight,
+                child: Column(
+                  children: <Widget>[
+                    FloatingActionButton(
+                      onPressed: _onAddMarkerButtonPressed,
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: Colors.deepOrange,
+                      child: const Icon(Icons.add_location, size: 36.0),
+                    ),
+                    SizedBox(height: 16.0),
+                    FloatingActionButton(
+                      onPressed: _onACurrentButtonPressed,
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: Colors.deepOrange,
+                      child: const Icon(Icons.gps_fixed, size: 36.0),
+                    ),
+                  ],
+                ),
+              ),
+              ),
+            ],
     );
   }
 
-  Widget _zoomInOut() {
+  LatLng get _getLatLng => _lastMapPosition;
+  
+  void _moveTo(LatLng position) async{
+    final GoogleMapController controller =  await _controller.future;
+    print("Currunt"+_lastMapPosition.toString());
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target:_lastMapPosition, zoom: 15)));
+    _onAddMarkerButtonPressed();
 
   }
 
-  Widget _setLocation(double latitude, double longitude) {
-   return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Align(
-      alignment: Alignment.topRight,
-      child: FloatingActionButton(
-        onPressed: () => _setMarker(),
-       materialTapTargetSize: MaterialTapTargetSize.padded,
-       backgroundColor: Colors.deepOrangeAccent,
-       child: const Icon(Icons.location_on, size: 36.0),
-     ),
-   ),
-  );
-    // _setPosition(latitude, longitude);
-    // return widget.marker = Marker(
-    //   markerId: MarkerId(widget.itemID),
-    //   position: LatLng(latitude, longitude),
-    //   infoWindow: InfoWindow(title: "Pickup Location"),
-    // );
-  }
-
-  _setMarker() async{
-    print(_result);
+  void _onAddMarkerButtonPressed() {
     setState(() {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      target: LatLng(lat, lng))));
-     });
+      _marker.clear();
+      _marker.add(Marker(
+        // This marker id can be anything that uniquely identifies each marker.
+        markerId: MarkerId(_lastMapPosition.toString()),
+        position: _lastMapPosition,
+        infoWindow: InfoWindow(
+          title: 'Item Name',
+          snippet: 'Seller Name',
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+    });
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    _lastMapPosition = position.target;
+  }
+  void _onACurrentButtonPressed() {
+    geo.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((_position)async{
+      final GoogleMapController controller =  await _controller.future;
+      _lastMapPosition =LatLng(_position.latitude, _position.longitude);
+      print("Currunt"+_lastMapPosition.toString());
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target:_lastMapPosition, zoom: 15)));
+      _onAddMarkerButtonPressed();
+    });
     
-   // mapController.animateCamera(CameraUpdate(
-
-   // ));
-    //print("HEREEeeee{$position}");
-    //List<Placemark> placemark = await Geolocator().placemarkFromAddress(position);
-//     var location = new Location();
-
-// location.onLocationChanged().listen((LocationData currentLocation) {
-//   print(currentLocation.latitude);
-//   print(currentLocation.longitude);
-//   print(currentLocation.accuracy);
-//   print(currentLocation.altitude);
-//   print(currentLocation.speed);
-//   print(currentLocation.heading);
-// });
   }
-
-  _getMyLocation(){
-
-  }
-  // Future<void> _setPosition(double latitude, double longitude) async{
-  //   final GoogleMapController controller = await _controller.future;
-  //   controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude, longitude))));
-  // }
-  Future<void> _getLocation(BuildContext context) async {
-      Map<dynamic, dynamic> locationMap;
-
-      String result;
-
-      try {
-        locationMap = await GeoLocation.getLocation;
-        var status = locationMap["status"];
-        if ((status is String && status == "true") ||
-            (status is bool) && status) {
-          lat = locationMap["latitude"];
-          lng = locationMap["longitude"];
-
-          if (lat is String) {
-            result = "Location: ($lat, $lng)";
-          } else {
-            // lat and lng are not string, you need to check the data type and use accordingly.
-            // it might possible that else will be called in Android as we are getting double from it.
-            result = "Location: ($lat, $lng)";
-          }
-        } else {
-          result = locationMap["message"];
-        }
-      } on PlatformException {
-        result = 'Failed to get location';
-      }
-
-      if (!mounted) return;
-
-      setState(() {
-        _result = result;
-      });
-    }
-
 }

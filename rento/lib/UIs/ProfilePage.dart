@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/components/Avatar.dart';
 import 'package:rento/components/SideMenu.dart';
@@ -19,12 +20,7 @@ class cmnt {
 
 class Profile extends State<ProfilePage> {
   double rating = 3;
-    String intName, intPhone, intBio, imageURL, email;
-  List<cmnt> comments = [
-    new cmnt("very understanding seller", DateTime.now(), "Sami", "Good seller"),
-    new cmnt("always returns items on time", DateTime.now(), "Khalid", "always on time"),
-    new cmnt("Definilty would rent item to him again !", DateTime.now(), "Basim Banjar", "Likes")
-  ];
+  String intName, intPhone, intBio, imageURL, email;
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +42,12 @@ class Profile extends State<ProfilePage> {
         body: Column(children: <Widget>[
           SizedBox(height: 20.0),
           FutureBuilder(
-            future: FirestoreServices.getProfileDetails(UserAuth.getEmail()),
-            builder:(context, snapshot){
+              future: FirestoreServices.getProfileDetails(UserAuth.getEmail()),
+              builder: (context, snapshot) {
                 return !snapshot.hasData
-                ? Center(child: CircularProgressIndicator())
-                : _buildWidgets(context, snapshot.data);
-            }
-          ),
+                    ? Center(child: CircularProgressIndicator())
+                    : _buildWidgets(context, snapshot.data);
+              }),
           //USER DESCRIPTION
           new Padding(
               padding: EdgeInsets.all(15),
@@ -71,19 +66,16 @@ class Profile extends State<ProfilePage> {
                   starCount: 5,
                   rating: rating,
                   size: 30,
-                  onRatingChanged: (rating) =>
-                      setState(() => this.rating = rating),
                 ),
               ])),
 
           Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: comments.length,
-              itemBuilder: (context, index) {
-                final comment = comments[index];
-                return new Comment(comment._text, comment._dateTime,
-                    comment._uName, comment._head);
+            child: StreamBuilder(
+              stream: FirestoreServices.getUserRates(UserAuth.getEmail()),
+              builder: (context, snapshot) {
+                return snapshot == null
+                    ? CircularProgressIndicator()
+                    : buildComments(context, snapshot.data.documents);
               },
             ),
           )
@@ -91,22 +83,30 @@ class Profile extends State<ProfilePage> {
   }
 
   Widget _buildUserIdentity(String user, String photo) {
-    photo == null || photo == "" ?  photo = "https://cdn1.iconfinder.com/data/icons/avatar-1-2/512/User2-512.png" : photo = photo;
+    photo == null || photo == ""
+        ? photo =
+            "https://cdn1.iconfinder.com/data/icons/avatar-1-2/512/User2-512.png"
+        : photo = photo;
     return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           new Padding(
-            child:  
-            new CircleAvatar(
+            child: new CircleAvatar(
               radius: 60.0,
               backgroundColor: Colors.grey,
               backgroundImage:
-              photo != null && photo != "" ? new NetworkImage(photo) : null,
+                  photo != null && photo != "" ? new NetworkImage(photo) : null,
               // backgroundImage: user.avatarUrl != null ? new NetworkImage(
               //     user.avatarUrl) : null,
-              child: photo == null || photo == "" ? Icon(Icons.account_circle, size: 140, color: Colors.black54,) : null,              
+              child: photo == null || photo == ""
+                  ? Icon(
+                      Icons.account_circle,
+                      size: 140,
+                      color: Colors.black54,
+                    )
+                  : null,
             ),
             padding: const EdgeInsets.only(right: 15.0),
           ),
@@ -115,8 +115,8 @@ class Profile extends State<ProfilePage> {
               new Padding(
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: new Text(user,
-                    style: new TextStyle(fontWeight: FontWeight.bold, 
-                    fontSize: 18)),
+                    style: new TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18)),
               ),
             ],
           )
@@ -159,20 +159,59 @@ class Profile extends State<ProfilePage> {
         ));
   }
 
-  _buildWidgets(BuildContext context, dynamic data)
-  {
+  _buildWidgets(BuildContext context, dynamic data) {
     this.imageURL = data['photoURL'];
     this.intBio = data['Bio'];
     this.intName = data['name'];
     this.intPhone = data['phone'];
+    dynamic d = data['ProfileRate'];
+    this.rating = d+0.1;
+    print("THIS RATING $rating");
     return Column(
       children: <Widget>[
-      //  _buildUserIdentity(intName),
-       Avatar(imageURL, 200.0),
-       Divider(),
-       _bibleField(),
-       Divider(),
-       
-    ],);
+        //  _buildUserIdentity(intName),
+        Avatar(imageURL, 200.0),
+        Divider(),
+        _bibleField(),
+        Divider(),
+      ],
+    );
+  }
+
+  buildComments(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return snapshot.length == 0
+    ?_noDataFound()
+    :ListView.builder(
+      shrinkWrap: true,
+      itemCount: snapshot.length,
+      physics: ClampingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        DocumentSnapshot doc = snapshot[index];
+        String text = doc.data['Comment'];
+        DateTime date = doc.data['Date'];
+        String uName = doc.data['CommenterID'];
+        return new Comment(
+            text, date.toString().substring(0, 16), uName, "");
+      },
+    );
+  }
+
+  Widget _noDataFound() {
+    return Center(
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        Icon(
+          Icons.mood_bad,
+          size: 40,
+          color: Colors.black54,
+        ),
+        Text(
+          "You don't have any comments yet",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black54),
+        ),
+      ]),
+    );
   }
 }

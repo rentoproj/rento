@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
 import 'package:rento/components/ProfileCard.dart';
+import 'OtherProfile.dart';
+
 class RentItem extends StatefulWidget {
   final String itemID;
   RentItem(this.itemID);
@@ -80,7 +83,10 @@ class RentItemState extends State<RentItem> {
     final sizedBox = new Container(
       margin: new EdgeInsets.only(left: 10.0, right: 10.0),
       child: new SizedBox(
-        height: MediaQuery.of(context).size.height - 160,
+
+
+        height: MediaQuery.of(context).size.height - 166,
+
         child: description,
       ),
     );
@@ -128,7 +134,7 @@ class RentItemState extends State<RentItem> {
                                       name: _name,
                                       location: _location,
                                       desc: _decription,
-                                      code: _code);
+                                      code: _code.toString());
                                   Navigator.of(context)
                                       .pushReplacementNamed('/RentalHistory');
                                 },
@@ -210,13 +216,21 @@ class RentItemState extends State<RentItem> {
     this._price = data['price'];
     this._category = data['category'];
     this._sellerID = data['sellerID'];
+    int count = data['RateCount'];
+    double totalRate = data['Rate'];
+    //make sure no divisin by zero happens
+    this._rate = count == 0 
+    ?0
+    :totalRate/count;
+    //rate calculation end
+    
     print(_path);
     print(_name);
-    print(_sellerID + " THIS IS THE USER ID");
 
     return ListView(
       children: <Widget>[
         ImageSlider(widget.itemID ,200.0),
+        SizedBox(height: 15),
         new Center(
           widthFactor: MediaQuery.of(context).size.width / 2,
           child: new ListTile(
@@ -227,6 +241,11 @@ class RentItemState extends State<RentItem> {
           ),
         ),
         new ProfileCard(_sellerID),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
         new ListTile(
           title: new Text(
             "Description",
@@ -234,6 +253,12 @@ class RentItemState extends State<RentItem> {
           ),
           subtitle: new Text("$_decription"),
         ),
+        SizedBox(height: 15),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
         new ListTile(
           leading: new Icon(Icons.category),
           title: new Text("$_category"),
@@ -254,6 +279,22 @@ class RentItemState extends State<RentItem> {
               )),
           leading: new Icon(Icons.location_on),
         ),
+        SizedBox(height: 15),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
+        Container(
+            height: 300,
+            child: GoogleMaps(itemID),
+        ),
+        SizedBox(height: 15),
+        new Divider(
+          color: Colors.redAccent,
+          indent: 16.0,
+        ),
+        SizedBox(height: 15),
         new ListTile(
           title: Text("Starting Date:"),
           subtitle: new IconButton(

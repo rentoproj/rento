@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'DatesChecker.dart';
 
 class FirebaseService {
   FirebaseService() {
@@ -46,6 +47,7 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+
   static void ItemupdateData(ID,n,int p,b){
     print("entered");
     print("$n $p $b");
@@ -76,7 +78,7 @@ class FirebaseService {
     .where("ItemID", isEqualTo: ItemID)
     .delete();*/
   }
-  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc,int code})
+  static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc, String code})
   {
     Firestore.instance.collection('Requests').add({
       'BuyerID': buyerID,
@@ -94,13 +96,36 @@ class FirebaseService {
     });
 
   }
+  static void AddUserRate(userID, commenter, comment, rate, date)
+  {
+    Firestore.instance.collection('UserRates').add({
+      'CommenterID': commenter,
+      'UserID': userID,
+      'Date': date,
+      'Rate': rate,
+      'Comment': comment,
+    }).then((onValue){
+      Firestore.instance.collection('UserRates').where('UserID', isEqualTo: userID).getDocuments()
+      .then((snapshots){
+        int count = snapshots.documents.length;
+        double total =0;
+        for (int i =0; i<count;i++)
+        {
+          total += snapshots.documents[i].data[rate];
+        }
+        double avg = total/count;
+        Firestore.instance.collection('Users').document(userID).setData({'ProfileRate':avg});
+      });
+    });
+
+  }
 
   static void newUser({email, name, phone, imgURL})
   {
     Firestore.instance.collection("Users").document(email).setData(
       {
         'Bio': "",
-        'ProfileRate':0,
+        'ProfileRate':0.00001,
         'isBanned': false,
         'name': name,
         'phone':phone,
@@ -109,17 +134,16 @@ class FirebaseService {
     );
   }
 
-  static Future <void> createOffer(data)
-  {
+  static Future <DocumentReference> createOffer(data){
      var id;
-    print('hadaa al id '+id+data['photo']);
+    // print('hadaa al id '+id+data['photo']);
      
-    Firestore.instance.collection("Item").add(data).then((onValue){
-     id= onValue.documentID;
-     print('hadaa al id '+id);
-      Firestore.instance.collection("Item").document(id).collection('photos').add({'photoURL':data['photo']});
-    });
-    
+    return Firestore.instance.collection("Item").add(data);  
+  }
+
+  static Future <void> pushPhotos(List <String> data, DocumentReference id){
+    for(int i = 0; i<data.length; i++)
+      Firestore.instance.collection("Item").document(id.documentID).collection('photos').add({'photoURL':data[i]});
   }
  /* static Future <void> createOffer2(id)
   {
@@ -154,6 +178,20 @@ class FirebaseService {
     print("delete entered");
     return Firestore.instance.collection('Wishlist').document(id).delete();
   }
+
+  static void addItemRate({String itemID, double rate})
+  {
+    Firestore.instance.collection('Item').document(itemID).get().then((onValue){
+      double totalRate = onValue.data['Rate'];
+      int count = onValue.data['RateCount'];
+      count++;
+      totalRate += rate;
+      Firestore.instance.collection('Item').document(itemID).setData({
+        'Rate':totalRate,
+        'RateCount':count,
+        });
+    });
+  }
 }
 
 class UserAuth{
@@ -168,15 +206,23 @@ class UserAuth{
 
   static bool isLoggedIn()
   {
-    if (user ==null)
+    if (user == null){
+      DatesChecker.destroy();
       return false;
+    }
 
-    else return true;
+    else
+    {
+      new DatesChecker(user.email);
+      return true;
+    } 
   }
 
   static Future <void> logout()
   {
-    return FirebaseAuth.instance.signOut();
+    return FirebaseAuth.instance.signOut().whenComplete((){
+      DatesChecker.destroy();
+    });
   }
 
   static String getEmail()

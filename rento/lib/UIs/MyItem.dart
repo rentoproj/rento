@@ -4,6 +4,7 @@ import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/UIs/EditItem.dart';
+import 'package:rento/components/ImageSlider.dart';
 
 class MyItem extends StatefulWidget {
   final String itemID;
@@ -163,13 +164,20 @@ class MyItemState extends State<MyItem> {
     this._path = data['photo'];
     this._price = data['price'];
     this._category = data['category'];
+    int count = data['RateCount'];
+    double totalRate = data['Rate'];
+    //make sure no divisin by zero happens
+    this._rate = count == 0 
+    ?0
+    :totalRate/count;
+    //rate calculation end
     
     print(_path);
     print(_name);
 
     return ListView(
       children: <Widget>[
-        itemImage(_path),
+        ImageSlider(widget.itemID ,200.0),
         new Center(
           widthFactor: MediaQuery.of(context).size.width / 2,
           child: new ListTile(
