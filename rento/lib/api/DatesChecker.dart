@@ -33,8 +33,9 @@ class DatesChecker
 
   static void destroy()
   {
-    availabilityTimer.cancel();
-    requestsTimer.cancel();
+    availabilityTimer == null ? null : availabilityTimer.cancel();
+    requestsTimer == null ? null : requestsTimer.cancel();
+    
     print("DESTROYED CHECKER");
   }
 
