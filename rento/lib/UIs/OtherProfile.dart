@@ -4,6 +4,7 @@ import 'package:rento/components/SideMenu.dart';
 import 'package:rento/components/StarRating.dart';
 import 'package:rento/components/Comment.dart';
 import 'package:rento/api/FirestoreServices.dart';
+import 'package:rento/UIs/Chat.dart';
 import 'package:rento/api/services.dart';
 
 class OtherProfile extends StatefulWidget {
@@ -92,6 +93,7 @@ class ProfileState extends State<OtherProfile> {
           child: new Center(
               child: new Column(children: [
             //new Padding(padding: EdgeInsets.only(top: 15.0)),
+            
             new SingleChildScrollView(
               child: new TextFormField(
                 enableInteractiveSelection: false,
@@ -116,7 +118,7 @@ class ProfileState extends State<OtherProfile> {
                   fontFamily: "Poppins",
                 ),
               ),
-            )
+            ),
           ])),
         ));
   }
@@ -140,6 +142,16 @@ class ProfileState extends State<OtherProfile> {
             children: <Widget>[
               //  _buildUserIdentity(intName),
               Avatar(imageURL, 200.0),
+              new FlatButton(child: Icon(Icons.chat),
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Chat(
+                                profileID: this.profileID,
+                               // peerAvatar: document['photoUrl'],
+                              )));
+                          },),
               Divider(),
               _bibleField(),
               Divider(),

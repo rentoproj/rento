@@ -10,9 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10cc8385-1c99-4f36-bb69-a7d02000d524" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rento/lib/UIs/Offer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/rento/lib/UIs/Offer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rento/lib/UIs/SearchPage2.dart" beforeDir="false" afterPath="$PROJECT_DIR$/rento/lib/UIs/SearchPage2.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rento/lib/UIs/MainPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/rento/lib/UIs/MainPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rento/lib/UIs/RentalItemS.dart" beforeDir="false" afterPath="$PROJECT_DIR$/rento/lib/UIs/RentalItemS.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rento/lib/components/SideMenu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/rento/lib/components/SideMenu.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rento/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/rento/lib/main.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,10 +26,12 @@
     <session id="1298086007">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.18" value="2" />
+          <entry key="project.open.time.24" value="1" />
           <entry key="project.open.time.30" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -50,7 +53,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rento/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
+            <state relative-caret-position="380">
               <caret line="27" selection-start-line="27" selection-end-line="27" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -70,27 +73,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="327" />
-    <option name="y" value="21" />
-    <option name="width" value="953" />
-    <option name="height" value="779" />
+    <option name="x" value="325" />
+    <option name="y" value="20" />
+    <option name="width" value="955" />
+    <option name="height" value="780" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="rento" type="1abcf292:AndroidViewProjectNode" />
-              <item name="rento" type="e9137016:NonAndroidModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -114,13 +107,23 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="rento" type="1abcf292:AndroidViewProjectNode" />
+              <item name="rento" type="e9137016:NonAndroidModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/rento-master/rento-master" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -209,8 +212,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989429" visible="true" weight="0.055033557" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989429" visible="true" weight="0.12013423" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Captures" order="2" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="3" />
@@ -277,7 +281,7 @@
     <entry file="file://$PROJECT_DIR$/rento/lib/empty.dart" />
     <entry file="file://$PROJECT_DIR$/rento/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
+        <state relative-caret-position="380">
           <caret line="27" selection-start-line="27" selection-end-line="27" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />

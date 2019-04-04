@@ -28,6 +28,8 @@ dependencies:
   firebase_database: ^1.1.0+1
   firebase_storage:
   image_picker: ^0.4.12+1
+  fluttertoast: ^2.0.7
+  shared_preferences: 0.4.3
   intl:
   cached_network_image:
   rxdart:
@@ -43,17 +45,29 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter:
+  uses-material-design: true
+
+  assets:
+     - images/img_not_available.jpeg
+     - images/mimi1.gif
+     - images/mimi2.gif
+     - images/mimi3.gif
+     - images/mimi4.gif
+     - images/mimi5.gif
+     - images/mimi6.gif
+     - images/mimi7.gif
+     - images/mimi8.gif
+     - images/mimi9.gif
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
