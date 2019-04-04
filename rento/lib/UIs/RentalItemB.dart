@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/components/GoogleMap.dart';
+import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
 import 'package:rento/components/StarRating.dart';
 
@@ -100,7 +102,7 @@ class RentalItemStateB extends State<RentalItemB> {
                   Expanded(
                       child: ListView(
                     children: <Widget>[
-                      itemImage(_path),
+                      ImageSlider(itemID, 200.0),
                       new Center(
                         widthFactor: MediaQuery.of(context).size.width / 2,
                         child: new ListTile(
@@ -110,6 +112,10 @@ class RentalItemStateB extends State<RentalItemB> {
                           ),
                         ),
                       ),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
                       new ListTile(
                         title: new Text(
                           "Description",
@@ -117,6 +123,12 @@ class RentalItemStateB extends State<RentalItemB> {
                         ),
                         subtitle: new Text("$_decription"),
                       ),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
                       new ListTile(
                         leading: new Icon(Icons.transform),
                         title: new Text("$_State"),
@@ -137,6 +149,19 @@ class RentalItemStateB extends State<RentalItemB> {
                             )),
                         leading: new Icon(Icons.location_on),
                       ),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
+                      Container(height: 300, child: GoogleMaps(itemID)),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
                       new ListTile(
                         title: new Text(
                           "from :${_startDate.substring(0, 16)} to:${_endDate.substring(0, 16)}",

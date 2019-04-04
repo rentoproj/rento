@@ -3,8 +3,13 @@ import 'dart:async';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/api/services.dart';
+import 'package:flutter/services.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+import 'package:rento/api/FirestoreServices.dart';
+
 //import 'MainPage.dart';
 
 class OfferItem extends StatefulWidget {
@@ -18,43 +23,48 @@ class _OfferItemPageState extends State<OfferItem> {
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
 
-  File _imageFile;
+  List<File> _imagesFile;
+  List<NetworkImage> _images = new List<NetworkImage>();
+  List<String> _URLs = new List<String>();
   bool _uploaded = false;
   String _downloadUrl, _error;
   StorageReference _reference =
       FirebaseStorage.instance.ref().child('myImage.jpeg');
 
   Future getImage(bool isCamera) async {
-    File image;
+    List<File> images = List<File>();
     if (isCamera) {
-      image = await ImagePicker.pickImage(source: ImageSource.camera);
+      await ImagePicker.pickImage(source: ImageSource.camera).then((val) {
+        images.add(val);
+        uploadImage(val);
+      });
       //loadAssets();
     } else {
-      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      await ImagePicker.pickImage(source: ImageSource.gallery).then((val) {
+        images.add(val);
+        uploadImage(val);
+      });
     }
     setState(() {
-      _imageFile = image;
+      _imagesFile = images;
     });
   }
 
-
-  Future<String> uploadImage() async {
-    StorageReference ref = FirebaseStorage.instance.ref().child("image");
-    StorageUploadTask uploadTask = ref.putFile(_imageFile);
-
+  Future<void> uploadImage(File file) async {
+    String hashedName =UserAuth.getEmail() + DateTime.now().toIso8601String();
+    StorageReference ref = FirebaseStorage.instance.ref().child(hashedName + hashedName.hashCode.toString());
+    StorageUploadTask uploadTask = ref.putFile(file);
     var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
     var url = downUrl.toString();
-    imageURL = url;
-    return url;
-
-    // StorageTaskSnapshot taskSnapshot =await uploadTask.onComplete;
-    // String downloadAddress = await _reference.getDownloadURL();
-    // imageURL = downloadAddress.toString();
-    // setState(() {
-    //  _uploaded = true;
-    //  // imageURL =downloadAddress;
-
-    // });
+    _URLs.add(url);
+    print(hashedName + hashedName.hashCode.toString());
+    print(url);
+    //CREATE IMAGE FROM FILE
+    _images.add(NetworkImage(url));
+    setState(() {
+      _uploaded = true;
+      this._images = _images;
+    });
   }
 
   Future downloadImage() async {
@@ -70,6 +80,9 @@ class _OfferItemPageState extends State<OfferItem> {
   int itemPrice;
   String itemLocation;
   String imageURL;
+  double lat;
+  double lng;
+  GoogleMaps map =GoogleMaps("");
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -79,24 +92,52 @@ class _OfferItemPageState extends State<OfferItem> {
       drawer: SideMenu(),
       body: new ListView(
         children: <Widget>[
-          _imageFile == null
-              ? Container()
-              : Image.file(
-                  _imageFile,
+          Container(
                   height: 300.0,
-                  width: 300.0,
+                  child: new Carousel(
+                    boxFit: BoxFit.cover,
+                    images: _imagesFile == null
+                    ? [NetworkImage("https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2")]
+                    : _images,
+                    autoplay: false,
+                  ),
                 ),
-          new RaisedButton(
-            child: new Text('Take a picture'),
-            onPressed: () {
-              getImage(true);
-            },
-          ),
-          new RaisedButton(
-            child: new Text('Upload From Gallery'),
-            onPressed: () {
-              getImage(false);
-            },
+          Row(
+            children: <Widget>[
+              SizedBox(width: 10.0, height: 80.0),
+              Container(
+                decoration: BoxDecoration(border:Border.all(color: Colors.deepOrangeAccent),borderRadius: BorderRadius.all(Radius.circular(30.0))),// BorderRadiusDirectional.all(new BorderRadius.circular(30.0)),
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(width: 10.0,),
+                    Icon(Icons.add_a_photo),
+                    new FlatButton(
+                      child: new Text('Take a picture'),
+                      onPressed: () {
+                        getImage(true);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 40.0,),
+              Container(
+                decoration: BoxDecoration(border:Border.all(color: Colors.deepOrangeAccent),borderRadius: BorderRadius.all(Radius.circular(30.0))),// BorderRadiusDirectional.all(new BorderRadius.circular(30.0)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SizedBox(width: 10.0,),
+                    Icon(Icons.insert_photo),
+                    new FlatButton(
+                      child: new Text('Uplaod From Gallary'),
+                      onPressed: () {
+                        getImage(false);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
 
           new ListTile(
@@ -150,6 +191,7 @@ class _OfferItemPageState extends State<OfferItem> {
                   );
                 }).toList()),
           ),
+          Divider(height: 10.0),
           new ListTile(
             title: new TextField(
               decoration: new InputDecoration(
@@ -209,7 +251,10 @@ class _OfferItemPageState extends State<OfferItem> {
                 }),
             trailing: Text('${_ftime.hour} :${_ftime.minute}'),
           ),
-
+          Container(
+            height: 300,
+            child: map,
+          ),
           // new RaisedButton(
           //   child: new Text('Upload to storage'),
           //   onPressed: () {
@@ -234,32 +279,31 @@ class _OfferItemPageState extends State<OfferItem> {
             child: Text('Offer Item'),
             textColor: Colors.blue,
             onPressed: () {
-              dialogTrigger(context);
-              uploadImage().then((onValue) {
-                print("trieeed to AAAAAAAAAAAAd");
-                // Navigator.of(context).pop();
-                FirebaseService.createOffer({
-                  'name': this.itemName,
-                  'description': this.itemDescription,
-                  'price': this.itemPrice,
-                  'location': this.itemLocation,
-                  'photo': onValue,
-                  'sellerID': UserAuth.getEmail(),
-                  'RateCount' : 0,
-                  'Rate' : 0.00001,
-                }).then((result) {
-                  print('d5lt wlllaah');
-                  
-                }).catchError((e) {
-                  print(e+'error');
-                });
+              //uploadImage();
+
+              FirebaseService.createOffer({
+                'name': this.itemName,
+                'description': this.itemDescription,
+                'price': this.itemPrice,
+                'location': this.itemLocation,
+                'photo': _imagesFile == null ?
+                          "https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2"
+                          :_URLs[0],
+                'sellerID': UserAuth.getEmail(), 
+                'Lat' : map,
+                'Lng' : this.lng,
+                'RateCount' : 0,
+                'Rate' : 0.00001,
+              }).then((result) {
+                dialogTrigger(context);
+                print('hadaa al id '+result.documentID);
+                FirebaseService.pushPhotos(_URLs, result);
+              }).catchError((e) {
+                print(e);
               });
+
             },
           ),
-          // new RaisedButton(
-          //   child: new Text('Save as a Draft'),
-          //   onPressed: () {},
-          // ),
         ],
       ),
     );

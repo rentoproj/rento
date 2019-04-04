@@ -8,6 +8,9 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:rento/components/StarRating.dart';
 
+import 'package:rento/components/GoogleMap.dart';
+import 'package:rento/components/ImageSlider.dart';
+
 //555
 class RentalItem extends StatefulWidget {
   final String itemID;
@@ -30,11 +33,6 @@ class RentalItemState extends State<RentalItem> {
   String _startDate = "";
   String _endDate = "";
   String _State = "";
-  String _CurrentRate = "";
-  String _FinalRate = "";
-  int _RatesLength = 0;
-  double _DoubleFinalRating = 0.0;
-
   String _code = "";
   String FormCode = "";
   String comment;
@@ -123,7 +121,7 @@ class RentalItemState extends State<RentalItem> {
                   Expanded(
                       child: ListView(
                     children: <Widget>[
-                      itemImage(_path),
+                      ImageSlider(itemID, 200.0),
                       new Center(
                         widthFactor: MediaQuery.of(context).size.width / 2,
                         child: new ListTile(
@@ -133,6 +131,10 @@ class RentalItemState extends State<RentalItem> {
                           ),
                         ),
                       ),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
                       new ListTile(
                         title: new Text(
                           "Description",
@@ -140,6 +142,12 @@ class RentalItemState extends State<RentalItem> {
                         ),
                         subtitle: new Text("$_decription"),
                       ),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
                       new ListTile(
                         leading: new Icon(Icons.transform),
                         title: new Text("$_State"),
@@ -160,6 +168,19 @@ class RentalItemState extends State<RentalItem> {
                             )),
                         leading: new Icon(Icons.location_on),
                       ),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
+                      Container(height: 300, child: GoogleMaps(itemID)),
+                      SizedBox(height: 15),
+                      new Divider(
+                        color: Colors.redAccent,
+                        indent: 16.0,
+                      ),
+                      SizedBox(height: 15),
                       new ListTile(
                         title: new Text(
                           "from :${_startDate.substring(0, 16)} to:${_endDate.substring(0, 16)}",

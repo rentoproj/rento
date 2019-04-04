@@ -10,12 +10,8 @@ class RentalHistory extends StatefulWidget {
 
 class _ItemListPageState extends State<RentalHistory> {
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-        title: new Text("Rental History"),
-        
-      ),drawer: SideMenu(),
-      body:
+    return Material(
+      child:
         Stack(
           children: <Widget>[
             StreamBuilder(

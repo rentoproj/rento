@@ -32,7 +32,8 @@ dependencies:
   cached_network_image:
   rxdart:
   carousel_pro:
-  google_maps_flutter: 
+  google_maps_flutter: ^0.4.0
+  geolocator: ^3.0.1 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

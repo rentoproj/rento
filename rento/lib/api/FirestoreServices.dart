@@ -99,5 +99,13 @@ class FirestoreServices {
     .where("wisherID", isEqualTo: UserAuth.getEmail())
     .snapshots();
   }
+
+  //GET THE ITEM LAT LNG (LOCATION FOR THE MAP)
+  static Future<DocumentSnapshot> getLatLng(String itemID){
+    return Firestore.instance
+        .collection("Item")
+        .document(itemID)
+        .get();
+  }
  
 }

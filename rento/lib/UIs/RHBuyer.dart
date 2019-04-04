@@ -10,12 +10,8 @@ class RHBuyer extends StatefulWidget {
 
 class _ItemListPageStateB extends State<RHBuyer> {
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-        title: new Text("Rental History(Buyer)"),
-        
-      ),drawer: SideMenu(),
-      body:
+    return Material(
+      child:
         Stack(
           children: <Widget>[
             StreamBuilder(

@@ -134,17 +134,16 @@ class FirebaseService {
     );
   }
 
-  static Future <void> createOffer(data)
-  {
+  static Future <DocumentReference> createOffer(data){
      var id;
     // print('hadaa al id '+id+data['photo']);
      
-    Firestore.instance.collection("Item").add(data).then((onValue){
-     id= onValue.documentID;
-     print('hadaa al id '+id);
-      Firestore.instance.collection("Item").document(id).collection('photos').add({'photoURL':data['photo']});
-    });
-    
+    return Firestore.instance.collection("Item").add(data);  
+  }
+
+  static Future <void> pushPhotos(List <String> data, DocumentReference id){
+    for(int i = 0; i<data.length; i++)
+      Firestore.instance.collection("Item").document(id.documentID).collection('photos').add({'photoURL':data[i]});
   }
  /* static Future <void> createOffer2(id)
   {
