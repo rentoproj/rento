@@ -136,7 +136,7 @@ class FirebaseService {
   static Future <void> createOffer(data)
   {
      var id;
-    print('hadaa al id '+id+data['photo']);
+    // print('hadaa al id '+id+data['photo']);
      
     Firestore.instance.collection("Item").add(data).then((onValue){
      id= onValue.documentID;
