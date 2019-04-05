@@ -178,7 +178,7 @@ class ProfileState extends State<OtherProfile> {
             child: StreamBuilder(
               stream: FirestoreServices.getUserRates(UserAuth.getEmail()),
               builder: (context, snapshot) {
-                return snapshot == null
+                return !snapshot.hasData
                     ? CircularProgressIndicator()
                     : buildComments(context, snapshot.data.documents);
               },
