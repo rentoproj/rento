@@ -163,7 +163,7 @@ class MyItemState extends State<MyItem> {
     this._decription = data['description'];
     this._path = data['photo'];
     this._price = data['price'];
-    this._category = data['category'];
+    this._category = data['Category'];
     int count = data['RateCount'];
     double totalRate = data['Rate'];
     //make sure no divisin by zero happens
