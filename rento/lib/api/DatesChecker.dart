@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'FirestoreServices.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class DatesChecker
 {
   static Timer availabilityTimer;
@@ -13,11 +13,11 @@ class DatesChecker
 
   void availabilityChecks(Timer t)
   {
-    // FirestoreServices.getItemList().forEach((snapshot){
-    //   snapshot.documents.forEach((doc){
-        
-    //   });
-    // });
+    Firestore.instance.collection('Item').getDocuments().then((snapshot){
+      snapshot.documents.forEach((doc){
+        doc.
+      });
+    });
   }
 
   void requestsCheck(Timer t)

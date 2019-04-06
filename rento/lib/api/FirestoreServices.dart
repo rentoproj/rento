@@ -6,7 +6,7 @@ class FirestoreServices {
   static Future<QuerySnapshot> searchItem(String searchTerm) {
     return Firestore.instance
         .collection("Item")
-        .where("name", isGreaterThanOrEqualTo: searchTerm ).getDocuments();
+        .where("name", isGreaterThanOrEqualTo: searchTerm ).orderBy('name').getDocuments();
     //     .then((QuerySnapshot s) {
     //   int i = 0;
     //   while (i <= s.documents.length) {
@@ -106,6 +106,11 @@ class FirestoreServices {
         .collection("Item")
         .document(itemID)
         .get();
+  }
+
+  static Future<QuerySnapshot> getHighRatedItems()
+  {
+    return Firestore.instance.collection("Item").where("Rate", isLessThanOrEqualTo: "9999999").orderBy("Rate", descending:true).limit(5).getDocuments();
   }
  
 }
