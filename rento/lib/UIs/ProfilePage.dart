@@ -73,7 +73,7 @@ class Profile extends State<ProfilePage> {
             child: StreamBuilder(
               stream: FirestoreServices.getUserRates(UserAuth.getEmail()),
               builder: (context, snapshot) {
-                return snapshot == null
+                return !snapshot.hasData
                     ? CircularProgressIndicator()
                     : buildComments(context, snapshot.data.documents);
               },
