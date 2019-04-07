@@ -10,16 +10,16 @@ import 'package:rento/components/ImageSlider.dart';
 
 //555
 class RentalItem extends StatefulWidget {
-  final String itemID;
-  RentalItem(this.itemID);
+  final String requestID;
+  RentalItem(this.requestID);
   State<StatefulWidget> createState() {
-    return RentalItemState(itemID);
+    return RentalItemState(requestID);
   }
 }
 
 class RentalItemState extends State<RentalItem> {
-  final String itemID;
-  RentalItemState(this.itemID);
+  final String requestID;
+  RentalItemState(this.requestID);
 
   String _BuyerID;
   String _SellerID;
@@ -33,6 +33,7 @@ class RentalItemState extends State<RentalItem> {
   String _code = "";
   String FormCode = "";
   String comment;
+  String itemID;
   static const platform = const MethodChannel('sendSms');
 
   _showDialog() async {
@@ -69,7 +70,7 @@ class RentalItemState extends State<RentalItem> {
           new FlatButton(
               child: const Text('confirm'),
               onPressed: () {
-                FirebaseService.UpdateRequestState(itemID, "On Rent");
+                FirebaseService.UpdateRequestState(requestID, "On Rent");
                 Navigator.of(context).pushReplacementNamed('/RentalHistory');
               })
         ],
@@ -79,7 +80,7 @@ class RentalItemState extends State<RentalItem> {
 
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: FirestoreServices.getRequestDetails(itemID),
+        future: FirestoreServices.getRequestDetails(requestID),
         builder: (context, snapshot) {
           return !snapshot.hasData
               ? Center(child: CircularProgressIndicator())
@@ -99,6 +100,7 @@ class RentalItemState extends State<RentalItem> {
     this._State = data['State'];
     this._BuyerID = data['BuyerID'];
     this._code = data['Code'];
+    this.itemID = data['ItemID'];
     //build function returns a "Widget"
     return new Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -213,7 +215,7 @@ class RentalItemState extends State<RentalItem> {
                   icon: Icon(Icons.check),
                   onPressed: () {
                     FirebaseService.UpdateRequestState(
-                        itemID, "Waiting for pickup");
+                        requestID, "Waiting for pickup");
                     Navigator.pop(context);
                   }),
               title: Text('Accept'),
@@ -222,7 +224,7 @@ class RentalItemState extends State<RentalItem> {
               icon: IconButton(
                 icon: Icon(Icons.cancel),
                 onPressed: () {
-                  FirebaseService.DeleteRequest(itemID);
+                  FirebaseService.DeleteRequest(requestID);
 
                   Navigator.pop(context);
                 },
@@ -248,7 +250,7 @@ class RentalItemState extends State<RentalItem> {
               icon: IconButton(
                   icon: Icon(Icons.cancel),
                   onPressed: () {
-                    FirebaseService.DeleteRequest(itemID);
+                    FirebaseService.DeleteRequest(requestID);
                   }),
               title: Text('Cancel'),
             ),
@@ -278,7 +280,7 @@ class RentalItemState extends State<RentalItem> {
               icon: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
-                    FirebaseService.DeleteRequest(itemID);
+                    FirebaseService.DeleteRequest(requestID);
                   }),
               title: Text('Delete'),
             ),

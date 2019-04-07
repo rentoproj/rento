@@ -77,12 +77,13 @@ class _OfferItemPageState extends State<OfferItem> {
   String newValue;
   String itemName;
   String itemDescription;
-  int itemPrice;
+  int itemPrice=0;
   String itemLocation;
-  String imageURL;
+  String imageURL="https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2";
   double lat;
   double lng;
   GoogleMaps map =GoogleMaps("");
+  String Category;
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -173,6 +174,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 hint: Text('Choose'),
                 onChanged: (String changedValue) {
                   newValue = changedValue;
+                  Category=changedValue;
                   setState(() {
                     newValue;
                     print(newValue);
@@ -279,29 +281,12 @@ class _OfferItemPageState extends State<OfferItem> {
             child: Text('Offer Item'),
             textColor: Colors.blue,
             onPressed: () {
-              //uploadImage();
+              if(Category==""||itemName==""||itemDescription==""||itemLocation==""||itemPrice==0||imageURL=="https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2" )
+                MissingFieldDia(context);
+                else
+               dialogTrigger(context);
 
-              FirebaseService.createOffer({
-                'name': this.itemName,
-                'description': this.itemDescription,
-                'price': this.itemPrice,
-                'location': this.itemLocation,
-                'photo': _imagesFile == null ?
-                          "https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2"
-                          :_URLs[0],
-                'sellerID': UserAuth.getEmail(), 
-                'Lat' : map.getLatLng().latitude,
-                'Lng' : map.getLatLng().longitude,
-                'RateCount' : 0,
-                'Rate' : 0.00001,
-              }).then((result) {
-                print("LONGTITUDE: ${map.getLatLng().longitude} LATITUDE ${map.getLatLng().latitude}");
-                dialogTrigger(context);
-                print('hadaa al id '+result.documentID);
-                FirebaseService.pushPhotos(_URLs, result);
-              }).catchError((e) {
-                print(e);
-              });
+         
 
             },
           ),
@@ -309,7 +294,27 @@ class _OfferItemPageState extends State<OfferItem> {
       ),
     );
   }
-
+  Future<bool> MissingFieldDia(BuildContext context)async{
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('All Fields are requiered', style: TextStyle(fontSize: 15.0)),
+            content: Text('Fill all the Fields'),
+            actions: <Widget>[
+              
+              FlatButton(
+                 child: Text('OK'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.pop(context);
+                }
+              )
+            ],
+          );
+        });
+  }
   Future<bool> dialogTrigger(BuildContext context) async {
     return showDialog(
         context: context,
@@ -320,11 +325,43 @@ class _OfferItemPageState extends State<OfferItem> {
             content: Text('Item is Offered'),
             actions: <Widget>[
               FlatButton(
-                child: Text('OK'),
+                child: Text('Confirm'),
                 textColor: Colors.blue,
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/ItemList');
+                  FirebaseService.createOffer({
+                'name': this.itemName,
+                'Category': Category,
+                'description': this.itemDescription,
+                'price': this.itemPrice,
+                'location': this.itemLocation,
+                'photo': _imagesFile == null ?
+                          "https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2"
+                          :_URLs[0],
+                'sellerID': UserAuth.getEmail(), 
+                'Lat' : 0.02255,
+                'Lng' : 0.0005,
+                'RateCount' : 0,
+                'Rate' : 0.00001,
+                'isAvailable': true,
+                'StartingDate':_date,
+                'EndingDate':_fdate,
+              }).then((result) {
+                print('6b3tha:D');
+                Navigator.of(context).pushReplacementNamed('/ItemList');
+                FirebaseService.pushPhotos(_URLs, result);
+                
+              }).catchError((e) {
+                print(e);
+              });
+                 
                 },
+              ),
+              FlatButton(
+                 child: Text('Cancel'),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.pop(context);
+                }
               )
             ],
           );

@@ -48,9 +48,9 @@ class ProfileState extends State<OtherProfile> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Padding(
+          new Align(
             child: new CircleAvatar(
-              radius: 60.0,
+              radius: 45.0,
               backgroundColor: Colors.grey,
               backgroundImage:
                   photo != null && photo != "" ? new NetworkImage(photo) : null,
@@ -64,12 +64,12 @@ class ProfileState extends State<OtherProfile> {
                     )
                   : null,
             ),
-            padding: const EdgeInsets.only(right: 15.0),
+            alignment: Alignment.centerLeft,
           ),
           new Column(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 5),
                 child: new Text(user,
                     style: new TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18)),
@@ -86,7 +86,7 @@ class ProfileState extends State<OtherProfile> {
           child: new Center(
               child: new Column(children: [
             //new Padding(padding: EdgeInsets.only(top: 15.0)),
-            
+
             new SingleChildScrollView(
               child: new TextFormField(
                 enableInteractiveSelection: false,
@@ -134,18 +134,20 @@ class ProfileState extends State<OtherProfile> {
           SizedBox(height: 20.0),
           Column(
             children: <Widget>[
-              //  _buildUserIdentity(intName),
-              Avatar(imageURL, 200.0),
-              new FlatButton(child: Icon(Icons.chat),
-                onPressed: (){
+              _buildUserIdentity(intName, imageURL),
+              // Avatar(imageURL, 200.0),
+              new FlatButton(
+                child: Icon(Icons.chat),
+                onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Chat(
                                 profileID: this.profileID,
-                               // peerAvatar: document['photoUrl'],
+                                // peerAvatar: document['photoUrl'],
                               )));
-                          },),
+                },
+              ),
               Divider(),
               _bibleField(),
               Divider(),
@@ -176,7 +178,7 @@ class ProfileState extends State<OtherProfile> {
 
           Expanded(
             child: StreamBuilder(
-              stream: FirestoreServices.getUserRates(UserAuth.getEmail()),
+              stream: FirestoreServices.getUserRates(profileID),
               builder: (context, snapshot) {
                 return !snapshot.hasData
                     ? CircularProgressIndicator()
@@ -189,21 +191,29 @@ class ProfileState extends State<OtherProfile> {
 
   buildComments(BuildContext context, List<DocumentSnapshot> snapshot) {
     return snapshot.length == 0
-    ?_noDataFound()
-    :ListView.builder(
-      shrinkWrap: true,
-      itemCount: snapshot.length,
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        DocumentSnapshot doc = snapshot[index];
-        String text = doc.data['Comment'];
-        DateTime date = doc.data['Date'];
-        String uName = doc.data['CommenterID'];
-        return new Comment(
-            text, date.toString().substring(0, 16), uName, "");
-      },
-    );
+        ? _noDataFound()
+        : ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.length,
+            physics: ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              DocumentSnapshot doc = snapshot[index];
+              while (doc.data['Comment'].toString().trim() == "" ||
+                  doc.data['Comment'] == null) {
+                // print(doc.data['Comment'] + doc.data['CommenterID'] + "COMMENTS");
+                doc = snapshot[index++];
+              }
+              print(
+                  doc.data['Comment'] + doc.data['CommenterID'] + " COMMENTS");
+
+              String text = doc.data['Comment'];
+              DateTime date = doc.data['Date'];
+              String uName = doc.data['CommenterID'];
+              return new Comment(
+                  text, date.toString().substring(0, 16), uName, "");
+            },
+          );
   }
 
   Widget _noDataFound() {

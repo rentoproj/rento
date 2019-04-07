@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:rento/api/DatesChecker.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/RentalHistorySlider.dart';
@@ -64,6 +65,7 @@ class MyAppState extends State<MyApp> {
   void initState (){
     UserAuth();
     super.initState();
+    DatesChecker("adc@rento.com");
     FirebaseAuth.instance.onAuthStateChanged.listen((user){
       
     });
