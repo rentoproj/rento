@@ -51,7 +51,7 @@ class RentalItemStateB extends State<RentalItemB> {
           new FlatButton(
               child: const Text('confirm'),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/RentalHistory');
+                Navigator.of(context).pushReplacementNamed('/RentalHistorySlider');
               })
         ],
       ),
@@ -337,7 +337,7 @@ class DialogState extends State<RateDialoge> {
           ),
         ),
         Text(
-          'Rate this buyer',
+          'Rate this seller',
           textAlign: TextAlign.center,
           style: new TextStyle(fontSize: 25),
         ),

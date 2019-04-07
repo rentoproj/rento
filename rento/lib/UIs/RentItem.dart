@@ -7,6 +7,7 @@ import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
 import 'package:rento/components/ProfileCard.dart';
+import 'package:rento/components/RentalHistorySlider.dart';
 
 class RentItem extends StatefulWidget {
   final String itemID;
@@ -135,7 +136,7 @@ class RentItemState extends State<RentItem> {
                                       desc: _decription,
                                       code: _code.toString());
                                   Navigator.of(context)
-                                      .pushReplacementNamed('/RentalHistory');
+                                      .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => RentalHistorySlider()));
                                 },
                               ),
                               // usually buttons at the bottom of the dialog
@@ -216,7 +217,7 @@ class RentItemState extends State<RentItem> {
     this._category = data['category'];
     this._sellerID = data['sellerID'];
     int count = data['RateCount'];
-    double totalRate = data['Rate'];
+    int totalRate = data['Rate'];
     //make sure no divisin by zero happens
     this._rate = count == 0 
     ?0
@@ -336,7 +337,7 @@ class RentItemState extends State<RentItem> {
         ),
         new ListTile(
           title: new Text(
-            "$_rate/5",
+            "${_rate.round()}/5",
             style: new TextStyle(fontWeight: FontWeight.w400),
           ),
           leading: new Icon(Icons.star),

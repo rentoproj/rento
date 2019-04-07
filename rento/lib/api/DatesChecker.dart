@@ -15,7 +15,7 @@ class DatesChecker
   {
     Firestore.instance.collection('Item').getDocuments().then((snapshot){
       snapshot.documents.forEach((doc){
-        print("${doc.data['StartingDate'] is DateTime} IS DATETIME");
+        // print("${doc.data['StartingDate'] is DateTime} IS DATETIME");
         if(DateTime.now().toString().compareTo(doc.data['StartingDate'].toString()) >= 0)
         {
           doc.reference.updateData({'isAbailable':true});

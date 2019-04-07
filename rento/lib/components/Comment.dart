@@ -12,7 +12,7 @@ class Comment extends StatelessWidget {
         title: new SingleChildScrollView(
           child: new TextFormField(
             enableInteractiveSelection: false,
-            enabled: false,
+            enabled: true,
             maxLines: 3,
             initialValue: _text,
             decoration: new InputDecoration(
@@ -20,12 +20,10 @@ class Comment extends StatelessWidget {
 
               ),
               //alignLabelWithHint:true,
-              labelText: _head,
               prefixText: _uName+": ",
               prefixStyle: TextStyle(color: Colors.black87),
-              suffixText: _dateTime,
-              
-              disabledBorder: new OutlineInputBorder(
+              helperText: _dateTime,
+              enabledBorder: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
                 borderSide: new BorderSide(
                     color: Colors.deepOrange,

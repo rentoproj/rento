@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/services.dart';
+import 'package:rento/components/RentalHistorySlider.dart';
 import 'package:rento/components/StarRating.dart';
 import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/ImageSlider.dart';
@@ -71,7 +72,7 @@ class RentalItemState extends State<RentalItem> {
               child: const Text('confirm'),
               onPressed: () {
                 FirebaseService.UpdateRequestState(requestID, "On Rent");
-                Navigator.of(context).pushReplacementNamed('/RentalHistory');
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => RentalHistorySlider()));
               })
         ],
       ),
@@ -330,7 +331,7 @@ class RateDialoge extends StatefulWidget {
 class DialogState extends State<RateDialoge> {
   double itemRating = 1, userRating = 1;
   String comment, sellerID, buyerID;
-  DialogState(this.sellerID, buyerID);
+  DialogState(this.sellerID, this.buyerID);
   Widget build(BuildContext context) {
     return SimpleDialog(
       children: <Widget>[
