@@ -35,7 +35,7 @@ class Profile extends State<ProfilePage> {
               onPressed: () {
                 Navigator.of(context).pushNamed('/EditProfile');
               },
-            )
+            ),
           ],
         ),
         drawer: new SideMenu(),
@@ -89,17 +89,15 @@ class Profile extends State<ProfilePage> {
         : photo = photo;
     return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Padding(
+          new Align(
             child: new CircleAvatar(
-              radius: 60.0,
+              radius: 55.0,
               backgroundColor: Colors.grey,
               backgroundImage:
                   photo != null && photo != "" ? new NetworkImage(photo) : null,
-              // backgroundImage: user.avatarUrl != null ? new NetworkImage(
-              //     user.avatarUrl) : null,
               child: photo == null || photo == ""
                   ? Icon(
                       Icons.account_circle,
@@ -108,12 +106,13 @@ class Profile extends State<ProfilePage> {
                     )
                   : null,
             ),
-            padding: const EdgeInsets.only(right: 15.0),
+            alignment: Alignment.centerLeft,
           ),
           new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                 child: new Text(user,
                     style: new TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18)),
@@ -123,24 +122,25 @@ class Profile extends State<ProfilePage> {
         ]);
   }
 
-  Widget _bibleField() {
+  Widget _bibleField(String bio) {
+    print("$bio INSIDE BIO BUILDER ${bio.isEmpty}");
     return new Container(
         padding: const EdgeInsets.all(15),
         child: new Container(
           child: new Center(
               child: new Column(children: [
             //new Padding(padding: EdgeInsets.only(top: 15.0)),
+
             new SingleChildScrollView(
               child: new TextFormField(
                 enableInteractiveSelection: false,
                 enabled: false,
                 maxLines: 5,
-                initialValue: intBio,
+                initialValue: (bio == null || bio.isEmpty) ? " " : bio,
                 // "For contacts on rents or offers: +966 50 344 5663 or by email: sclapton@gmail.com"
                 decoration: new InputDecoration(
-                  labelText: "Bibliography",
-                  labelStyle: TextStyle(color: Colors.black87, fontSize: 20),
-                  fillColor: Colors.pink,
+                  prefixText: "Bio: ",
+                  // labelStyle: TextStyle(color: Colors.black87, fontSize: 70),                  
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
                     borderSide: new BorderSide(
@@ -154,11 +154,10 @@ class Profile extends State<ProfilePage> {
                   fontFamily: "Poppins",
                 ),
               ),
-            )
+            ),
           ])),
         ));
   }
-
   _buildWidgets(BuildContext context, dynamic data) {
     this.imageURL = data['photoURL'];
     this.intBio = data['Bio'];
@@ -166,33 +165,44 @@ class Profile extends State<ProfilePage> {
     this.intPhone = data['phone'];
     dynamic d = data['ProfileRate'];
     this.rating = d+0.1;
-    print("THIS RATING $rating");
+    print("THIS BIO '$intBio' ${intBio.isEmpty}");
     return Column(
       children: <Widget>[
-        //  _buildUserIdentity(intName),
-        Avatar(imageURL, 200.0),
+         _buildUserIdentity(intName, imageURL),
+        // Avatar(imageURL, 200.0),
         Divider(),
-        _bibleField(),
+        _bibleField(intBio),
         Divider(),
       ],
     );
   }
 
   buildComments(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return snapshot.length == 0
-    ?_noDataFound()
-    :ListView.builder(
-      shrinkWrap: true,
-      itemCount: snapshot.length,
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        DocumentSnapshot doc = snapshot[index];
+    //if no comments return no data found
+    if (snapshot.length == 0) return _noDataFound();
+
+    //filter out empty & null comments
+    List<Comment> cmnts = new List<Comment>();
+    for (int i = 0; i < snapshot.length; i++) {
+      DocumentSnapshot doc = snapshot[i];
+      if (doc.data['Comment'].toString().trim() == "" ||
+          doc.data['Comment'] == null)
+        ;
+      else {
         String text = doc.data['Comment'];
         DateTime date = doc.data['Date'];
         String uName = doc.data['CommenterID'];
-        return new Comment(
-            text, date.toString().substring(0, 16), uName, "");
+        cmnts.add(
+            new Comment(text, date.toString().substring(0, 16), uName, ""));
+      }
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: cmnts.length,
+      physics: ClampingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        return cmnts[index];
       },
     );
   }
@@ -207,7 +217,7 @@ class Profile extends State<ProfilePage> {
           color: Colors.black54,
         ),
         Text(
-          "You don't have any comments yet",
+          "There are no comments for this user yet",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.black54),
         ),

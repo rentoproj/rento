@@ -50,7 +50,7 @@ class ProfileState extends State<OtherProfile> {
         children: <Widget>[
           new Align(
             child: new CircleAvatar(
-              radius: 45.0,
+              radius: 55.0,
               backgroundColor: Colors.grey,
               backgroundImage:
                   photo != null && photo != "" ? new NetworkImage(photo) : null,
@@ -89,7 +89,7 @@ class ProfileState extends State<OtherProfile> {
         ]);
   }
 
-  Widget _bibleField() {
+  Widget _bibleField(String bio) {
     return new Container(
         padding: const EdgeInsets.all(15),
         child: new Container(
@@ -102,12 +102,11 @@ class ProfileState extends State<OtherProfile> {
                 enableInteractiveSelection: false,
                 enabled: false,
                 maxLines: 5,
-                initialValue: intBio,
+                initialValue: (bio == null || bio.isEmpty) ? " " : bio,
                 // "For contacts on rents or offers: +966 50 344 5663 or by email: sclapton@gmail.com"
                 decoration: new InputDecoration(
-                  labelText: "Bibliography",
-                  labelStyle: TextStyle(color: Colors.black87, fontSize: 20),
-                  fillColor: Colors.pink,
+                  prefixText: "Bio: ",
+                  // labelStyle: TextStyle(color: Colors.black87, fontSize: 70),                  
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
                     borderSide: new BorderSide(
@@ -147,7 +146,7 @@ class ProfileState extends State<OtherProfile> {
               _buildUserIdentity(intName, imageURL),
               // Avatar(imageURL, 200.0),
               Divider(),
-              _bibleField(),
+              _bibleField(intBio),
               Divider(),
             ],
           ),
@@ -156,21 +155,27 @@ class ProfileState extends State<OtherProfile> {
               padding: EdgeInsets.all(15),
               child: Column(children: <Widget>[
                 //RATES
-                Text(
-                  "Rating",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontFamily: "Poppings",
-                      fontSize: 18),
+                Align(
+                  alignment: Alignment(-1, 0),
+                  child: Text(
+                    "Rating",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontFamily: "Poppings",
+                        fontSize: 18),
+                  ),
                 ),
-                new StarRating(
-                  color: Colors.yellow[600],
-                  starCount: 5,
-                  rating: rating,
-                  size: 30,
-                  onRatingChanged: (rating) =>
-                      setState(() => this.rating = rating),
+
+                Align(
+                    child: new StarRating(
+                    color: Colors.yellow[600],
+                    starCount: 5,
+                    rating: rating,
+                    size: 30,
+                    onRatingChanged: (rating) =>
+                        setState(() => this.rating = rating),
+                  ),
                 ),
               ])),
 
