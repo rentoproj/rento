@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rento/api/services.dart';
+import 'package:rento/UIs/Chatting.dart';
+import 'package:rento/UIs/Wishlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SideMenu extends StatefulWidget
@@ -55,6 +57,16 @@ class SideMenuState extends State<SideMenu> {
               Navigator.of(context).pushReplacementNamed('/Wishlist');
             },
           ),
+          new ListTile(
+              title: new Text('Chatting'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (BuildContext context) => new Chatting()));
+              },
+            ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
