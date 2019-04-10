@@ -341,7 +341,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 'Lat' : map.getLatLng().latitude,
                 'Lng' : map.getLatLng().longitude,
                 'RateCount' : 0,
-                'Rate' : 0.00001,
+                'Rate' : 0,
                 'isAvailable': true,
                 'StartingDate':_date,
                 'EndingDate':_fdate,
