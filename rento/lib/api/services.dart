@@ -202,6 +202,21 @@ class FirebaseService {
         });
     });
   }
+
+  static void createChat (String uid1, String uid2)
+  {
+    Firestore.instance.collection('messages').add({
+      'users':[uid1, uid2],
+    }).then((doc){
+      Firestore.instance.collection('messages/${doc.documentID}/Chat').add({
+        'content':"",
+        'idFrom':"",
+        'idTo':"",
+        'timestamp':"",
+        'type':0
+      });
+    });
+  }
 }
 
 class UserAuth{

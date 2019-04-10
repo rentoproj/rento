@@ -33,11 +33,10 @@ class _ChattingState extends State<Chatting> {
   String id = UserAuth.getEmail();
 
   Widget buildItem(BuildContext context, DocumentSnapshot doc) {
-    List<String> chatters = doc.data['users'];
-
-    chatters.remove(UserAuth.getEmail);
+    List<dynamic> chatters = new List<dynamic>.from(doc.data['users']);
+    chatters.remove(UserAuth.getEmail());
     String targetID = chatters[0];
-
+    print(targetID + UserAuth.getEmail());
     return FutureBuilder(
         future: Firestore.instance.collection('Users').document(targetID).get(),
         builder: (context, doc) {

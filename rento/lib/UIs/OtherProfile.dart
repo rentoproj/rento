@@ -78,10 +78,15 @@ class ProfileState extends State<OtherProfile> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Chat(
+                          builder: (context){ 
+                            FirebaseService.createChat(UserAuth.getEmail(), user);
+                            
+                            Chat(
                                 profileID: this.profileID,
                                 // peerAvatar: document['photoUrl'],
-                              )));
+                              );
+                              }
+                              ));
                 },
               ),
             ],
