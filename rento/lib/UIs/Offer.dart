@@ -341,7 +341,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 'Lat' : 0.02255,
                 'Lng' : 0.0005,
                 'RateCount' : 0,
-                'Rate' : 0.00001,
+                'Rate' : 0,
                 'isAvailable': true,
                 'StartingDate':_date,
                 'EndingDate':_fdate,
