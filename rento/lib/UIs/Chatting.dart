@@ -12,7 +12,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:rento/UIs/const.dart';
 import 'package:rento/UIs/OtherProfile.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -97,6 +96,7 @@ class _ChattingState extends State<Chatting> {
     }
   }
   Widget build(BuildContext context) {
+    Firestore.instance.collection("messages").where('users', arrayContains: UserAuth.getEmail());
     return Scaffold(
       appBar: new AppBar(
         title: new Text("Chatting"),

@@ -58,6 +58,7 @@ class SideMenuState extends State<SideMenu> {
             },
           ),
           new ListTile(
+              leading: Icon(Icons.chat),
               title: new Text('Chatting'),
               onTap: () {
                 Navigator.of(context).pop();
