@@ -338,8 +338,8 @@ class _OfferItemPageState extends State<OfferItem> {
                           "https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2"
                           :_URLs[0],
                 'sellerID': UserAuth.getEmail(), 
-                'Lat' : 0.02255,
-                'Lng' : 0.0005,
+                'Lat' : map.getLatLng().latitude,
+                'Lng' : map.getLatLng().longitude,
                 'RateCount' : 0,
                 'Rate' : 0.00001,
                 'isAvailable': true,
