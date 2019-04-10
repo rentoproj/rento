@@ -103,7 +103,7 @@ Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots)
   List <DocumentSnapshot> docs = new List <DocumentSnapshot>(); 
   for (int i = 0; i < snapshots.length; i++) {
     DocumentSnapshot doc = snapshots[i];
-    if(!(doc.data['isBanned'] || doc.data['isAvailable']))
+    if(!(doc.data['isBanned'] || !doc.data['isAvailable']))
       docs.add(doc);
   }
 
