@@ -82,18 +82,20 @@ class _EditItemState extends State<EditItem> {
       _downloadUrl = downloadAddress;
     });
   }
+  //to upload values
+  String UName,UDescription,ULocation,UImage,UCategory;
 
   String newValue;
   String itemName;
   String itemDescription;
-  int itemPrice=0;
+  int UPrice, itemPrice=0;
   String itemLocation;
   String imageURL="https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2";
   double lat;
   double lng;
   GoogleMaps map =GoogleMaps("");
   String Category;
-  DateTime _eDate,bDate;
+  DateTime _eDate,bDate,UEDate,UBDate;
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
@@ -187,7 +189,7 @@ class _EditItemState extends State<EditItem> {
                   labelText: "Item Name",
                   hintText: this.itemName),
               onChanged: (value) {
-                this.itemName = value;
+                this.UName = value;
               },
             ),
           ),
@@ -203,20 +205,20 @@ class _EditItemState extends State<EditItem> {
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) {
-                this.itemDescription = value;
+                this.UDescription = value;
               },
             ),
           ),
           new ListTile(
             title: const Text('Category'),
             trailing: new DropdownButton<String>(
-                hint: Text("choose"),
+                hint: Text(this.Category),
                 onChanged: (String changedValue) {
                   newValue=changedValue;
                   Category=changedValue;
                   setState(() {
                     newValue;
-                    Category=changedValue;
+                    UCategory=changedValue;
                     print(Category);
                   });
                 },
@@ -242,7 +244,7 @@ class _EditItemState extends State<EditItem> {
                   hintText: this.itemPrice.toString()),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                this.itemPrice = int.tryParse(value);
+                this.UPrice = int.tryParse(value);
               },
             ),
           ),
@@ -253,7 +255,7 @@ class _EditItemState extends State<EditItem> {
                   labelText: "Item Location",
                   hintText: this.itemLocation),
               onChanged: (value) {
-                this.itemLocation = value;
+                this.ULocation = value;
               },
             ),
           ),
@@ -321,7 +323,7 @@ class _EditItemState extends State<EditItem> {
             child: Text('Confirm'),
             textColor: Colors.blue,
             onPressed: () {
-             FirebaseService.ItemupdateData(this.itemID,this.itemName,this.itemDescription,this._eDate,this.bDate,this.Category,this.imageURL,this.itemPrice);
+             FirebaseService.ItemupdateData(this.itemID,this.UName,this.UDescription,this.UEDate,this.UBDate,this.UCategory,this.imageURL,this.UPrice);
               dialogTrigger(context);
          
 
@@ -361,10 +363,11 @@ class _EditItemState extends State<EditItem> {
         context: context,
         initialDate:this.bDate,
         firstDate: _SD,
-        lastDate: this._eDate);
+        lastDate: new DateTime(2021)
+        );
     if (picked != null) {
       setState(() {
-        this.bDate= picked;
+        this.UBDate= picked;
         _date=picked;
         
       });
@@ -376,10 +379,11 @@ class _EditItemState extends State<EditItem> {
         context: context,
         initialDate: this._eDate,
         firstDate: _date,
-        lastDate: new DateTime(2021));
+        lastDate: new DateTime(2021)
+        );
     if (picked != null) {
       setState(() {
-        this._eDate= picked;
+        this.UEDate= picked;
       });
     }
   }
