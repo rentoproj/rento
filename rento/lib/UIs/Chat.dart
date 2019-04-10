@@ -27,8 +27,10 @@ final greyColor2 = Color(0xffE8E8E8);
 class Chat extends StatelessWidget {
   final String profileID;
   final String peerAvatar;
+  final String name;
+  final String chatID;
 
-  Chat({Key key, @required this.profileID, @required this.peerAvatar})
+  Chat({Key key, @required this.profileID, @required this.peerAvatar, this.name, this.chatID})
       : super(key: key);
 
   @override
@@ -36,7 +38,7 @@ class Chat extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
-          'CHAT',
+          name,
           style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -44,6 +46,8 @@ class Chat extends StatelessWidget {
       body: new ChatScreen(
         profileID: profileID,
         peerAvatar: peerAvatar,
+        chatID: chatID,
+        name: name,
       ),
     );
   }
@@ -52,22 +56,26 @@ class Chat extends StatelessWidget {
 class ChatScreen extends StatefulWidget {
   final String profileID;
   final String peerAvatar;
+  final String name;
+  final String chatID;
 
-  ChatScreen({Key key, @required this.profileID, @required this.peerAvatar})
+  ChatScreen({Key key, @required this.profileID, @required this.peerAvatar, this.name, this.chatID})
       : super(key: key);
 
   @override
   State createState() =>
-      new ChatScreenState(profileID: profileID, peerAvatar: peerAvatar);
+      new ChatScreenState(profileID: profileID, peerAvatar: peerAvatar, chatID: chatID);
 }
 
 class ChatScreenState extends State<ChatScreen> {
   ChatScreenState(
-      {Key key, @required this.profileID, @required this.peerAvatar});
+      {Key key, @required this.profileID, @required this.peerAvatar, this.name, this.chatID});
 
   String profileID;
   String peerAvatar;
   String id;
+  final String name;
+  final String chatID;
 
   var listMessage;
   String groupChatId;
@@ -95,6 +103,7 @@ class ChatScreenState extends State<ChatScreen> {
     imageUrl = '';
 
     readLocal();
+    print("AT INIT STATE $chatID");
   }
 
   void onFocusChange() {
@@ -158,13 +167,14 @@ class ChatScreenState extends State<ChatScreen> {
 
   void onSendMessage(String content, int type) {
     // type: 0 = text, 1 = image, 2 = sticker
+    print("messages/$chatID/Chat");
     if (content.trim() != '') {
       textEditingController.clear();
 
       var documentReference = Firestore.instance
           .collection('messages')
-          .document(groupChatId)
-          .collection(groupChatId)
+          .document(chatID)
+          .collection('Chat')
           .document(DateTime.now().millisecondsSinceEpoch.toString());
 
       Firestore.instance.runTransaction((transaction) async {
@@ -623,6 +633,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildListMessage() {
+    print(chatID);
     return Flexible(
       child: groupChatId == ''
           ? Center(
@@ -631,8 +642,8 @@ class ChatScreenState extends State<ChatScreen> {
           : StreamBuilder(
               stream: Firestore.instance
                   .collection('messages')
-                  .document(groupChatId)
-                  .collection(groupChatId)
+                  .document(chatID)
+                  .collection('Chat')
                   .orderBy('timestamp', descending: true)
                   .limit(20)
                   .snapshots(),

@@ -32,11 +32,12 @@ class Chatting extends StatefulWidget {
 class _ChattingState extends State<Chatting> {
   String id = UserAuth.getEmail();
 
-  Widget buildItem(BuildContext context, DocumentSnapshot doc) {
-    List<dynamic> chatters = new List<dynamic>.from(doc.data['users']);
+  Widget buildItem(BuildContext context, DocumentSnapshot chats) {
+    List<dynamic> chatters = new List<dynamic>.from(chats.data['users']);
+    String chatID = chats.documentID; 
     chatters.remove(UserAuth.getEmail());
     String targetID = chatters[0];
-    print(targetID + UserAuth.getEmail());
+    print(targetID + UserAuth.getEmail() + chatID);
     return FutureBuilder(
         future: Firestore.instance.collection('Users').document(targetID).get(),
         builder: (context, doc) {
@@ -93,7 +94,9 @@ class _ChattingState extends State<Chatting> {
                       MaterialPageRoute(
                           builder: (context) => Chat(
                                 profileID: document.documentID,
-                                //peerAvatar: document['photoUrl'],
+                                peerAvatar: document['photoUrl'],
+                                name: document['name'],
+                                chatID: chatID,
                               )));
                 },
                 color: greyColor2,
