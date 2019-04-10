@@ -345,6 +345,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 'isAvailable': true,
                 'StartingDate':_date,
                 'EndingDate':_fdate,
+                'isBanned': false,
               }).then((result) {
                 print('6b3tha:D');
                 Navigator.of(context).pushReplacementNamed('/ItemList');

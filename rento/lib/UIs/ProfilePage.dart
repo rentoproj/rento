@@ -186,8 +186,7 @@ class Profile extends State<ProfilePage> {
     for (int i = 0; i < snapshot.length; i++) {
       DocumentSnapshot doc = snapshot[i];
       if (doc.data['Comment'].toString().trim() == "" ||
-          doc.data['Comment'] == null)
-        ;
+          doc.data['Comment'] == null);       
       else {
         String text = doc.data['Comment'];
         DateTime date = doc.data['Date'];
