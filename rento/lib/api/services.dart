@@ -130,14 +130,15 @@ class FirebaseService {
   static void newUser({email, name, phone, imgURL})
   {
     Firestore.instance.collection("Users").document(email).setData(
-      {
-        'Bio': "",
-        'ProfileRate':0.00001,
-        'isBanned': false,
-        'name': name,
-        'phone':phone,
-        'photoURL':imgURL,
-      }
+    {
+      'Bio': "",
+      'ProfileRate':0.00001,
+      'isBanned': false,
+      'isAdmin': false,
+      'name': name,
+      'phone':phone,
+      'photoURL':imgURL,
+    }
     );
   }
 

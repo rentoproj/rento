@@ -471,11 +471,7 @@ class _LoginScreen2State extends State<LoginScreen2>
                   ],
                 ),
               ),
-              
-
               Divider(),
-
-
               new Row(
                 children: <Widget>[
                   new Expanded(
@@ -921,15 +917,15 @@ class _LoginScreen2State extends State<LoginScreen2>
         ));
   }
 
-    Widget bannedDialog() {
-    return AlertDialog(
-      title: Text('This account is currently banned, please contact us at support@rento.com'),
-      actions: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
-    );
-  }
+      Widget bannedDialog() {
+      return AlertDialog(
+        title: Text('This account is currently banned, please contact us at support@rento.com'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    }
 }
