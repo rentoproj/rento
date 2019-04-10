@@ -45,17 +45,15 @@ class ProfileState extends State<OtherProfile> {
         : photo = photo;
     return new Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Padding(
+          new Align(
             child: new CircleAvatar(
-              radius: 60.0,
+              radius: 55.0,
               backgroundColor: Colors.grey,
               backgroundImage:
                   photo != null && photo != "" ? new NetworkImage(photo) : null,
-              // backgroundImage: user.avatarUrl != null ? new NetworkImage(
-              //     user.avatarUrl) : null,
               child: photo == null || photo == ""
                   ? Icon(
                       Icons.account_circle,
@@ -64,40 +62,51 @@ class ProfileState extends State<OtherProfile> {
                     )
                   : null,
             ),
-            padding: const EdgeInsets.only(right: 15.0),
+            alignment: Alignment.centerLeft,
           ),
           new Column(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
+                padding: const EdgeInsets.fromLTRB(15, 30, 0, 5),
                 child: new Text(user,
                     style: new TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18)),
+              ),
+              new FlatButton(
+                child: Icon(Icons.chat),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Chat(
+                                profileID: this.profileID,
+                                // peerAvatar: document['photoUrl'],
+                              )));
+                },
               ),
             ],
           )
         ]);
   }
 
-  Widget _bibleField() {
+  Widget _bibleField(String bio) {
     return new Container(
         padding: const EdgeInsets.all(15),
         child: new Container(
           child: new Center(
               child: new Column(children: [
             //new Padding(padding: EdgeInsets.only(top: 15.0)),
-            
+
             new SingleChildScrollView(
               child: new TextFormField(
                 enableInteractiveSelection: false,
                 enabled: false,
                 maxLines: 5,
-                initialValue: intBio,
+                initialValue: (bio == null || bio.isEmpty) ? " " : bio,
                 // "For contacts on rents or offers: +966 50 344 5663 or by email: sclapton@gmail.com"
                 decoration: new InputDecoration(
-                  labelText: "Bibliography",
-                  labelStyle: TextStyle(color: Colors.black87, fontSize: 20),
-                  fillColor: Colors.pink,
+                  prefixText: "Bio: ",
+                  // labelStyle: TextStyle(color: Colors.black87, fontSize: 70),                  
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
                     borderSide: new BorderSide(
@@ -134,20 +143,10 @@ class ProfileState extends State<OtherProfile> {
           SizedBox(height: 20.0),
           Column(
             children: <Widget>[
-              //  _buildUserIdentity(intName),
-              Avatar(imageURL, 200.0),
-              new FlatButton(child: Icon(Icons.chat),
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Chat(
-                                profileID: this.profileID,
-                               // peerAvatar: document['photoUrl'],
-                              )));
-                          },),
+              _buildUserIdentity(intName, imageURL),
+              // Avatar(imageURL, 200.0),
               Divider(),
-              _bibleField(),
+              _bibleField(intBio),
               Divider(),
             ],
           ),
@@ -156,27 +155,33 @@ class ProfileState extends State<OtherProfile> {
               padding: EdgeInsets.all(15),
               child: Column(children: <Widget>[
                 //RATES
-                Text(
-                  "Rating",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontFamily: "Poppings",
-                      fontSize: 18),
+                Align(
+                  alignment: Alignment(-1, 0),
+                  child: Text(
+                    "Rating",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontFamily: "Poppings",
+                        fontSize: 18),
+                  ),
                 ),
-                new StarRating(
-                  color: Colors.yellow[600],
-                  starCount: 5,
-                  rating: rating,
-                  size: 30,
-                  onRatingChanged: (rating) =>
-                      setState(() => this.rating = rating),
+
+                Align(
+                    child: new StarRating(
+                    color: Colors.yellow[600],
+                    starCount: 5,
+                    rating: rating,
+                    size: 30,
+                    onRatingChanged: (rating) =>
+                        setState(() => this.rating = rating),
+                  ),
                 ),
               ])),
 
           Expanded(
             child: StreamBuilder(
-              stream: FirestoreServices.getUserRates(UserAuth.getEmail()),
+              stream: FirestoreServices.getUserRates(profileID),
               builder: (context, snapshot) {
                 return !snapshot.hasData
                     ? CircularProgressIndicator()
@@ -188,20 +193,31 @@ class ProfileState extends State<OtherProfile> {
   }
 
   buildComments(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return snapshot.length == 0
-    ?_noDataFound()
-    :ListView.builder(
-      shrinkWrap: true,
-      itemCount: snapshot.length,
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
-        DocumentSnapshot doc = snapshot[index];
+    //if no comments return no data found
+    if (snapshot.length == 0) return _noDataFound();
+
+    //filter out empty & null comments
+    List<Comment> cmnts = new List<Comment>();
+    for (int i = 0; i < snapshot.length; i++) {
+      DocumentSnapshot doc = snapshot[i];
+      if (doc.data['Comment'].toString().trim() == "" ||
+          doc.data['Comment'] == null)
+        ;
+      else {
         String text = doc.data['Comment'];
         DateTime date = doc.data['Date'];
         String uName = doc.data['CommenterID'];
-        return new Comment(
-            text, date.toString().substring(0, 16), uName, "");
+        cmnts.add(
+            new Comment(text, date.toString().substring(0, 16), uName, ""));
+      }
+    }
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: cmnts.length,
+      physics: ClampingScrollPhysics(),
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        return cmnts[index];
       },
     );
   }

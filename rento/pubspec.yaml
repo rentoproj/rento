@@ -36,7 +36,6 @@ dependencies:
   geolocator: ^3.0.1 
   fluttertoast: ^3.0.3
   shared_preferences: ^0.4.3
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -48,17 +47,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-     - images/img_not_available.jpeg
-     - images/mimi1.gif
-     - images/mimi2.gif
-     - images/mimi3.gif
-     - images/mimi4.gif
-     - images/mimi5.gif
-     - images/mimi6.gif
-     - images/mimi7.gif
-     - images/mimi8.gif
-     - images/mimi9.gif
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

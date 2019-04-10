@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:rento/UIs/const.dart';
 import 'package:rento/UIs/OtherProfile.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +18,11 @@ import 'package:rento/api/services.dart';
 import 'package:rento/components/ImageSlider.dart';
 import 'dart:math';
 import 'package:rento/components/ProfileCard.dart';
+
+final themeColor = Color(0xfff5a623);
+final primaryColor = Color(0xff203152);
+final greyColor = Color(0xffaeaeae);
+final greyColor2 = Color(0xffE8E8E8);
 
 class Chat extends StatelessWidget {
   final String profileID;

@@ -4,6 +4,8 @@ import 'package:rento/components/CustomShapeClipper.dart';
 import 'package:rento/UIs/SearchPage2.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/components/SideMenu.dart';
+import 'package:rento/api/FirestoreServices.dart';
+import 'package:rento/components/itemBlock1.dart';
 
 
 Color firstColor = Colors.deepOrange;
@@ -33,7 +35,7 @@ class HomeScreenState extends State<MainPage> {
         child: Column(
           children: <Widget>[
             HomeScreenTopPart(),
-           // HomeScreenBottomPart(),
+            // HomeScreenBottomPart(),
           ],
         ),
       ),
@@ -181,17 +183,38 @@ class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
         ),
         Container(
           height: 240.0,
-          child: StreamBuilder(
-              //stream: appBloc.itemsSnapshotStream,
+          child: FutureBuilder(
+              future: FirestoreServices.getHighRatedItems(),
               builder: (context, snapshot) {
                 return !snapshot.hasData
                     ? Center(child: CircularProgressIndicator())
-                    : _buildItemsList(context, snapshot.data.documents);
+                    : buildResult(context, snapshot.data.documents);
               }),
         ),
       ],
     );
   }
+}
+
+Widget buildResult(BuildContext context, List<DocumentSnapshot> snapshots)
+{
+  return ListView.builder(
+    shrinkWrap: true,
+    itemCount: snapshots.length,
+    physics: ClampingScrollPhysics(),
+    scrollDirection: Axis.vertical,
+    itemBuilder: (context, i) {
+        DocumentSnapshot doc = snapshots[i];
+        String des = doc.data['description'];
+        String loc = doc.data['location'];
+        String name = doc.data['name'];
+        String id = doc.documentID;
+        String url = doc.data['photo'];
+        int price =doc.data['price'];
+        print(name);
+      return ItemBlock(name, des, url, loc, price, id);
+    }
+  );
 }
 
 Widget _buildItemsList(

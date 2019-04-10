@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/api/services.dart';
 import 'MainPage.dart';
 class LoginScreen2 extends StatefulWidget {
@@ -335,9 +336,16 @@ class _LoginScreen2State extends State<LoginScreen2>
                                     email: email, password: password)
                                 .then((FirebaseUser user) {
                               print("success TO LOGIN");
-                              //FirebaseAuth.instance.signOut();
-                              Navigator.of(context)..pushReplacement(
-                                    MaterialPageRoute(builder: (context)=>MainPage()));
+                              FirestoreServices.isBannedUser(email).then((snapshot){
+                                if (snapshot.data['isBanned']){
+                                  FirebaseAuth.instance.signOut();
+                                  showDialog(context: context, barrierDismissible: true, builder: (context) => bannedDialog());
+                                }
+                                else 
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(builder: (context)=>MainPage()));
+                                
+                              });
                             }).catchError((e) {
                               print("fail TO LOGIN");
                               print('Error: $e');
@@ -911,5 +919,17 @@ class _LoginScreen2State extends State<LoginScreen2>
           children: <Widget>[LoginPage(), HomePage(), SignupPage()],
           scrollDirection: Axis.horizontal,
         ));
+  }
+
+    Widget bannedDialog() {
+    return AlertDialog(
+      title: Text('This account is currently banned, please contact us at support@rento.com'),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ],
+    );
   }
 }

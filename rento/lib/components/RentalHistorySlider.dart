@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rento/UIs/RHBuyer.dart';
 import 'package:rento/UIs/RentalHistory.dart';
-import 'package:rento/api/services.dart';
-import 'package:rento/components/SideMenu.dart';
 import 'package:rento/components/SideMenu.dart';
 class RentalHistorySlider extends StatefulWidget {
   @override

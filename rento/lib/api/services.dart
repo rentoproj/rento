@@ -59,7 +59,8 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
-  static void UpdateRequestState(ReqID,newstate){
+  
+  static void UpdateRequestState(ReqID, newstate){
     print("entered");
     
     Firestore.instance.collection('Requests').document(ReqID).updateData(
@@ -69,15 +70,18 @@ class FirebaseService {
       }
     ).then((onVal){print("complete");});
   }
+  
   static void DeleteRequest(ReqID){
     Firestore.instance.collection('Requests').document(ReqID).delete();
   }
- static void DeleteItem(ItemID){
+  
+  static void DeleteItem(ItemID){
     Firestore.instance.collection('Item').document(ItemID).delete();
   /*  Firestore.instance.collection("Requests")
     .where("ItemID", isEqualTo: ItemID)
     .delete();*/
   }
+  
   static void sendRequest({String buyerID, String eDate, String itemID, String imgUrl, String rDate, String sellerID, String sDate, String state, String name, String location, String desc, String code})
   {
     Firestore.instance.collection('Requests').add({
@@ -96,10 +100,12 @@ class FirebaseService {
     });
 
   }
-  static void AddUserRate(userID, commenter, comment, rate, date)
+  
+  static void AddUserRate(userID, commenterID, comment, rate, date)
   {
+    print("ENTERED ADD USER RATE WITH $userID $commenterID $comment $rate");
     Firestore.instance.collection('UserRates').add({
-      'CommenterID': commenter,
+      'CommenterID': commenterID,
       'UserID': userID,
       'Date': date,
       'Rate': rate,
@@ -111,10 +117,11 @@ class FirebaseService {
         double total =0;
         for (int i =0; i<count;i++)
         {
-          total += snapshots.documents[i].data[rate];
+          print(snapshots.documents[i].data["Rate"]);
+          total += snapshots.documents[i].data["Rate"];
         }
         double avg = total/count;
-        Firestore.instance.collection('Users').document(userID).setData({'ProfileRate':avg});
+        Firestore.instance.collection('Users').document(userID).updateData({'ProfileRate':avg});
       });
     });
 
@@ -156,7 +163,7 @@ class FirebaseService {
     
   }*/
 
-    static Stream <DocumentSnapshot> updateSideM (){
+  static Stream <DocumentSnapshot> updateSideM (){
     return Firestore.instance.collection("Users").document(UserAuth.getEmail()).snapshots();
   }
 
@@ -181,12 +188,14 @@ class FirebaseService {
 
   static void addItemRate({String itemID, double rate})
   {
+        print("ENTERED ADD ITEM RATE WITH $itemID $rate");
+
     Firestore.instance.collection('Item').document(itemID).get().then((onValue){
-      double totalRate = onValue.data['Rate'];
+      int totalRate = onValue.data['Rate'];
       int count = onValue.data['RateCount'];
       count++;
-      totalRate += rate;
-      Firestore.instance.collection('Item').document(itemID).setData({
+      totalRate += rate.toInt();
+      Firestore.instance.collection('Item').document(itemID).updateData({
         'Rate':totalRate,
         'RateCount':count,
         });

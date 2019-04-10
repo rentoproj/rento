@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/components/GoogleMap.dart';
 import 'package:rento/components/ImageSlider.dart';
-import 'dart:math';
 import 'package:rento/components/StarRating.dart';
 
 class RentalItemB extends StatefulWidget {
-  final String itemID;
-  RentalItemB(this.itemID);
+  final String requestID;
+  RentalItemB(this.requestID);
   State<StatefulWidget> createState() {
-    return RentalItemStateB(itemID);
+    return RentalItemStateB(requestID);
   }
 }
 
 class RentalItemStateB extends State<RentalItemB> {
-  final String itemID;
-  RentalItemStateB(this.itemID);
+  final String requestID;
+  RentalItemStateB(this.requestID);
   String _BuyerID;
   String _SellerID;
   String _name = "Rent Item";
@@ -34,6 +32,7 @@ class RentalItemStateB extends State<RentalItemB> {
   int _RatesLength = 0;
   double _DoubleFinalRating = 0.0;
   double tempRate = 0;
+  String itemID;
 
   _showDialog() async {
     await showDialog<String>(
@@ -52,7 +51,7 @@ class RentalItemStateB extends State<RentalItemB> {
           new FlatButton(
               child: const Text('confirm'),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/RentalHistory');
+                Navigator.of(context).pushReplacementNamed('/RentalHistorySlider');
               })
         ],
       ),
@@ -61,7 +60,7 @@ class RentalItemStateB extends State<RentalItemB> {
 
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: FirestoreServices.getRequestDetails(itemID),
+        future: FirestoreServices.getRequestDetails(requestID),
         builder: (context, snapshot) {
           return !snapshot.hasData
               ? Center(child: CircularProgressIndicator())
@@ -81,6 +80,7 @@ class RentalItemStateB extends State<RentalItemB> {
     this._State = data['State'];
     this._BuyerID = data['BuyerID'];
     this._code = data['code'];
+    this.itemID = data['ItemID'];
 
     //build function returns a "Widget"
     return new Scaffold(
@@ -203,7 +203,7 @@ class RentalItemStateB extends State<RentalItemB> {
               icon: IconButton(
                 icon: Icon(Icons.cancel),
                 onPressed: () {
-                  FirebaseService.DeleteRequest(itemID);
+                  FirebaseService.DeleteRequest(requestID);
 
                   Navigator.pop(context);
                 },
@@ -230,7 +230,7 @@ class RentalItemStateB extends State<RentalItemB> {
               icon: IconButton(
                   icon: Icon(Icons.cancel),
                   onPressed: () {
-                    FirebaseService.DeleteRequest(itemID);
+                    FirebaseService.DeleteRequest(requestID);
                   }),
               title: Text('Cancel'),
             ),
@@ -267,7 +267,7 @@ class RentalItemStateB extends State<RentalItemB> {
               icon: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
-                    FirebaseService.DeleteRequest(itemID);
+                    FirebaseService.DeleteRequest(requestID);
                   }),
               title: Text('Delete'),
             ),
@@ -337,7 +337,7 @@ class DialogState extends State<RateDialoge> {
           ),
         ),
         Text(
-          'Rate this buyer',
+          'Rate this seller',
           textAlign: TextAlign.center,
           style: new TextStyle(fontSize: 25),
         ),

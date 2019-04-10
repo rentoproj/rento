@@ -98,13 +98,22 @@ class FlightListingBottomPartState extends State<FlightListingBottomPart> {
 
 Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots)
 {
+  if (snapshots.length == 0) return _noDataFound();
+  
+  List <DocumentSnapshot> docs = new List <DocumentSnapshot>(); 
+  for (int i = 0; i < snapshots.length; i++) {
+    DocumentSnapshot doc = snapshots[i];
+    if(!(doc.data['isBanned'] || !doc.data['isAvailable']))
+      docs.add(doc);
+  }
+
   return ListView.builder(
     shrinkWrap: true,
-    itemCount: snapshots.length,
+    itemCount: docs.length,
     physics: ClampingScrollPhysics(),
     scrollDirection: Axis.vertical,
     itemBuilder: (context, i) {
-        DocumentSnapshot doc = snapshots[i];
+        DocumentSnapshot doc = docs[i];
         String des = doc.data['description'];
         String loc = doc.data['location'];
         String name = doc.data['name'];
@@ -117,7 +126,23 @@ Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots)
   );
 }
 
-
+Widget _noDataFound() {
+    return Center(
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        Icon(
+          Icons.mood_bad,
+          size: 40,
+          color: Colors.black54,
+        ),
+        Text(
+          "No items matching your search found",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.black54),
+        ),
+      ]),
+    );
+  }
 
 class FlightListTopPart extends StatelessWidget {
  SearchPage refreach;
@@ -189,5 +214,4 @@ class FlightListTopPart extends StatelessWidget {
       ],
     );
   }
- 
 }

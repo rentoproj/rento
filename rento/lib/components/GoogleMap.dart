@@ -7,14 +7,26 @@ import 'package:rento/api/FirestoreServices.dart';
 
 class GoogleMaps extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
-  String itemID = "";
   GoogleMaps(this.itemID);
+
+  _MyAppState maps;
+  String itemID = "";
+  LatLng location;
+  
+  _MyAppState createState(){
+    this.maps = new _MyAppState();
+    return maps;
+  }
+
+  LatLng getLatLng (){
+    return maps.getLatLng();
+  }
+
 }
 
 class _MyAppState extends State<GoogleMaps> {
   Completer<GoogleMapController> _controller = Completer();
-  final Set<Marker> _marker = {};
+  final Set<Marker> _marker = new Set<Marker>();
   var geo = Geolocator();
   static double latitude = 11.5481917, longitude = 42.0491457;
   LatLng _lastMapPosition = LatLng(latitude, longitude);
@@ -87,7 +99,9 @@ class _MyAppState extends State<GoogleMaps> {
     );
   }
 
-  LatLng get _getLatLng => _lastMapPosition;
+  LatLng getLatLng (){
+    return this._lastMapPosition;
+  } 
   
   void _moveTo(LatLng position) async{
     final GoogleMapController controller =  await _controller.future;

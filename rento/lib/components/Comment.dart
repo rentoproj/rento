@@ -19,12 +19,9 @@ class Comment extends StatelessWidget {
               labelStyle: TextStyle(
 
               ),
-              //alignLabelWithHint:true,
-              labelText: _head,
+              alignLabelWithHint:true,
               prefixText: _uName+": ",
               prefixStyle: TextStyle(color: Colors.black87),
-              suffixText: _dateTime,
-              
               disabledBorder: new OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
                 borderSide: new BorderSide(
