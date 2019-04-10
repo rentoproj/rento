@@ -112,5 +112,10 @@ class FirestoreServices {
   {
     return Firestore.instance.collection("Item").where("Rate", isLessThanOrEqualTo: "9999999").orderBy("Rate", descending:true).limit(5).getDocuments();
   }
+
+  static Future <DocumentSnapshot> isBannedUser(String uID)
+  {
+    return Firestore.instance.collection('Users').document(uID).get();
+  }
  
 }
