@@ -17,17 +17,16 @@ class MyItem extends StatefulWidget {
 class MyItemState extends State<MyItem> {
   final String itemID;
   MyItemState(this.itemID);
-  DateTime _date = new DateTime.now();
-  TimeOfDay _time = new TimeOfDay.now();
-  DateTime _fdate = new DateTime.now();
-  TimeOfDay _ftime = new TimeOfDay.now();
-
+  DateTime _date;
+  
+  DateTime _fdate;
+  
   
   String _name = "Rent Item";
   String _location = "None";
   String _decription = "None";
   String _category = "None";
-  double _rate = 0.0;
+  int _rate = 0;
   int _price = 0;
   String _path = "";
 
@@ -131,30 +130,7 @@ class MyItemState extends State<MyItem> {
     );
   }
 
-  Future<Null> _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: _time,
-    );
-    if (picked != null) {
-      setState(() {
-        _time = picked;
-        _ftime = picked;
-      });
-    }
-  }
-
-  Future<Null> _selectTime1(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: _ftime,
-    );
-    if (picked != null) {
-      setState(() {
-        _ftime = picked;
-      });
-    }
-  }
+  
  
 
   Widget _buildDetails(BuildContext context, dynamic data) {
@@ -165,7 +141,9 @@ class MyItemState extends State<MyItem> {
     this._price = data['price'];
     this._category = data['Category'];
     int count = data['RateCount'];
-    double totalRate = data['Rate'];
+    int totalRate = data['Rate'];
+    this._date= data['StartingDate'];
+    this._fdate=data['EndingDate'];
     //make sure no divisin by zero happens
     this._rate = count == 0 
     ?0
@@ -219,7 +197,7 @@ class MyItemState extends State<MyItem> {
           subtitle: new IconButton(
               icon: new Icon(Icons.date_range),
               onPressed: () {
-                _selectDate(context);
+                //_selectDate(context);
               }),
           trailing: Text('${_date.year}${-_date.month}${-_date.day}'),
         ),
@@ -228,7 +206,7 @@ class MyItemState extends State<MyItem> {
           subtitle: new IconButton(
               icon: new Icon(Icons.date_range),
               onPressed: () {
-                _selectDate1(context);
+                //_selectDate1(context);
               }),
           trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
         ),

@@ -104,6 +104,7 @@ class _OfferItemPageState extends State<OfferItem> {
                   ),
                 ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(width: 10.0, height: 80.0),
               Container(
@@ -121,16 +122,15 @@ class _OfferItemPageState extends State<OfferItem> {
                   ],
                 ),
               ),
-              SizedBox(width: 40.0,),
+              SizedBox(width: 5.0,),
               Container(
                 decoration: BoxDecoration(border:Border.all(color: Colors.deepOrangeAccent),borderRadius: BorderRadius.all(Radius.circular(30.0))),// BorderRadiusDirectional.all(new BorderRadius.circular(30.0)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     SizedBox(width: 10.0,),
                     Icon(Icons.insert_photo),
                     new FlatButton(
-                      child: new Text('Uplaod From Gallary'),
+                      child: new Text('Pick From Gallary'),
                       onPressed: () {
                         getImage(false);
                       },
