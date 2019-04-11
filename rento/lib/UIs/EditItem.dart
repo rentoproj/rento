@@ -126,6 +126,13 @@ class _EditItemState extends State<EditItem> {
    this.Category=data['Category'];
    this._eDate=data['EndingDate'];
    this.bDate=data['StartingDate'];
+   UName=itemName;
+   UDescription=itemDescription;
+   UPrice=itemPrice;
+   ULocation=itemLocation;
+   UCategory=Category;
+   UEDate=_eDate;
+   UBDate=bDate;
    
   
    
@@ -277,7 +284,8 @@ class _EditItemState extends State<EditItem> {
             child: Text('Confirm'),
             textColor: Colors.blue,
             onPressed: () {
-             //FirebaseService.ItemupdateData(this.itemID,this.UName,this.UDescription,this.UEDate,this.UBDate,this.UCategory,this.imageURL,this.UPrice,map.getLatLng().latitude,map.getLatLng().longitude);
+              
+             FirebaseService.ItemupdateData(this.itemID,this.UName,this.UDescription,this.UEDate,this.UBDate,this.UCategory,this.imageURL,this.UPrice,map.getLatLng().latitude,map.getLatLng().longitude);
              dialogTrigger(context);
              
          
