@@ -235,7 +235,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 }),
             trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
           ),
-          new ListTile(
+         /* new ListTile(
             title: Text("Starting time:"),
             subtitle: new IconButton(
                 icon: new Icon(Icons.timer),
@@ -252,7 +252,7 @@ class _OfferItemPageState extends State<OfferItem> {
                   _selectTime1(context);
                 }),
             trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-          ),
+          ),*/
           Container(
             height: 300,
             child: map,
@@ -281,7 +281,7 @@ class _OfferItemPageState extends State<OfferItem> {
             child: Text('Offer Item'),
             textColor: Colors.blue,
             onPressed: () {
-              if(Category==""||itemName==""||itemDescription==""||itemLocation==""||itemPrice==0||imageURL=="https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2" )
+            if(Category==""||itemName==null||itemDescription==""||itemLocation==""||itemPrice==0||imageURL=="https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2" )
                 MissingFieldDia(context);
                 else
                dialogTrigger(context);

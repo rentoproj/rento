@@ -17,7 +17,7 @@ class _MyHomePageState extends State<EditProfile> {
   File _image;
 
   Field name, phone, Bio, oldPassF, newPassF;
-  String intName, intPhone, intBio, imageURL, email, oldPass, newPass;
+  String intName, intPhone, intBio, imageURL, email, oldPass, newPass,UName,UPhone,UBio,UImage;
   //TextEditingController nameCont, phoneCont, bioCont;
   // TextEditingController     nameCont = new TextEditingController(),
   //   phoneCont = new TextEditingController(),
@@ -74,12 +74,12 @@ class _MyHomePageState extends State<EditProfile> {
           child: new Text('Submit Changes',
           style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
           onPressed: () {
-            if (name.textv != null) intName = name.textv;
-            if (Bio.textv != null) intBio = Bio.textv;
-            if (phone.textv != null) intPhone = phone.textv;
+            if (name.textv != null) UName = name.textv;
+            if (Bio.textv != null) UBio = Bio.textv;
+            if (phone.textv != null) UPhone = phone.textv;
   
             print("VALUES: ${name.textv} , ${intName}");
-            FirebaseService.AupdateData(intName, intPhone, intBio);
+            FirebaseService.AupdateData(UName, UPhone, UBio);
             Navigator.of(context).pop();
           }
         ),
@@ -104,6 +104,10 @@ class _MyHomePageState extends State<EditProfile> {
     this.intBio = data['Bio'];
     this.intName = data['name'];
     this.intPhone = data['phone'];
+    UImage=imageURL;
+    UBio=intBio;
+    UName=intName;
+    UPhone=intPhone;
     print(email);
     return Column(
       children: <Widget>[
