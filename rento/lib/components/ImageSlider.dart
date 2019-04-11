@@ -9,8 +9,6 @@ class ImageSlider extends StatefulWidget {
   String itemID;
   List<NetworkImage> images = new List<NetworkImage>();
   ImageSlider(this.itemID, this.size);
-
-
   _ImageSliderState createState() => _ImageSliderState();
 }
 
