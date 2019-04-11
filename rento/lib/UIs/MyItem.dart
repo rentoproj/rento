@@ -232,7 +232,7 @@ class MyItemState extends State<MyItem> {
               }),
           trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
         ),
-        new ListTile(
+       /* new ListTile(
           title: Text("Starting Date:"),
           subtitle: new IconButton(
               icon: new Icon(Icons.timer),
@@ -249,7 +249,7 @@ class MyItemState extends State<MyItem> {
                 _selectTime1(context);
               }),
           trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-        ),
+        ),*/
         new Divider(
           color: Colors.redAccent,
           indent: 16.0,

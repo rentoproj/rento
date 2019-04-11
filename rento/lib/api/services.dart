@@ -48,7 +48,7 @@ class FirebaseService {
     ).then((onVal){print("complete");});
   }
 
-  static void ItemupdateData(ID,name,des,edate,bdate,category,url,price){
+  static void ItemupdateData(ID,name,des,edate,bdate,category,url,price,lat,long){
     
     Firestore.instance.collection('Item').document(ID).updateData(
       {
@@ -58,7 +58,9 @@ class FirebaseService {
         'EndingDate':edate,
         'StartingDate':bdate,
         'Category': category,
-        'photo': url
+        'photo': url,
+        'Lat':lat,
+        'Lng':long,
 
       }
     ).then((onVal){print("complete");});

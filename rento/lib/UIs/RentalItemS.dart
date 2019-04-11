@@ -36,46 +36,65 @@ class RentalItemState extends State<RentalItem> {
   String _code = "";
   String FormCode = "";
   String comment;
+  final formKey = new GlobalKey<FormState>();
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
   static const platform = const MethodChannel('sendSms');
 
   _showDialog() async {
     await showDialog<String>(
       context: context,
-      child: new AlertDialog(
-        contentPadding: const EdgeInsets.all(16.0),
-        content: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new TextFormField(
-                onSaved: (value) {
-                  FormCode = value;
-                },
-                validator: (FormCode) {
-                  if (FormCode != _code) {
-                    return "invalid code";
-                  } else
-                    return null;
-                },
-                autofocus: true,
-                decoration: new InputDecoration(
-                    labelText: 'enter the code sent to the buyer'),
-              ),
-            )
+      child: Form(
+        key: formKey,
+              child: new AlertDialog(
+          contentPadding: const EdgeInsets.all(16.0),
+          content: new Row(
+            children: <Widget>[
+              new Expanded(
+                    child: new TextFormField(
+                    onSaved: (value) {
+                      FormCode = value;
+                    },
+                    validator: (String val) {
+                      print(_code);
+                      print(this._code);
+                      if (val != this._code ) {
+                        return "invalid code";
+                      }
+                    },
+                    autofocus: true,
+                    decoration: new InputDecoration(
+                        labelText: 'Enter the code sent to the buyer'),
+                  ),
+                
+              )
+            ],
+          ),
+          actions: <Widget>[
+            new FlatButton(
+                child: const Text('CANCEL'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            new FlatButton(
+                child: const Text('confirm'),
+                onPressed: () {
+                   if (validateAndSave()) {
+                    // If the form is valid, we want to show a Snackbar
+                        FirebaseService.UpdateRequestState(itemID, "On Rent");
+                  Navigator.of(context).pushReplacementNamed('/RentalHistory');
+                  }
+                  
+                })
           ],
         ),
-        actions: <Widget>[
-          new FlatButton(
-              child: const Text('CANCEL'),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          new FlatButton(
-              child: const Text('confirm'),
-              onPressed: () {
-                FirebaseService.UpdateRequestState(itemID, "On Rent");
-                Navigator.of(context).pushReplacementNamed('/RentalHistory');
-              })
-        ],
       ),
     );
   }
@@ -101,7 +120,7 @@ class RentalItemState extends State<RentalItem> {
     this._endDate = data['EndDate'];
     this._State = data['State'];
     this._BuyerID = data['BuyerID'];
-    this._code = data['Code'];
+    this._code = data['code'];
     //build function returns a "Widget"
     return new Scaffold(
       resizeToAvoidBottomPadding: false,

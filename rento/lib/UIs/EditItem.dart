@@ -8,6 +8,7 @@ import 'package:rento/api/services.dart';
 import 'package:rento/api/FirestoreServices.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rento/components/GoogleMap.dart';
+import 'package:rento/components/ImageSlider.dart';
 import 'package:rento/components/SideMenu.dart';
 
 class EditItem extends StatefulWidget {
@@ -91,8 +92,7 @@ class _EditItemState extends State<EditItem> {
   int UPrice, itemPrice=0;
   String itemLocation;
   String imageURL="https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2";
-  double lat;
-  double lng;
+ 
   GoogleMaps map =GoogleMaps("");
   String Category;
   DateTime _eDate,bDate,UEDate,UBDate;
@@ -133,53 +133,7 @@ class _EditItemState extends State<EditItem> {
 
     return new ListView(
         children: <Widget>[
-          Container(
-                  height: 300.0,
-                  child: new Carousel(
-                    boxFit: BoxFit.cover,
-                    images: _imagesFile == null
-                    ? [NetworkImage("https://firebasestorage.googleapis.com/v0/b/rento-system-46236.appspot.com/o/no_image_available.jpg?alt=media&token=185bec93-fa22-41e0-a6ae-5be2f8b184f2")]
-                    : _images,
-                    autoplay: false,
-                  ),
-                ),
-          Row(
-            children: <Widget>[
-              SizedBox(width: 10.0, height: 80.0),
-              Container(
-                decoration: BoxDecoration(border:Border.all(color: Colors.deepOrangeAccent),borderRadius: BorderRadius.all(Radius.circular(30.0))),// BorderRadiusDirectional.all(new BorderRadius.circular(30.0)),
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(width: 10.0,),
-                    Icon(Icons.add_a_photo),
-                    new FlatButton(
-                      child: new Text('Take a picture'),
-                      onPressed: () {
-                        getImage(true);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 40.0,),
-              Container(
-                decoration: BoxDecoration(border:Border.all(color: Colors.deepOrangeAccent),borderRadius: BorderRadius.all(Radius.circular(30.0))),// BorderRadiusDirectional.all(new BorderRadius.circular(30.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    SizedBox(width: 10.0,),
-                    Icon(Icons.insert_photo),
-                    new FlatButton(
-                      child: new Text('Uplaod From Gallary'),
-                      onPressed: () {
-                        getImage(false);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          ImageSlider(this.itemID ,200.0),
 
           new ListTile(
             title: new TextField(
@@ -277,7 +231,7 @@ class _EditItemState extends State<EditItem> {
                 }),
             trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
           ),
-          new ListTile(
+        /*  new ListTile(
             title: Text("Starting time:"),
             subtitle: new IconButton(
                 icon: new Icon(Icons.timer),
@@ -294,7 +248,7 @@ class _EditItemState extends State<EditItem> {
                   _selectTime1(context);
                 }),
             trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-          ),
+          ),*/
           Container(
             height: 300,
             child: map,
@@ -323,8 +277,9 @@ class _EditItemState extends State<EditItem> {
             child: Text('Confirm'),
             textColor: Colors.blue,
             onPressed: () {
-             FirebaseService.ItemupdateData(this.itemID,this.UName,this.UDescription,this.UEDate,this.UBDate,this.UCategory,this.imageURL,this.UPrice);
-              dialogTrigger(context);
+             //FirebaseService.ItemupdateData(this.itemID,this.UName,this.UDescription,this.UEDate,this.UBDate,this.UCategory,this.imageURL,this.UPrice,map.getLatLng().latitude,map.getLatLng().longitude);
+             dialogTrigger(context);
+             
          
 
             },
