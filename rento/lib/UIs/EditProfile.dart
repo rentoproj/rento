@@ -62,14 +62,6 @@ class _MyHomePageState extends State<EditProfile> {
                 : _buildWidgets(context, snapshot.data);
           },
         ),
-        Column(
-          children: <Widget>[
-            oldPassF = new Field(new Icon(Icons.lock_open), "Password",
-                "write your old password here"),
-            newPassF = new Field(new Icon(Icons.lock), "New password",
-                "write the new password here"),
-          ],
-        ),
         new RaisedButton(
           child: new Text('Submit Changes',
           style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
@@ -79,8 +71,9 @@ class _MyHomePageState extends State<EditProfile> {
             if (phone.textv != null) intPhone = phone.textv;
   
             print("VALUES: ${name.textv} , ${intName}");
-            FirebaseService.AupdateData(intName, intPhone, intBio);
-            Navigator.of(context).pop();
+            FirebaseService.AupdateData(intName, intPhone, intBio).then((onValue){
+              Navigator.of(context).pop();
+            });
           }
         ),
         new RaisedButton(

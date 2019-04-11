@@ -36,10 +36,10 @@ class FirebaseService {
   }
 
 
-  static void AupdateData(n,p,b){
+  static Future<void> AupdateData(n,p,b){
     print("entered");
     print("$n $p $b");
-    Firestore.instance.collection('Users').document(UserAuth.getEmail()).updateData(
+    return Firestore.instance.collection('Users').document(UserAuth.getEmail()).updateData(
       {
         'name':n,
         'phone':p,

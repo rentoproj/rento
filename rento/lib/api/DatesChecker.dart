@@ -30,12 +30,15 @@ class DatesChecker
 
   void requestsCheck(Timer t)
   {
-    // FirestoreServices.getRequests().forEach((snapshot){
-    //   snapshot.documents.forEach((doc){
-    //     String state = doc.data['state'];
-    //   });
-    // });
-
+    Firestore.instance.collection('Requests').getDocuments().then((snapshot){
+      snapshot.documents.forEach((doc){
+        String state = doc.data['State'];
+        String sDate = doc.data['StartDate'];
+        String eDate = doc.data['EndDate'];
+        
+        
+      });
+    });
   }
 
 
