@@ -75,18 +75,21 @@ class ProfileState extends State<OtherProfile> {
               new FlatButton(
                 child: Icon(Icons.chat),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context){ 
-                            FirebaseService.createChat(UserAuth.getEmail(), user);
-                            
-                            Chat(
-                                profileID: this.profileID,
-                                // peerAvatar: document['photoUrl'],
-                              );
-                              }
-                              ));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    FirebaseService.createChat(UserAuth.getEmail(), profileID);
+                    String docID;
+                    if (UserAuth.getEmail().compareTo(profileID) > 0) {
+                      docID = UserAuth.getEmail() + profileID;
+                    } else
+                      docID = profileID + UserAuth.getEmail();
+                    print(profileID + user + docID + "PEOF");
+                    return Chat(
+                      profileID: this.profileID,
+                      peerAvatar: imageURL,
+                      name: user,
+                      chatID: docID,
+                    );
+                  }));
                 },
               ),
             ],
@@ -111,7 +114,7 @@ class ProfileState extends State<OtherProfile> {
                 // "For contacts on rents or offers: +966 50 344 5663 or by email: sclapton@gmail.com"
                 decoration: new InputDecoration(
                   prefixText: "Bio: ",
-                  // labelStyle: TextStyle(color: Colors.black87, fontSize: 70),                  
+                  // labelStyle: TextStyle(color: Colors.black87, fontSize: 70),
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
                     borderSide: new BorderSide(
@@ -173,7 +176,7 @@ class ProfileState extends State<OtherProfile> {
                 ),
 
                 Align(
-                    child: new StarRating(
+                  child: new StarRating(
                     color: Colors.yellow[600],
                     starCount: 5,
                     rating: rating,
