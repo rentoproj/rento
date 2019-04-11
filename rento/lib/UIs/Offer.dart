@@ -235,7 +235,7 @@ class _OfferItemPageState extends State<OfferItem> {
                 }),
             trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
           ),
-          new ListTile(
+         /* new ListTile(
             title: Text("Starting time:"),
             subtitle: new IconButton(
                 icon: new Icon(Icons.timer),
@@ -252,7 +252,7 @@ class _OfferItemPageState extends State<OfferItem> {
                   _selectTime1(context);
                 }),
             trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-          ),
+          ),*/
           Container(
             height: 300,
             child: map,

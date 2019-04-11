@@ -163,7 +163,7 @@ class MyItemState extends State<MyItem> {
     this._decription = data['description'];
     this._path = data['photo'];
     this._price = data['price'];
-    this._category = data['category'];
+    this._category = data['Category'];
     int count = data['RateCount'];
     double totalRate = data['Rate'];
     //make sure no divisin by zero happens
@@ -232,7 +232,7 @@ class MyItemState extends State<MyItem> {
               }),
           trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
         ),
-        new ListTile(
+       /* new ListTile(
           title: Text("Starting Date:"),
           subtitle: new IconButton(
               icon: new Icon(Icons.timer),
@@ -249,7 +249,7 @@ class MyItemState extends State<MyItem> {
                 _selectTime1(context);
               }),
           trailing: Text('${_ftime.hour} :${_ftime.minute}'),
-        ),
+        ),*/
         new Divider(
           color: Colors.redAccent,
           indent: 16.0,

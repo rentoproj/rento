@@ -48,19 +48,25 @@ class FirebaseService {
     ).then((onVal){print("complete");});
   }
 
-  static void ItemupdateData(ID,n,int p,b){
-    print("entered");
-    print("$n $p $b");
+  static void ItemupdateData(ID,name,des,edate,bdate,category,url,price,lat,long){
+    
     Firestore.instance.collection('Item').document(ID).updateData(
       {
-        'name':n,
-        'price':p,
-        'description':b
+        'name':name,
+        'price':price,
+        'description':des,
+        'EndingDate':edate,
+        'StartingDate':bdate,
+        'Category': category,
+        'photo': url,
+        'Lat':lat,
+        'Lng':long,
+
       }
     ).then((onVal){print("complete");});
   }
   
-  static void UpdateRequestState(ReqID, newstate){
+  static void UpdateRequestState(ReqID,newstate){
     print("entered");
     
     Firestore.instance.collection('Requests').document(ReqID).updateData(
