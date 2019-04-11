@@ -37,75 +37,14 @@ class _ChattingState extends State<Chatting> {
     String chatID = chats.documentID; 
     chatters.remove(UserAuth.getEmail());
     String targetID = chatters[0];
-    print(targetID + UserAuth.getEmail() + chatID);
+    print(targetID + " TARGETS " + chatID);
     return FutureBuilder(
         future: Firestore.instance.collection('Users').document(targetID).get(),
         builder: (context, doc) {
           if (!doc.hasData)
             return CircularProgressIndicator();
           else {
-            DocumentSnapshot document = doc.data;
-            return Container(
-              child: FlatButton(
-                child: Row(
-                  children: <Widget>[
-                    Material(
-                      child: CachedNetworkImage(
-                        placeholder: (context, url) => Container(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 1.0,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(themeColor),
-                              ),
-                              width: 50.0,
-                              height: 50.0,
-                              padding: EdgeInsets.all(15.0),
-                            ),
-                        imageUrl: document.data['photoURL'],
-                        width: 50.0,
-                        height: 50.0,
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                      clipBehavior: Clip.hardEdge,
-                    ),
-                    Flexible(
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                'Nickname: ${document.data['name']}',
-                                style: TextStyle(color: primaryColor),
-                              ),
-                              alignment: Alignment.centerLeft,
-                              margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-                            ),
-                          ],
-                        ),
-                        margin: EdgeInsets.only(left: 20.0),
-                      ),
-                    ),
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Chat(
-                                profileID: document.documentID,
-                                peerAvatar: document['photoUrl'],
-                                name: document['name'],
-                                chatID: chatID,
-                              )));
-                },
-                color: greyColor2,
-                padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-              ),
-              margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
-            );
+            return chatCard(context, doc.data, chatID);
           }
         });
   }
@@ -144,5 +83,71 @@ class _ChattingState extends State<Chatting> {
         ],
       ),
     );
+  }
+
+  Widget chatCard(BuildContext cotext, DocumentSnapshot doc, String chatID)
+  {
+    print("${doc.data.values}  ASDA");
+    return Container(
+              child: FlatButton(
+                child: Row(
+                  children: <Widget>[
+                    Material(
+                      child: CachedNetworkImage(
+                        placeholder: (context, url) => Container(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 1.0,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(themeColor),
+                              ),
+                              width: 50.0,
+                              height: 50.0,
+                              padding: EdgeInsets.all(15.0),
+                            ),
+                        imageUrl: doc.data['photoURL'],
+                        width: 50.0,
+                        height: 50.0,
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                      clipBehavior: Clip.hardEdge,
+                    ),
+                    Flexible(
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                'Nickname: ${doc.data['name']}',
+                                style: TextStyle(color: primaryColor),
+                              ),
+                              alignment: Alignment.centerLeft,
+                              margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.only(left: 20.0),
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Chat(
+                                profileID: doc.documentID,
+                                peerAvatar: doc.data['photoUrl'],
+                                name: doc['name'],
+                                chatID: chatID,
+                              )));
+                },
+                color: greyColor2,
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+              ),
+              margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
+            );
   }
 }

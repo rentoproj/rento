@@ -205,17 +205,28 @@ class FirebaseService {
 
   static void createChat (String uid1, String uid2)
   {
-    Firestore.instance.collection('messages').add({
+    String docID;
+    if (uid1.compareTo(uid2) > 0)
+    {
+      docID = uid1 + uid2;
+    }
+    else
+      docID = uid2 + uid1;
+
+
+    print("CREATING CHAT $docID");
+    Firestore.instance.collection('messages').document(docID).setData({
       'users':[uid1, uid2],
-    }).then((doc){
-      Firestore.instance.collection('messages/${doc.documentID}/Chat').add({
-        'content':"",
-        'idFrom':"",
-        'idTo':"",
-        'timestamp':"",
-        'type':0
-      });
-    });
+    }, merge: true);
+    // .then((doc){
+    //   Firestore.instance.collection('messages/${docID}/Chat').add({
+    //     'content':"",
+    //     'idFrom':"",
+    //     'idTo':"",
+    //     'timestamp':"",
+    //     'type':0
+    //   });
+    // });
   }
 }
 
