@@ -22,7 +22,7 @@ class WishlistCard extends StatelessWidget {
           );
           //pushItem(item);
         },
-        splashColor: Colors.orangeAccent,
+        splashColor: Colors.redAccent,
         child: Padding(
           padding: const EdgeInsets.only(
             top: 8.0,

@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rento/components/WishlistCard.dart';
-import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/components/SideMenu.dart';
 import 'package:rento/UIs/Chat.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:async';
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:rento/UIs/OtherProfile.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:rento/api/FirestoreServices.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:rento/api/services.dart';
-import 'package:rento/components/ImageSlider.dart';
-import 'dart:math';
+
 
 class Chatting extends StatefulWidget {
   _ChattingState createState() => new _ChattingState();

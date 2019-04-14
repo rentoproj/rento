@@ -133,7 +133,6 @@ class _EditItemState extends State<EditItem> {
    UCategory=Category;
    UEDate=_eDate;
    UBDate=bDate;
-   
   
    
 
@@ -176,11 +175,10 @@ class _EditItemState extends State<EditItem> {
                 hint: Text(this.Category),
                 onChanged: (String changedValue) {
                   newValue=changedValue;
-                  Category=changedValue;
+                  UCategory=changedValue;
                   setState(() {
-                    newValue;
-                    UCategory=changedValue;
-                    print(Category);
+                    this.UCategory=changedValue;
+                    print(UCategory);
                   });
                 },
                 value: newValue,
@@ -227,7 +225,7 @@ class _EditItemState extends State<EditItem> {
                 onPressed: () {
                   _selectDate(context);
                 }),
-            trailing: Text('${_date.year}${-_date.month}${-_date.day}'),
+            trailing: Text('${bDate.year}${bDate.month}${bDate.day}'),
           ),
           new ListTile(
             title: Text("Ending Date:"),
@@ -236,7 +234,7 @@ class _EditItemState extends State<EditItem> {
                 onPressed: () {
                   _selectDate1(context);
                 }),
-            trailing: Text('${_fdate.year}${-_fdate.month}${-_fdate.day}'),
+            trailing: Text('${_eDate.year}${-_eDate.month}${-_eDate.day}'),
           ),
         /*  new ListTile(
             title: Text("Starting time:"),
@@ -282,9 +280,9 @@ class _EditItemState extends State<EditItem> {
           // ),
           new FlatButton(
             child: Text('Confirm'),
-            textColor: Colors.blue,
+            textColor: Colors.red,
             onPressed: () {
-              
+              print("this is the ultimate cateory  $UCategory");
              FirebaseService.ItemupdateData(this.itemID,this.UName,this.UDescription,this.UEDate,this.UBDate,this.UCategory,this.imageURL,this.UPrice,map.getLatLng().latitude,map.getLatLng().longitude);
              dialogTrigger(context);
              
@@ -308,7 +306,7 @@ class _EditItemState extends State<EditItem> {
             actions: <Widget>[
               FlatButton(
                 child: Text('Confirm'),
-                textColor: Colors.blue,
+                textColor: Colors.red,
                 onPressed: () {
                   Navigator.of(context).pushReplacementNamed('/ItemList');
                   

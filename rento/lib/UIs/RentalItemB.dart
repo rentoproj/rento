@@ -370,7 +370,7 @@ class DialogState extends State<RateDialoge> {
               border: OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(25.0),
                 borderSide: new BorderSide(
-                    color: Colors.green, style: BorderStyle.solid, width: 2),
+                    color: Colors.red, style: BorderStyle.solid, width: 2),
               ),
             ),
             onChanged: (value) {
@@ -380,7 +380,7 @@ class DialogState extends State<RateDialoge> {
         ),
         FlatButton(
           child: Text('OK'),
-          textColor: Colors.blue,
+          textColor: Colors.red,
           onPressed: () {
             // FirebaseService.UpdateRate(this.sellerID, userRating); SEEMS USELSESS AFTER UPDATING ADDUSERRATE
             FirebaseService.AddUserRate(sellerID, buyerID, this.comment,

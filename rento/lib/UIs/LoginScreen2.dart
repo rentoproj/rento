@@ -40,27 +40,14 @@ class _LoginScreen2State extends State<LoginScreen2>
         child: new Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: 250.0),
+              padding: EdgeInsets.only(top: 200.0),
             ),
             Container(
               padding: EdgeInsets.only(top: 20.0),
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    "",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                  Text(
-                    "Rento",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 70.0,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  Image.asset("images/logo4.png", width: MediaQuery.of(context).size.width,)
                 ],
               ),
             ),

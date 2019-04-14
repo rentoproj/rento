@@ -118,7 +118,7 @@ class ProfileState extends State<OtherProfile> {
                   disabledBorder: new OutlineInputBorder(
                     borderRadius: new BorderRadius.circular(25.0),
                     borderSide: new BorderSide(
-                        color: Colors.deepOrange,
+                        color: Colors.red,
                         style: BorderStyle.solid,
                         width: 2),
                   ),

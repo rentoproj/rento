@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rento/api/services.dart';
 import 'package:rento/components/CustomShapeClipper.dart';
 import 'package:flutter/material.dart';
 import 'package:rento/UIs/MainPage.dart';
@@ -103,7 +104,7 @@ Widget _buildItems(BuildContext context, List<DocumentSnapshot> snapshots)
   List <DocumentSnapshot> docs = new List <DocumentSnapshot>(); 
   for (int i = 0; i < snapshots.length; i++) {
     DocumentSnapshot doc = snapshots[i];
-    if(!(doc.data['isBanned'] || !doc.data['isAvailable']))
+    if(!(doc.data['isBanned'] || !doc.data['isAvailable'] || doc.data['sellerID'] == UserAuth.getEmail()))
       docs.add(doc);
   }
 
@@ -158,7 +159,7 @@ class FlightListTopPart extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient( begin: Alignment.topCenter, 
               end: Alignment.bottomCenter, 
-              colors: [Colors.deepOrange[800], firstColor, secondColor]),
+              colors: [Colors.redAccent, Colors.redAccent, Colors.red]),
             ),
             height: 160.0,
           ),

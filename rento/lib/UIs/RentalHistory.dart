@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rento/components/ItemCard.dart';
 import 'package:rento/api/FirestoreServices.dart';
-import 'package:rento/components/SideMenu.dart';
 
 class RentalHistory extends StatefulWidget {
   _ItemListPageState createState() => new _ItemListPageState();
@@ -31,8 +30,6 @@ class _ItemListPageState extends State<RentalHistory> {
 }
 Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
 {
-  print("just got into the build func");
-  print(snapshots.length);
   return ListView.builder(
     shrinkWrap: true,
     itemCount: snapshots.length,
@@ -46,7 +43,6 @@ Widget _buildItems (BuildContext context, List<DocumentSnapshot> snapshots)
         String id = doc.documentID;
         String url = doc.data['Photo'];
         String state =doc.data['State'];
-        print('iam eree!!');
       return RequestBlock(name, des, url, loc, state, id);
     }
   );

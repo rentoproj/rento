@@ -60,6 +60,7 @@ with SingleTickerProviderStateMixin {
               floating: true,
               forceElevated: boxIsScrolled,
               bottom: TabBar(
+                indicatorColor: Colors.white,
                 tabs: <Widget>[
                   Tab(
                     text: "Seller History",
@@ -82,15 +83,12 @@ with SingleTickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_upward, size: 30,),
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Colors.redAccent,
         onPressed: () {
           _scrollViewController
               .jumpTo(_scrollViewController.position.minScrollExtent);
         },
       ),
     );
-  }
-  Widget W(){
-    return Container(color: Colors.deepOrangeAccent,);
   }
 }

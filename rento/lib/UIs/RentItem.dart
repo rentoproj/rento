@@ -214,7 +214,7 @@ class RentItemState extends State<RentItem> {
     this._decription = data['description'];
     this._path = data['photo'];
     this._price = data['price'];
-    this._category = data['category'];
+    this._category = data['Category'];
     this._sellerID = data['sellerID'];
     int count = data['RateCount'];
     int totalRate = data['Rate'];

@@ -39,7 +39,7 @@ class ProfileCard extends StatelessWidget {
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder:(context)=>OtherProfile(profileID)));
         },
-        splashColor: Colors.orangeAccent,
+        splashColor: Colors.red,
         child: Padding(
           padding: const EdgeInsets.only(
             top: 8.0,

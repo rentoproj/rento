@@ -21,7 +21,7 @@ class ItemBlock extends StatelessWidget {
           );
           //pushItem(item);
         },
-        splashColor: Colors.orangeAccent,
+        splashColor: Colors.red,
         child: Padding(
           padding: const EdgeInsets.only(
             top: 8.0,

@@ -38,7 +38,7 @@ class _ItemListPageState extends State<ItemList> {
                 Icons.add,
                 size: 30,
               ),
-              backgroundColor: Colors.deepOrange,
+              backgroundColor: Colors.red,
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => OfferItem()));

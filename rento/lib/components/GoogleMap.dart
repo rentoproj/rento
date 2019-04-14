@@ -81,14 +81,14 @@ class _MyAppState extends State<GoogleMaps> {
                     FloatingActionButton(
                       onPressed: _onAddMarkerButtonPressed,
                       materialTapTargetSize: MaterialTapTargetSize.padded,
-                      backgroundColor: Colors.deepOrange,
+                      backgroundColor: Colors.red,
                       child: const Icon(Icons.add_location, size: 36.0),
                     ),
                     SizedBox(height: 16.0),
                     FloatingActionButton(
                       onPressed: _onACurrentButtonPressed,
                       materialTapTargetSize: MaterialTapTargetSize.padded,
-                      backgroundColor: Colors.deepOrange,
+                      backgroundColor: Colors.red,
                       child: const Icon(Icons.gps_fixed, size: 36.0),
                     ),
                   ],
@@ -99,7 +99,7 @@ class _MyAppState extends State<GoogleMaps> {
     );
   }
 
-  LatLng getLatLng (){
+  LatLng getLatLng() {
     return this._lastMapPosition;
   } 
   

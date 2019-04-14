@@ -8,11 +8,11 @@ import 'package:rento/api/FirestoreServices.dart';
 import 'package:rento/components/itemBlock1.dart';
 
 
-Color firstColor = Colors.deepOrange;
-Color secondColor = Colors.deepOrangeAccent;
+Color firstColor = Colors.redAccent;
+Color secondColor = Colors.red;
 
 ThemeData appTheme =
-    ThemeData(primaryColor: Colors.deepOrange, fontFamily: 'Oxygen');
+    ThemeData(primaryColor: Colors.redAccent, fontFamily: 'Oxygen');
 
 class MainPage extends StatefulWidget {
   @override
@@ -35,7 +35,7 @@ class HomeScreenState extends State<MainPage> {
         child: Column(
           children: <Widget>[
             HomeScreenTopPart(),
-            // HomeScreenBottomPart(),
+            HomeScreenBottomPart(),
           ],
         ),
       ),
@@ -54,8 +54,6 @@ class HomeScreenTopPart extends StatefulWidget {
 }
 
 class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +67,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter, 
-              colors: [Colors.deepOrange[800], firstColor, secondColor]),
+              colors: [Colors.redAccent, Colors.redAccent, Colors.red]),
               ),
             child: Column(
               children: <Widget>[
@@ -154,8 +152,6 @@ class HomeScreenBottomPart extends StatefulWidget {
 
 class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
 
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -167,17 +163,9 @@ class HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Randomly Items",
+                "High Rate Items",
                 style: dropDownMenuItemStyle,
               ),
-              Spacer(),
-              new FlatButton(
-                            child: new Text("Confirm"),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/Offer');
-                            },
-                          ),
             ],
           ),
         ),

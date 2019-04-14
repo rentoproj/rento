@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:rento/api/DatesChecker.dart';
 import 'package:rento/api/services.dart';
 import 'package:rento/components/GoogleMap.dart';
@@ -36,7 +35,7 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData( 
-        primaryColor:  Colors.deepOrange[800]
+        primaryColor:  Colors.redAccent
       ),
       home: UserAuth.isLoggedIn() ?  MainPage(): LoginScreen2(),
       routes: <String, WidgetBuilder>{
