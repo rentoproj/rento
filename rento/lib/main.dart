@@ -60,7 +60,7 @@ class MyAppState extends State<MyApp> {
   void initState (){
     UserAuth();
     super.initState();
-    DatesChecker("adc@rento.com");
+    //DatesChecker("adc@rento.com");
     FirebaseAuth.instance.onAuthStateChanged.listen((user){
     });
   }

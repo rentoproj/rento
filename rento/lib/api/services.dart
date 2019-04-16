@@ -72,7 +72,6 @@ class FirebaseService {
     Firestore.instance.collection('Requests').document(ReqID).updateData(
       {
         'State':newstate,
-        
       }
     ).then((onVal){print("complete");});
   }

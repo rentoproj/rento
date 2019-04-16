@@ -40,7 +40,7 @@ class _ImageSliderState extends State<ImageSlider> {
     return Container(
       height: widget.size,
       child: new Carousel(
-        boxFit: BoxFit.cover,
+        boxFit: BoxFit.fitHeight,
         images: widget.images,
         autoplay: false,
       ),
