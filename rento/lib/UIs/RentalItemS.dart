@@ -87,7 +87,7 @@ class RentalItemState extends State<RentalItem> {
                    if (validateAndSave()) {
                     // If the form is valid, we want to show a Snackbar
                         FirebaseService.UpdateRequestState(itemID, "On Rent");
-                  Navigator.of(context).pushReplacementNamed('/RentalHistory');
+                  Navigator.of(context).pushReplacementNamed('/RentalHistorySlider');
                   }
                   
                 })

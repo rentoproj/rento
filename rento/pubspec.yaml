@@ -22,10 +22,10 @@ dependencies:
     sdk: flutter
  
 
-  cloud_firestore: ^0.9.7
+  cloud_firestore: ^0.9.13
   firebase_core: ^0.3.4
   firebase_auth: 
-  firebase_database: ^2.0.2
+  firebase_database: ^2.0.3
   firebase_storage:
   image_picker: ^0.5.1
   intl:

@@ -248,22 +248,22 @@ class UserAuth{
   static bool isLoggedIn()
   {
     if (user == null){
-      DatesChecker.destroy();
+      //DatesChecker.destroy();
       return false;
     }
 
     else
     {
-      new DatesChecker(user.email);
+      //new DatesChecker(user.email);
       return true;
     } 
   }
 
   static Future <void> logout()
   {
-    return FirebaseAuth.instance.signOut().whenComplete((){
-      DatesChecker.destroy();
-    });
+    // return FirebaseAuth.instance.signOut().whenComplete((){
+    //   DatesChecker.destroy();
+    // });
   }
 
   static String getEmail()
